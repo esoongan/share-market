@@ -4,14 +4,17 @@ package ShareMarket.sharemarket.domain.users;
 // 실제 회원정보에 해당하는 클래스
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
 
 @Entity
-public class UserAccount {
+public class Account {
 
     @Id // pk
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment로 pk자동생성
     private Long id;
 
     private String username;
@@ -51,22 +54,29 @@ public class UserAccount {
         this.password = password;
     }
 
+    //location get/set
+    public String getLocation(){
+        return location;
+    }
+    public void setLocation(String location){
+        this.location = location;
+    }
+
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass()!=obj.getClass()) return false;
-        UserAccount userAccount = (UserAccount) obj;
-        return id.equals(userAccount.id) && username.equals(userAccount.username) &&
-                email.equals(userAccount.email) &&
-                password.equals(userAccount.password) &&
-                location.equals(userAccount.location);
+        Account account = (Account) obj;
+        return id.equals(account.id) &&
+                username.equals(account.username) &&
+                email.equals(account.email) &&
+                password.equals(account.password) &&
+                location.equals(account.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, password,location);
-
-
+        return Objects.hash(id, username, email, password, location);
     }
 }

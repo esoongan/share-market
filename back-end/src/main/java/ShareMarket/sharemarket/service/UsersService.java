@@ -1,2 +1,4 @@
-package ShareMarket.sharemarket.service;public class UsersService {
+package ShareMarket.sharemarket.service;
+
+public class UsersService {
 }
