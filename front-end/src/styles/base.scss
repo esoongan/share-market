@@ -1,0 +1,21 @@
+/* 전역적으로 사용하는 스타일 지정 - body, 타이포그래피 등*/
+@import url("//fonts.googleapis.com/earlyaccess/notosanskr.css");
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans KR", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// box-sizing 일괄 설정
+* {
+    box-sizing: inherit;
+}
+
+// 링크 스타일 밑줄 및 색상 무효화
+a {
+    text-decoration: inherit;
+    color: inherit;
+}
