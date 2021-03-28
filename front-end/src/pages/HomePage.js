@@ -5,7 +5,7 @@ const HomePage = () =>{
     return(
         <div>
             <PageTemplate>
-                HomePage
+                
             </PageTemplate>
         </div>
     )

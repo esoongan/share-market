@@ -15,7 +15,7 @@ const Header = () => (
       <div className={cx('right')}>
         {/* 조건에 따라 버튼 렌더링, to=''설정하기 */}
         <Button theme='text'>로그인</Button>
-        <Button theme='outline'>회원가입</Button>
+        <Button theme='outline' to='/join'>회원가입</Button>
       </div>
     </div >
   </header>
