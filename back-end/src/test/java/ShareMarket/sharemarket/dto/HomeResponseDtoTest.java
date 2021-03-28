@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.web.dto;
+package ShareMarket.sharemarket.dto;
 
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;

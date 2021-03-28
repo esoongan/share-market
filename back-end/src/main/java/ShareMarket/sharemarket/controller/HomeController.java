@@ -1,6 +1,6 @@
-package ShareMarket.sharemarket.web;
+package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.web.dto.HomeResponseDto;
+import ShareMarket.sharemarket.dto.HomeResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

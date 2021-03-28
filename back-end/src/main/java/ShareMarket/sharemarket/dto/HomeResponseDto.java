@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.web.dto;
+package ShareMarket.sharemarket.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

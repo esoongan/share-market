@@ -2,7 +2,7 @@ package ShareMarket.sharemarket.web;
 
 import ShareMarket.sharemarket.domain.posts.Posts;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
-import ShareMarket.sharemarket.web.dto.PostsSaveRequestDto;
+import ShareMarket.sharemarket.dto.PostsSaveRequestDto;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostsApiControllerTest {
+public class PostControllerTest {
 
     @LocalServerPort
     private int port;

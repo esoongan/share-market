@@ -1,16 +1,16 @@
-package ShareMarket.sharemarket.web;
+package ShareMarket.sharemarket.controller;
 
 
 import ShareMarket.sharemarket.service.PostsService;
-import ShareMarket.sharemarket.web.dto.PostsResponseDto;
-import ShareMarket.sharemarket.web.dto.PostsSaveRequestDto;
-import ShareMarket.sharemarket.web.dto.PostsUpdateRequestDto;
+import ShareMarket.sharemarket.dto.PostsResponseDto;
+import ShareMarket.sharemarket.dto.PostsSaveRequestDto;
+import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-public class PostsApiController {
+public class PostController {
 
     private final PostsService postsService;
 

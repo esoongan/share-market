@@ -3,10 +3,10 @@ package ShareMarket.sharemarket.service;
 
 import ShareMarket.sharemarket.domain.posts.Posts;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
-import ShareMarket.sharemarket.web.dto.PostsListResponseDto;
-import ShareMarket.sharemarket.web.dto.PostsResponseDto;
-import ShareMarket.sharemarket.web.dto.PostsSaveRequestDto;
-import ShareMarket.sharemarket.web.dto.PostsUpdateRequestDto;
+import ShareMarket.sharemarket.dto.PostsListResponseDto;
+import ShareMarket.sharemarket.dto.PostsResponseDto;
+import ShareMarket.sharemarket.dto.PostsSaveRequestDto;
+import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
