@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +33,7 @@ public class UserService {
 
         return userRepository.save(User.builder()
                     .username(userRequestDto.getUsername())
-                    .password(userRequestDto.getPassword())
+                    .password(passwordEncoder.encode(userRequestDto.getPassword()))
                     .email(userRequestDto.getEmail())
                     .location(userRequestDto.getLocation())
                     .roles(Collections.singletonList(MemberType.USER))

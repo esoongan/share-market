@@ -15,6 +15,8 @@ public class JwtUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    // 상세정보를 조회하는 메소드 , 사용자의 계정정보와 권한을 갖는 UserDetails인터페이스를 반환한다.
+    // 매개변수는 로그인시 입력한 아이디
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)

@@ -6,7 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 @RequiredArgsConstructor
 public enum MemberType implements GrantedAuthority {
-    USER("ROLE_USER");
+    USER("ROLE_USER"),
+    ADMIN("ROLE_ADMIN");
 
     @Getter
     private final String type;

@@ -1,6 +1,6 @@
 package ShareMarket.sharemarket.web;
 
-import ShareMarket.sharemarket.domain.posts.Posts;
+import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
 import ShareMarket.sharemarket.dto.PostsSaveRequestDto;
 import org.junit.After;
@@ -58,7 +58,7 @@ public class PostControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-        List<Posts> all = postsRepository.findAll();
+        List<Post> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
     }

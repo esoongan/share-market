@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Slf4j //로그찍는 라이브러리
 @RequiredArgsConstructor
-@RestController
+@RestController // API서버로서 동작할것이므로 RestController를 이용한다.
 public class UserController {
 
     private final UserService userService;
@@ -26,7 +26,7 @@ public class UserController {
     public ResponseEntity<User> join(@RequestBody UserRequestDto userRequestDto) throws URISyntaxException {
 
         log.info("resource -> {}", userRequestDto);
-        User user = userService.register(userRequestDto);
+        User user = userService.register(userRequestDto); // 회원등록
         log.info("user -> {}", user);
         URI url = new URI(String.format("/users/%s", user.getId()));
         return ResponseEntity.created(url).body(user);

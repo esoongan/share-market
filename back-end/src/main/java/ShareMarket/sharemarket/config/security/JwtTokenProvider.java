@@ -53,7 +53,7 @@ public class JwtTokenProvider {
 
     //JWT토큰에서 인증정보 조회
     public Authentication getAuthentication(String token){
-        // 토큰에서 추출한 회원정보를 받아 우저를 로드하고 이를 userDetails에 담아 UsernamePasswordAuthenticationToken에 담아보낸다.
+        // 토큰에서 추출한 회원정보를 받아 유저를 로드하고 이를 userDetails에 담아 UsernamePasswordAuthenticationToken에 담아보낸다.
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 // 리포지토리 - 데이터베이스에 접근하는 영역 ( 구 개발방식에서 dao의 역할)
-public interface PostsRepository extends JpaRepository<Posts, Long> {
+// 제네릭타입에는 Entity클래스와 PK의 타입을 명시하면됨
+public interface PostsRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p FROM Posts p ORDER BY p.id DESC")
-    List<Posts> findAllDesc();
+    @Query("SELECT p FROM Post p ORDER BY p.id DESC")
+    List<Post> findAllDesc();
 }
 
 /*
