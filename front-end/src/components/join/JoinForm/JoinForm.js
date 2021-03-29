@@ -6,10 +6,13 @@ import Select from "react-select";
 
 const cx = classNames.bind(styles);
 const options = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "orange", label: "Orange" },
-  { value: "berry", label: "Berry" },
+  { value: "서울 광진구 구의동", label: "서울 광진구 구의동" },
+  { value: "서울 광진구 화양동", label: "서울 광진구 화양동" },
+  { value: "서울 광진구 자양동", label: "서울 광진구 자양동" },
+  { value: "인천 연수구 송도1동", label: "인천 연수구 송도1동" },
+  { value: "인천 연수구 송도2동", label: "인천 연수구 송도2동" },
+  { value: "인천 연수구 송도3동", label: "인천 연수구 송도3동" },
+
 ]
 
 class JoinForm extends Component {
