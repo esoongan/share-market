@@ -3,15 +3,18 @@ package ShareMarket.sharemarket.service;
 
 import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
+import ShareMarket.sharemarket.domain.users.MemberType;
 import ShareMarket.sharemarket.dto.PostsListResponseDto;
 import ShareMarket.sharemarket.dto.PostsResponseDto;
-import ShareMarket.sharemarket.dto.PostsSaveRequestDto;
+import ShareMarket.sharemarket.dto.PostsRequestDto;
 import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,10 +24,12 @@ public class PostsService {
     private final PostsRepository postsRepository;
 
     @Transactional
-    public Post save(PostsSaveRequestDto postsSaveRequestDto){
+    public Post save(PostsRequestDto postsRequestDto){
+
         //JpaRepository에 정의된 메소드save() -> DB에 INSERT와 UPDATE를 담당한다. (자동생성)
         //매개변수로는 Entity를 전달함
-        return postsRepository.save(postsSaveRequestDto.toEntity());
+//        return postsRepository.save(postsSaveRequestDto.toEntity());
+        return postsRepository.save(postsRequestDto.toEntity());
     }
 
     @Transactional
