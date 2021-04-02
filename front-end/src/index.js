@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from './Root';
 import reportWebVitals from './reportWebVitals';
-import 'styles/base.scss'
+import 'styles/custom-bootstrap.scss'
 import axios from 'axios'
 
 //axios.defaults.baseURL = "https://www.sharemarket.com";

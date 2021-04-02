@@ -32,7 +32,7 @@ class LoginModal extends Component{
         { error && <div className = {cx('error')}>로그인 실패</div> }
         <div className={cx('options')}>
           <Button onClick={onLogin}>로그인</Button>
-          <Button theme="gray" onClick={onCancel}>취소</Button>
+          <Button theme="gray-text" onClick={onCancel}>취소</Button>
         </div>
 
       </ModalWrapper>
