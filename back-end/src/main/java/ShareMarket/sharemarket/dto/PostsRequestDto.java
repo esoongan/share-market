@@ -11,11 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+// 클라이언트로부터 정보를 받아서 디비에 저장하는 객체
 public class PostsRequestDto {
 
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserDetails userDetails = (UserDetails)principal;
 
+    private Long id;
     private String title;
     private String content;
     private String user_id;
@@ -24,7 +26,7 @@ public class PostsRequestDto {
     private String deposit;
     private String photo;
 
-// 생성지 - @All~ 로 대체함
+// 생성지 - @All~ 로 대체함 (이해를 돕기위해 지우지않음)
 //    @Builder
 //    public PostsRequestDto(String title, String content, String user_id, String category, String price, String deposit, String photo){
 //        this.title = title;

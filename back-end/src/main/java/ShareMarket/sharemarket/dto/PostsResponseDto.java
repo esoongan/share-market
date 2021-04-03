@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+// 디비로부터 불러와서 정보를 반환하는 객체 -> 반환에는 엔티티객체(Post)가 아니고 Dto객체를 반환한다.
 public class PostsResponseDto {
 
     private Long id;
