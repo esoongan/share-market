@@ -7,12 +7,12 @@ import ShareMarket.sharemarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Map;
 
 @Slf4j //로그찍는 라이브러리
 @RequiredArgsConstructor
@@ -38,7 +38,16 @@ public class UserController {
         return userService.login(userRequestDto);
     }
 
-    //조회
+
+    //현재 요청헤더에 담긴 사용자 정보조회
+    @GetMapping("/current")
+    @ResponseBody
+    public UserDetails currentUserName(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return userDetails;
+    }
+
+    //유저_id(기본키값)에 따른 유저정보 조회
     @GetMapping("/users/{id}")
     public User details(@PathVariable Long id) {
         return userService.detail(id);

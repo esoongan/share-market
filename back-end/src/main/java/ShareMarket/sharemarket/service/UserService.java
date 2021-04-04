@@ -19,6 +19,7 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+    //id로 유저 조회
     public User detail(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("" + id));
     }
@@ -48,7 +49,4 @@ public class UserService {
         // 해당 유저에 대한 토큰을 생성해서 반환함.
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
     }
-
-
-
 }

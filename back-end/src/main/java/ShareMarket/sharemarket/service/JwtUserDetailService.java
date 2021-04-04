@@ -19,6 +19,7 @@ public class JwtUserDetailService implements UserDetailsService {
     // 매개변수는 로그인시 입력한 아이디
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // DB에서 사용자정보를 가져와서 User객체에 넣어서 반환
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));
 
