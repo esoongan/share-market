@@ -2,16 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as joinFormActions from 'store/modules/joinForm'
-import * as locationSelectorActions from 'store/modules/locationSelector'
 
 import { withRouter } from 'react-router-dom'
 import JoinForm from 'components/join/JoinForm'
 
 
 export class JoinFormContainer extends Component {
+    componentDidMount() {
+        const { JoinFormActions } = this.props
+        JoinFormActions.initialize()
+    }
     handleSelect = ({inputValue}) =>{
-        const {LocationSelectorActions } = this.props
-        LocationSelectorActions.select({inputValue})
+        const { JoinFormActions } = this.props
+        JoinFormActions.selectLocation({inputValue})
     }
     handleChangeInput = ({ name, value }) => {
         const { JoinFormActions } = this.props
@@ -50,12 +53,11 @@ const mapStateToProps = (state) => ({
     username: state.joinForm.get('username'),
     password: state.joinForm.get('password'),
     email: state.joinForm.get('email'),
-    location: state.locationSelector.get('location')
+    location: state.joinForm.get('location')
 })
 
 const mapDispatchToProps = (dispatch) => ({
     JoinFormActions: bindActionCreators(joinFormActions, dispatch),
-    LocationSelectorActions : bindActionCreators(locationSelectorActions, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(JoinFormContainer))
