@@ -36,7 +36,7 @@ public class UserService {
                     .username(userRequestDto.getUsername())
                     .password(passwordEncoder.encode(userRequestDto.getPassword()))
                     .email(userRequestDto.getEmail())
-                    .location(userRequestDto.getLocation())
+                    .addr(userRequestDto.getAddr())
                     .roles(Collections.singletonList(MemberType.USER))
                 .build());
     }
