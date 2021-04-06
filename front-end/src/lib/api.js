@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const join = ({username, password, email, location}) => axios.post('/join', {username, password, email, location}) 
+export const join = ({username, password, email, addr}) => axios.post('/join', {username, password, email, addr}) 
 export const login = ({username, password}) => axios.post('/login', {username, password}) 
 
 export const writePost = ({title, content, category, price, deposit}) => axios.post('/user/api/posts', {title, content, category, price, deposit})

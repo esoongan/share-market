@@ -14,18 +14,18 @@ export class JoinFormContainer extends Component {
     }
     handleSelect = ({inputValue}) =>{
         const { JoinFormActions } = this.props
-        JoinFormActions.selectLocation({inputValue})
+        JoinFormActions.selectAddr({inputValue})
     }
     handleChangeInput = ({ name, value }) => {
         const { JoinFormActions } = this.props
         JoinFormActions.changeInput({ name, value })
     }
     handleSubmit = async () => {
-        const { username, password, email, location, history } = this.props
+        const { username, password, email, addr, history } = this.props
         const { JoinFormActions } = this.props
 
         try {
-            await JoinFormActions.postUsers({ username, password, email, location })
+            await JoinFormActions.postUsers({ username, password, email, addr })
             history.push('/')
         } catch (e) {
             console.log(e);
@@ -33,7 +33,7 @@ export class JoinFormContainer extends Component {
     }
 
     render() {
-        const { username, password, email, location } = this.props
+        const { username, password, email, addr } = this.props
         const { handleChangeInput, handleSubmit, handleSelect } = this
         return (
             <JoinForm
@@ -43,7 +43,7 @@ export class JoinFormContainer extends Component {
                 username={username}
                 password={password}
                 email={email}
-                location={location}
+                addr={addr}
             />
         )
     }
@@ -53,7 +53,7 @@ const mapStateToProps = (state) => ({
     username: state.joinForm.get('username'),
     password: state.joinForm.get('password'),
     email: state.joinForm.get('email'),
-    location: state.joinForm.get('location')
+    addr: state.joinForm.get('addr')
 })
 
 const mapDispatchToProps = (dispatch) => ({

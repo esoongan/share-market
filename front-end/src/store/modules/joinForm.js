@@ -7,20 +7,20 @@ import * as api from 'lib/api'
 const CHANGE_INPUT = 'join/CHANGE_INPUT'
 const POST_USERS = 'join/POST_USERS'
 const INITIALIZE = 'join/INITIALIZE'
-const SELECT_LOCATION = 'join/SELECT_LOCATION'
+const SELECT_ADDR = 'join/SELECT_ADDR'
 
 //action creators
 export const initialize = createAction(INITIALIZE)
 export const changeInput = createAction(CHANGE_INPUT)
 export const postUsers = createAction(POST_USERS, api.join)
-export const selectLocation = createAction(SELECT_LOCATION)
+export const selectAddr = createAction(SELECT_ADDR)
 
 //initial state
 const initialState = Map({
     username : '',
     password : '',
     email : '',
-    location: '',
+    addr: '',
 })
 
 //reducer
@@ -30,12 +30,14 @@ export default handleActions({
         const {name, value} = action.payload
         return state.set(name, value)
     },    
-    [SELECT_LOCATION] : (state, action) => {
+    [SELECT_ADDR] : (state, action) => {
         const { inputValue } = action.payload
-        return state.set('location', inputValue)
+        return state.set('addr', inputValue)
     },
     ...pender({
         type: POST_USERS,
-        //onFailure: (state, action)=>{}
+        onFailure: (state, action)=>{
+            console.log(action);
+        }
     })
 }, initialState)
