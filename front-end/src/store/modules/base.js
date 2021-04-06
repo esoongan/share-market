@@ -7,6 +7,7 @@ import axios from 'axios'
 //action types
 const SHOW_MODAL = 'base/SHOW_MODAL'
 const HIDE_MODAL = 'base/HIDE_MODAL'
+const TOGGLE_MODAL = 'base/TOGGLE_MODAL'
 
 const INITIALIZE_LOGIN_MODAL = 'base/INITIALIZE_LOGIN_MODAL'
 const LOGIN = 'base/LOGIN'
@@ -18,6 +19,7 @@ const CHANGE_LOGIN_INPUT = 'login/CHANGE_INPUT'
 //action creators
 export const showModal = createAction(SHOW_MODAL)
 export const hideModal = createAction(HIDE_MODAL)
+export const toggleModal = createAction(TOGGLE_MODAL)
 
 export const initializeLoginModal = createAction(INITIALIZE_LOGIN_MODAL)
 export const login = createAction(LOGIN, api.login)
@@ -48,6 +50,10 @@ export default handleActions({
     [HIDE_MODAL] : (state, action) => {
         const { payload: modalName } = action
         return state.setIn(['modal', modalName], false)
+    },
+    [TOGGLE_MODAL] : (state, action) =>{
+        const { payload: modalName } = action
+        return state.setIn(['modal', modalName], !['modal', modalName])
     },
     /* 로그인 관련 */
     ...pender({

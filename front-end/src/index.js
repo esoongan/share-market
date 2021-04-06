@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import 'styles/custom-bootstrap.scss'
 import axios from 'axios'
 
-//axios.defaults.baseURL = "https://www.sharemarket.com";
+axios.defaults.baseURL = "http://localhost:8080";
 axios.defaults.withCredentials = true;    //백엔드로부터 refreshToken cookie를 주고받기
 
 ReactDOM.render(
