@@ -6,7 +6,7 @@ import 'styles/custom-bootstrap.scss'
 import axios from 'axios'
 
 axios.defaults.baseURL = "http://localhost:8080";
-axios.defaults.withCredentials = true;    //백엔드로부터 refreshToken cookie를 주고받기
+axios.defaults.withCredentials = false;    //백엔드로부터 refreshToken cookie를 주고받기
 
 ReactDOM.render(
   <React.StrictMode>

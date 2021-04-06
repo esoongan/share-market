@@ -8,12 +8,15 @@ const WRITE_POST = 'editor/WRITE_POST'
 const INITIALIZE = 'editor/INITIALIZE'
 const CHANGE_INPUT = 'editor/CHANGE_INPUT'
 const SELECT_CATEGORY = 'editor/SELECT_CATEGORY'
+const UPLOAD_FILES = 'editor/UPLOAD_FILES'
 
 //action creators
 export const initialize = createAction(INITIALIZE)
 export const changeInput = createAction(CHANGE_INPUT)
 export const writePost = createAction(WRITE_POST, api.writePost)
 export const selectCategory = createAction(SELECT_CATEGORY)
+export const uploadFiles = createAction(UPLOAD_FILES)
+
 
 //initial state
 const initialState = Map({

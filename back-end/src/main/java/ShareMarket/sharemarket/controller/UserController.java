@@ -22,6 +22,7 @@ public class UserController {
     private final UserService userService;
 
     //회원가입
+    @CrossOrigin
     @PostMapping("/join")
     public ResponseEntity<User> join(@RequestBody UserRequestDto userRequestDto) throws URISyntaxException {
 
