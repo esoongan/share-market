@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Column
     private String password;
     @Column
-    private String location;
+    private String addr;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
