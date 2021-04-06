@@ -34,6 +34,7 @@ public class UserController {
     }
 
     //로그인
+    @CrossOrigin("*")
     @PostMapping("/login")
     public String login(@RequestBody UserRequestDto userRequestDto) {
         return userService.login(userRequestDto);

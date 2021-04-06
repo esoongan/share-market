@@ -62,7 +62,8 @@ export default handleActions({
         onSuccess: (state, action) =>{
             const {data: token} = action.payload
             // API 요청하는 콜마다 헤더에 token(JWT) 담아 보내도록 설정
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+            axios.defaults.headers.common['X-AUTH-TOKEN'] = `${token}`
+            console.log(action);
             return state.set('logged', true)
                         .set('JWT', token)
         },
