@@ -2,6 +2,7 @@ package ShareMarket.sharemarket.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class MvcConfiguration implements WebMvcConfigurer {
@@ -15,5 +16,12 @@ public class MvcConfiguration implements WebMvcConfigurer {
         multipartResolver.setMaxUploadSize(5 * 1024 * 1024);
 
         return multipartResolver;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .exposedHeaders("jwt-token");
     }
 }
