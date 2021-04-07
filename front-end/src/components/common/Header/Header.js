@@ -6,17 +6,25 @@ import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
-const Header = () => (
+//PageTemplate 컴포넌트에 들어감
+const Header = ({ onLoginClick, onLogoutClick, logged }) => (
   <header className={cx('header')}>
     <div className={cx('header-content')}>
       <div className={cx('brand')}>
         <Link to="/"> Share Market </Link>
       </div>
-      <div className={cx('right')}>
-        {/* 조건에 따라 버튼 렌더링, to=''설정하기 */}
-        <Button theme='text'>로그인</Button>
-        <Button theme='outline' to='/join'>회원가입</Button>
-      </div>
+      {!logged &&
+        <div className={cx('right')}>
+          <Button theme='text' onClick={onLoginClick} >로그인</Button>
+          <Button theme='outline' to='/join'>회원가입</Button>
+        </div>
+      }
+      {logged &&
+        <div className={cx('right')}>
+          TODO: 로그인 상태일 때
+        </div>
+      }
+
     </div >
   </header>
 );

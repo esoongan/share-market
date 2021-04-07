@@ -21,7 +21,11 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+<<<<<<< HEAD
                 .allowedOrigins("http://localhost:3000")
                 .exposedHeaders("jwt-token");
+=======
+                .allowedOrigins("http://localhost:3000");
+>>>>>>> 1aeb0977cf13e8b8576c1107b220c34037ab7939
     }
 }

@@ -1,6 +1,6 @@
 @import './lib/all';
 
-$breakpoints: (small: 320px, medium: 768px, large:1024px, wide:1400px);
+$breakpoints: (small: 576px, medium: 768px, large:992px, wide:1200px);
 
 $color-primary: #5F2EEA;
 $color-primary-light: #D5CBF1;
@@ -8,3 +8,4 @@ $color-primary-dark: #401E9E;
 $color-secondary: #548235;
 $color-gray: #939597;
 $color-gray-light: #DFDFDF;
+

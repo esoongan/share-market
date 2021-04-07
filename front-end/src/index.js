@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from './Root';
 import reportWebVitals from './reportWebVitals';
-import 'styles/base.scss'
+import 'styles/custom-bootstrap.scss'
+import axios from 'axios'
+
+axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.withCredentials = false;    //백엔드로부터 refreshToken cookie를 주고받기
 
 ReactDOM.render(
   <React.StrictMode>

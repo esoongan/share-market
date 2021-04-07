@@ -36,6 +36,17 @@
             color: $color-primary;
         }
     }
+    &.gray-text {
+        color: $color-gray;
+        background: transparent;
+        &:hover {
+            color: $color-gray-light;
+            box-shadow: 0 0px 0px transparent, 0 0px 0px transparent;
+        }
+        &:active {
+            color: $color-gray;
+        }
+    }
 
     // gray: 회색 버튼
     &.gray {

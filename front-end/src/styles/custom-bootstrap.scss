@@ -1,0 +1,15 @@
+@import "utils";
+/* bootstrap customizing*/
+$theme-colors: (
+    "primary": $color-primary,
+    "secondary": $color-secondary,
+    "primary-light": $color-primary-light,
+    "primary-dark": $color-primary-dark,
+);
+
+$colors: (
+    "gray": $color-gray,
+    "gray-light": $color-gray-light
+);
+
+@import "~bootstrap/scss/bootstrap";

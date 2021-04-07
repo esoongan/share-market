@@ -50,7 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/**").hasRole("ADMIN") //admin으로 시작하는 경로는 ADMIN롤을 가진 사용자만 접근가능
                     .antMatchers("/user/**").hasRole("USER") //user로 시작하는 경로는 USER롤을 가진 사용자만 접근가능
                     .antMatchers("/**").permitAll()// 그외 나머지 요청은 누구나 접근 가능
+<<<<<<< HEAD
                     .antMatchers(HttpMethod.POST).permitAll()
+=======
+                    .antMatchers(HttpMethod.OPTIONS).permitAll()
+>>>>>>> 1aeb0977cf13e8b8576c1107b220c34037ab7939
                     .antMatchers("/h2-console/**").permitAll()
                     .and()
                 // JwtAuthenticationFIlter를 UsernamePasswordAuthenticationFilter전에 넣는다.
