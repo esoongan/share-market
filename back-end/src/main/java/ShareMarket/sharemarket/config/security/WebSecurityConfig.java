@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 @RequiredArgsConstructor
 @EnableWebSecurity //Spring Security를 사용하기위해 Spring Security Filter Chain을 사용한다는것을 명시해줘야함
@@ -47,16 +48,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰기반 인증이므로 세션을 사용하지 않는다.
                     .and()
                 .authorizeRequests() //요청에 대한 사용권한 체크 (페이지권할설정)
+                    //.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight요청은 인증처리를 하지 않겠다는것
+                    .antMatchers(HttpMethod.OPTIONS).permitAll() // preflight로 오는 option메소드들은 모두 허용하겠다. (위줄이랑 같은 효과인듯)
                     .antMatchers("/admin/**").hasRole("ADMIN") //admin으로 시작하는 경로는 ADMIN롤을 가진 사용자만 접근가능
                     .antMatchers("/user/**").hasRole("USER") //user로 시작하는 경로는 USER롤을 가진 사용자만 접근가능
                     .antMatchers("/**").permitAll()// 그외 나머지 요청은 누구나 접근 가능
-<<<<<<< HEAD
-                    .antMatchers(HttpMethod.POST).permitAll()
-=======
-                    .antMatchers(HttpMethod.OPTIONS).permitAll()
->>>>>>> 1aeb0977cf13e8b8576c1107b220c34037ab7939
                     .antMatchers("/h2-console/**").permitAll()
-                    .and()
+                    .anyRequest().authenticated().and()
+                    .cors().and() // spring-security에서 cors를 적용한다는설정, 인증성공 여부와 무관하게 origin헤더가 있는 요청에 대해 cors헤더를 포함한 응답을 해준다.
                 // JwtAuthenticationFIlter를 UsernamePasswordAuthenticationFilter전에 넣는다.
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);

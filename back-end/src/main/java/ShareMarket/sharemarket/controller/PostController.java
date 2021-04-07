@@ -31,12 +31,7 @@ public class PostController {
 //    }
 
     // 게시글 작성- 기본
-<<<<<<< HEAD
-
     @CrossOrigin("*")
-=======
-    @CrossOrigin("http://localhost:3000")
->>>>>>> 1aeb0977cf13e8b8576c1107b220c34037ab7939
     @PostMapping("/user/api/posts")
     public ResponseEntity<Post> savePost(@RequestBody PostsRequestDto postsRequestDto) throws  URISyntaxException{ //postsavedto객체에 담긴 정보를 저장한다.
         Post post = postsService.save(postsRequestDto);
