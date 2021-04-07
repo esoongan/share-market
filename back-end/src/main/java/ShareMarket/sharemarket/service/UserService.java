@@ -6,18 +6,27 @@ import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.domain.users.UserRepository;
 import ShareMarket.sharemarket.dto.UserRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtUserDetailService jwtUserDetailService;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     //id로 유저 조회
     public User detail(Long id) {
@@ -42,11 +51,28 @@ public class UserService {
     }
 
     // 로그인로직담당
-    public String login(UserRequestDto userRequestDto) {
-        // 요청에 담긴 아이디값으로 디비에서 값을 찾은후 user에 담는다.
-        User user = userRepository.findByUsername(userRequestDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException(userRequestDto.getUsername()));
-        // 해당 유저에 대한 토큰을 생성해서 반환함.
-        return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+    public String login(UserRequestDto userRequestDto) throws Exception {
+        authenticate(userRequestDto.getUsername(), userRequestDto.getPassword());
+        log.info("로그인성공");
+        // 요청에 담긴 아이디값으로 디비에서 값을 찾아서 UserDetails로 반환하는 loadUserByUsername
+        UserDetails userDetails = jwtUserDetailService.loadUserByUsername(userRequestDto.getUsername());
+        return jwtTokenProvider.createToken(userDetails);
+    }
+
+    // 아이디 비밀번호 유효성검사
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            log.info("인증실패1");
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            log.info("인증실패2_아이디와 비밀번호 유효성x");
+            throw new Exception("INVALID_CREDENTIALS", e);
+        } catch (SecurityException e) {
+            log.info("인증실패3");
+            throw new Exception("SECRURITY", e);
+        }
+
     }
 }
