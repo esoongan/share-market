@@ -41,7 +41,7 @@ class Editor extends Component {
           <Col md={3}>
             <InputGroup>
               <InputGroupAddon addonType="prepend">1일 당</InputGroupAddon>
-              <Input placeholder="렌탈비" min={0} type="number" step="1000"
+              <Input name="price" placeholder="렌탈비" min={0} type="number" step="1000"
                 value={price}
                 onChange={handleChange} />
               <InputGroupAddon addonType="append">₩</InputGroupAddon>
@@ -49,7 +49,7 @@ class Editor extends Component {
           </Col>
           <Col md={3}>
             <InputGroup>
-              <Input placeholder="보증금" min={0} type="number" step="1000"
+              <Input name="deposit" placeholder="보증금" min={0} type="number" step="1000"
                 value={deposit}
                 onChange={handleChange} />
               <InputGroupAddon addonType="append">₩</InputGroupAddon>
