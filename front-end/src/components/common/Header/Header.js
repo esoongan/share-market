@@ -3,6 +3,7 @@ import styles from './Header.scss';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import Button from '../Button';
+import DropdownButton from '../DropdownButton';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +22,8 @@ const Header = ({ onLoginClick, onLogoutClick, logged }) => (
       }
       {logged &&
         <div className={cx('right')}>
-          TODO: 로그인 상태일 때
+          <Button theme='text' to='/post/editor'>제품 올리기</Button>
+          <DropdownButton text='menu'/>
         </div>
       }
 
