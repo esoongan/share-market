@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import Select from 'react-select';
 import { InputGroup, InputGroupAddon, Input, FormGroup, Label, Row, Col } from 'reactstrap';
 import Button from 'components/common/Button';
+import UploaderContainer from 'containers/editor/UploaderContainer';
 
 const cx = classNames.bind(styles);
 const categories = [
@@ -63,7 +64,8 @@ class Editor extends Component {
         </div>
         <div className={cx('contents-forms')}>
           <div className={cx('photos')}>
-            TODO: import select photo module!
+            {/* TODO: UploaderContainer로 변경하기 */}
+            <UploaderContainer/>
           </div>
           <div className={cx('content')}>
             <FormGroup>
