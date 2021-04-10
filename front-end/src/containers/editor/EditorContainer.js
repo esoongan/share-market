@@ -18,7 +18,7 @@ class EditorContainer extends Component {
                 "content-type": "multipart/form-data"
             }
         };
-        const { title, content, category, price, deposit, history, selectedFiles } = this.props
+        const { title, content, category, price, deposit, history, imageList } = this.props
         const { EditorActions } = this.props
         try {
             /* 게시글 저장 api 호출 */
@@ -28,8 +28,8 @@ class EditorContainer extends Component {
 
             /* 이미지 파일 업로드 api 호출 */
             const formData = new FormData();
-            for(let i=0; i<selectedFiles.length; i++){
-                formData.append('files', selectedFiles[i])
+            for(let i=0; i<imageList.length; i++){
+                formData.append('files', imageList[i].file)
             }
             await EditorActions.uploadFiles({post_id, formData, config})
             history.push(`post/${post_id}`)      //포스트 보는 페이지로 이동
@@ -66,6 +66,7 @@ const mapStateToProps = (state) => ({
     price: state.editor.get('price'),
     deposit: state.editor.get('deposit'),
     post_id: state.editor.get('post_id'),
+    imageList: state.editor.get('imageList')
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -27,10 +27,18 @@ const initialState = Map({
     category: '',
     price: '',
     deposit: '',
-    selectedFiles: Map({
-        fileList: [],  //사용자가 선택한 File 객체들의 리스트(input 태그의 이벤트에서 받은 값)
-        previewUrl: []  //미리보기 시 사용함, FileReader.readAsDataURL(file)의 리턴값
-    }),
+    imageList: []
+    /* imageList: 사용자가 선택한 이미지 데이터들의 리스트
+    [
+        {
+            file: File객체,      => api 호출 때 넣어주는 데이터
+            data_url: 미리보기에 사용되는 url
+        },
+        {...},
+        {...},
+        ...
+    ]
+    */
 })
 
 //reducer
@@ -46,9 +54,8 @@ export default handleActions({
         return state.set('category', inputValue)
     },
     [SELECT_FILES]: (state, action) => {
-        const { fileList, previewUrl } = action.payload     //fileList: Array, previewUrl: Array
-        return state.setIn(['selectedFiles', 'fileList'], fileList)
-            .setIn(['selectedFiles', 'previewUrl'], previewUrl)
+        const { imageList } = action.payload
+        return state.set('imageList', imageList)
     },
     ...pender(
         {
