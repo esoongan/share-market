@@ -50,7 +50,6 @@ export default handleActions({
     },
     [SELECT_CATEGORY]: (state, action) => {
         const { inputValue } = action.payload
-        console.log(state.get('selectedFiles'));
         return state.set('category', inputValue)
     },
     [SELECT_FILES]: (state, action) => {
@@ -66,14 +65,14 @@ export default handleActions({
                 return state.set('post_id', id)
             },
             onError: (state, action) => {
-                console.log(action);
+                console.log('WRITE_POST onError',action);
                 return state
             },
         },
         {
             type: UPLOAD_FILES,
             onError: (state, action) => {
-                console.log(action)
+                console.log('UPLOAD_FILES onError',action);
                 return state
             },
         })
