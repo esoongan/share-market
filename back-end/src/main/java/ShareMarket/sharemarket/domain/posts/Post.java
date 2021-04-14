@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity // JPA가 관리할 테이블이다. -> 테이블과 링크될 클래스임을 나타냄
 public class Post extends BaseTimeEntity {
 
+
     @Id // PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment로 pk자동생성
     private Long id;  // mysql 기준으로 long - bigint

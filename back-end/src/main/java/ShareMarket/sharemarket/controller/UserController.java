@@ -32,6 +32,7 @@ public class UserController {
         log.info("resource -> {}", userRequestDto);
         User user = userService.register(userRequestDto); // 회원등록
         log.info("user -> {}", user);
+        log.info("회원가입 성공");
         URI url = new URI(String.format("/users/%s", user.getId()));
         return ResponseEntity.created(url).body(user);
     }

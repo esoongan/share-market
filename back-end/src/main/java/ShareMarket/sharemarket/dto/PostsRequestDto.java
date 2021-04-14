@@ -11,9 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-// 클라이언트로부터 정보를 받아서 디비에 저장하는 객체
+// 엔티티를 보호하기 위해 한번더 감싸는 dto인데, 그중에서도 클라이언트로부터 받은 데이터를 담아 요청처리를 담당하는 dto
 public class PostsRequestDto {
 
+    // 현재 요청한 유저가 누구인지 함께 저장하기위해 토큰에서 사용자 정보 추출하기 위함
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserDetails userDetails = (UserDetails)principal;
 

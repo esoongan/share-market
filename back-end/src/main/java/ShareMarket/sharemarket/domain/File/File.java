@@ -19,11 +19,6 @@ public class File { //사진(파일) 엔티티클래스
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 게시글 번호 - FK
-//    @ManyToOne
-//    @JoinColumn(name="post_id")
-//    private Post post;
-
     @Column(nullable = false)
     private Long post_id;
 
