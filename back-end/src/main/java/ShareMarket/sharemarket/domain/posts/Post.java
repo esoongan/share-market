@@ -1,6 +1,8 @@
 package ShareMarket.sharemarket.domain.posts;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
+import ShareMarket.sharemarket.dto.PostsRequestDto;
+import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,6 @@ public class Post extends BaseTimeEntity {
     private String category;
     private String price;
     private String deposit;
-    private String photo;
 
 
     @Builder // 해당 클래스의 빌더패턴 클래스 생성 -> 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함 -> 빌더를 이용해 데이터 삽입
@@ -39,13 +40,14 @@ public class Post extends BaseTimeEntity {
         this.category = category;
         this.price = price;
         this.deposit = deposit;
-        this.photo = photo;
     }
 
-    //미완성
-    public void update(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void update(PostsRequestDto postsUpdateRequestDto) {
+        this.title = postsUpdateRequestDto.getTitle();
+        this.content = postsUpdateRequestDto.getContent();
+        this.category = postsUpdateRequestDto.getCategory();
+        this.price = postsUpdateRequestDto.getPrice();
+        this.deposit = postsUpdateRequestDto.getDeposit();
     }
 }
 

@@ -25,7 +25,6 @@ public class PostsRequestDto {
     private String category;
     private String price;
     private String deposit;
-    private String photo;
 
 // 생성지 - @All~ 로 대체함 (이해를 돕기위해 지우지않음)
 //    @Builder
@@ -44,7 +43,6 @@ public class PostsRequestDto {
                 .user_id(((UserDetails) principal).getUsername())
                 .title(title)
                 .content(content)
-                .photo(photo)
                 .category(category)
                 .price(price)
                 .deposit(deposit)

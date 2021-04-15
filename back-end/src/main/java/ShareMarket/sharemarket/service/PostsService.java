@@ -28,20 +28,19 @@ public class PostsService {
     public Post save(PostsRequestDto postsRequestDto){
         //JpaRepository에 정의된 메소드save() -> DB에 INSERT와 UPDATE를 담당한다. (자동생성)
         //매개변수로는 ""Entity""를 전달함
-        return postsRepository.save(postsRequestDto.toEntity());
+        return postsRepository.save(postsRequestDto.toEntity()); // Post Entity객체
     }
 
     // 게시글 수정
     @Transactional
-    public PostsResponseDto update(Long id, PostsUpdateRequestDto postsUpdateRequestDto) {
+    public Post update(Long id, PostsRequestDto postsRequestDto) {
         // id로 디비에서 게시글을 찾고
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         // 전달받은 게시글로 업데이트
-        post.update(postsUpdateRequestDto.getTitle(), postsUpdateRequestDto.getContent());
-
-        return new PostsResponseDto(post);
+        post.update(postsRequestDto);
+        return post; // 엔티티객체 바로 리턴하면 안되서 추후에 수정해야함.
     }
 
     // 게시글 삭제
@@ -62,11 +61,11 @@ public class PostsService {
         return new PostsResponseDto(post); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
     }
 
-    // 게시글 목록 조회
-    @Transactional(readOnly = true)
-    public List<PostsListResponseDto> findAllDesc() {
-        return postsRepository.findAllDesc().stream()
-                .map(PostsListResponseDto::new)
-                .collect(Collectors.toList());
-    }
+//    // 게시글 목록 조회
+//    @Transactional(readOnly = true)
+//    public List<PostsListResponseDto> findAllDesc() {
+//        return postsRepository.findAllDesc().stream()
+//                .map(PostsListResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
 }

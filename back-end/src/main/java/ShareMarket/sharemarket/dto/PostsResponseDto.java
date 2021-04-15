@@ -16,7 +16,6 @@ public class PostsResponseDto {
     private String title;
     private String content;
     private String category;
-    private String photo;
     private String price;
     private String deposit;
 
@@ -26,7 +25,6 @@ public class PostsResponseDto {
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.category = entity.getCategory();
-        this.photo = entity.getPhoto();
         this.price = entity.getPrice();
         this.deposit = entity.getDeposit();
     }

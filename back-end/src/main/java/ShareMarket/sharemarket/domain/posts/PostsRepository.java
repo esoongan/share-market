@@ -1,5 +1,7 @@
 package ShareMarket.sharemarket.domain.posts;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,8 +11,11 @@ import java.util.List;
 // 제네릭타입에는 Entity클래스와 PK의 타입을 명시하면됨
 public interface PostsRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p FROM Post p ORDER BY p.id DESC")
-    List<Post> findAllDesc();
+    // 페이징함수 선언
+    Page<Post> findAll(Pageable pageable);
+
+//    @Query("SELECT p FROM Post p ORDER BY p.id DESC")
+//    List<Post> findAllDesc();
 }
 
 /*

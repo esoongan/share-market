@@ -24,16 +24,16 @@ public class PostController {
 
     // 게시글 저장 _ 로그인한 유저만 가능
     @PostMapping("/user/api/posts")
-    public ResponseEntity<Post> savePost(@RequestBody PostsRequestDto postsRequestDto) throws  URISyntaxException{ //postsavedto객체에 담긴 정보를 저장한다.
+    public ResponseEntity<Post> savePost(@RequestBody PostsRequestDto postsRequestDto) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
         Post post = postsService.save(postsRequestDto);
         URI url = new URI(String.format("/posts/$s", post.getId()));
         return ResponseEntity.created(url).body(post);
     }
 
     // 게시글 수정 _ 로그인한 유저중에서도 본인글만 가능
-    @PutMapping("/user/api/posts/{id}")
-    public PostsResponseDto updatePost(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto) {
-        return postsService.update(id, requestDto);
+    @PatchMapping("/user/api/posts/{id}")
+    public Post updatePost(@PathVariable Long id, @RequestBody PostsRequestDto requestDto) {
+        return postsService.update(id, requestDto); //
     }
 
     // 게시글 삭제 _ 로그인한 유저중에서도 본인글만 가능
@@ -51,9 +51,11 @@ public class PostController {
         return postsService.findById(id);
     }
 
-    //게시글 리스트 조회
-    @GetMapping("/api/v1/posts/list")
-    public List<PostsListResponseDto> findAll() {
-        return postsService.findAllDesc();
-    }
+//    //게시글 리스트 조회
+//    @GetMapping("/api/v1/posts/list")
+//    public List<PostsListResponseDto> findAll() {
+//        return postsService.findAllDesc();
+//    }
+
 }
+
