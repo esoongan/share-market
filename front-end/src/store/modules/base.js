@@ -39,7 +39,7 @@ const initialState = Map({
     loginModal: Map({
         username: '',
         password: '',
-        error: false,
+        error: false
     }),
     logged: false,
     JWT: undefined,     //login 성공 시 서버가 JWT를 Secret Key로 생성 후 전달
@@ -85,7 +85,6 @@ export default handleActions({
         onError: (state, action) =>{
             return state.set('logged', false).set('JWT', undefined)
         }
-
     }),
     [LOGOUT]: (state, action) =>{
         return state.set('logged', false).set('JWT', undefined)
@@ -103,6 +102,4 @@ export default handleActions({
         const { JWT } = action.payload
         return state.set('JWT', JWT)
     }
-
-
 }, initialState)
