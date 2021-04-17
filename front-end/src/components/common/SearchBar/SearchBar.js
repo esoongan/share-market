@@ -6,7 +6,7 @@ const cx = classNames.bind(styles);
 
 const SearchBar = () => (
   <div>
-    SearchBar
+    TODO: SearchBar
   </div>
 );
 

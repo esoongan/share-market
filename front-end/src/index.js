@@ -4,14 +4,36 @@ import Root from './Root';
 import reportWebVitals from './reportWebVitals';
 import 'styles/custom-bootstrap.scss'
 import axios from 'axios'
+import configure from './store/configure'
+import { tempSetUser, checkUser } from './store/modules/base';
+import { Provider } from 'react-redux';
+
 
 axios.defaults.baseURL = "http://localhost:8080";
 axios.defaults.withCredentials = false;    //백엔드로부터 refreshToken cookie를 주고받기
 
+const store = configure()
+
+function loadUser() {
+  try {
+    const JWT = localStorage.getItem('JWT');
+    if (!JWT) return; // 로그인 상태가 아니라면 아무것도 안함
+
+    store.dispatch(tempSetUser(JWT));
+    store.dispatch(checkUser({JWT}));
+  } catch (e) {
+    console.log('localStorage is not working');
+  }
+}
+
+loadUser()
 ReactDOM.render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <Root />
+    </React.StrictMode>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 
