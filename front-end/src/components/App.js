@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import Base from 'containers/common/Base'
 import { BrowserRouter } from 'react-router-dom'
 import Header from 'components/common/Header'
+import Footer from 'components/common/Footer'
 
 const App = () => {
     return (
@@ -18,7 +19,9 @@ const App = () => {
                 </Switch>
                 <Base />
             </div>
+        <Footer/>
         </BrowserRouter>
+
     )
 }
 
