@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-
+import clsx from 'clsx'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import SearchIcon from '@material-ui/icons/Search';
@@ -10,17 +10,21 @@ import IconButton from '@material-ui/core/IconButton';
 import Select from "react-select";
 import { DateRangePicker } from 'react-dates';
 import grey from '@material-ui/core/colors/grey';
-
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import {cityMarkets} from 'constant/locale'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(16),
   },
-  searchSection:{
-    background: grey[200],
+  section: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(16),
+  },
+  searchSection: {
+    background: grey[200],
   },
   searchBox: {
     padding: theme.spacing(2),
@@ -37,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     height: 28,
     margin: 4,
+  },
+  cityButton:{
+    padding: theme.spacing(4),
+    width: '100%',
   },
 }));
 
@@ -63,7 +71,7 @@ const HomePage = () => {
   // endDate: props.initialEndDate,
   return (
     <div className={classes.root}>
-      <section className={classes.searchSection}>
+      <section className={clsx(classes.searchSection, classes.section)}>
         <Grid
           container
           justify='center'
@@ -114,10 +122,24 @@ const HomePage = () => {
 
         </Grid>
       </section>
-      <section>
-        location
+      <section className={classes.section}>
+        <Typography variant="h5" gutterBottom>
+          지역별 마켓 둘러보기
+        </Typography>
+        <Grid container spacing={2}>
+          {
+            cityMarkets.map((item) => (
+              <Grid key={item.value} item xs={6} sm={4} md={2}>
+                <Button className={classes.cityButton} size="large" variant="contained" color="primary" onClick={null}>
+                  {item.label}
+                </Button>
+              </Grid>
+            ))
+          }
+    
+        </Grid>
       </section>
-      <section>
+      <section className={classes.section}>
         category
       </section>
     </div>
