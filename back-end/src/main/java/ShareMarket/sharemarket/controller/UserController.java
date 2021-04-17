@@ -1,19 +1,15 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.users.MemberType;
 import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.dto.UserRequestDto;
 import ShareMarket.sharemarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Response;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -45,7 +41,7 @@ public class UserController {
     }
 
     //현재 요청헤더에 담긴 사용자 정보조회
-    @GetMapping("/current")
+    @GetMapping("/user/api/check")
     @ResponseBody
     public UserDetails currentUserName(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
