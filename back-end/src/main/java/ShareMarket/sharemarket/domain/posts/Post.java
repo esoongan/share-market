@@ -33,7 +33,7 @@ public class Post extends BaseTimeEntity {
 
 
     @Builder // 해당 클래스의 빌더패턴 클래스 생성 -> 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함 -> 빌더를 이용해 데이터 삽입
-    public Post(String user_id, String title, String content, String category, String price, String deposit, String photo){
+    public Post(String user_id, String addr, String title, String content, String category, String price, String deposit, String photo){
         this.user_id = user_id;
         this.title = title;
         this.content = content;

@@ -8,13 +8,18 @@ import ShareMarket.sharemarket.dto.PostsResponseDto;
 import ShareMarket.sharemarket.dto.PostsRequestDto;
 import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import static java.rmi.server.LogStream.log;
+
+@Slf4j
 @CrossOrigin
 @RequiredArgsConstructor
 @RestController
@@ -24,7 +29,7 @@ public class PostController {
 
     // 게시글 저장 _ 로그인한 유저만 가능
     @PostMapping("/user/api/posts")
-    public ResponseEntity<Post> savePost(@RequestBody PostsRequestDto postsRequestDto) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
+    public ResponseEntity<Post> savePost(@RequestBody PostsRequestDto postsRequestDto, Authentication authentication) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
         Post post = postsService.save(postsRequestDto);
         URI url = new URI(String.format("/posts/$s", post.getId()));
         return ResponseEntity.created(url).body(post);
@@ -48,6 +53,7 @@ public class PostController {
     @CrossOrigin("*")
     @GetMapping("/api/posts/{id}")
     public PostsResponseDto findById(@PathVariable Long id) {
+        log.info("api호출");
         return postsService.findById(id);
     }
 

@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
-    //현재 요청헤더에 담긴 사용자 정보조회
+    //현재 요청 토큰에 담긴 사용자 정보조회
     @GetMapping("/user/api/check")
     @ResponseBody
     public UserDetails currentUserName(Authentication authentication) {

@@ -1,8 +1,8 @@
 package ShareMarket.sharemarket.dto;
 
 import ShareMarket.sharemarket.domain.posts.Post;
+import ShareMarket.sharemarket.domain.users.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +16,7 @@ public class PostsRequestDto {
 
     // 현재 요청한 유저가 누구인지 함께 저장하기위해 토큰에서 사용자 정보 추출하기 위함
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    UserDetails userDetails = (UserDetails)principal;
+    UserDetails userDetails = (UserDetails) principal;
 
     private Long id;
     private String title;
@@ -38,9 +38,10 @@ public class PostsRequestDto {
 //        this.photo = photo;
 //    }
 
+    // 디비에 저장하기 위해 요청DTO를 엔티티로 변환하기위함
     public Post toEntity() {
         return Post.builder()
-                .user_id(((UserDetails) principal).getUsername())
+                .user_id(((UserDetails) principal).getUsername()) // 토큰으로 아이디 조회후 디비에 저장
                 .title(title)
                 .content(content)
                 .category(category)

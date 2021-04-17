@@ -8,11 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 public class PagingService {
 
     private final PostsRepository postsRepository;
+    private final PostsService postsService;
 
     // 페이징으로 게시글 반환
     public Page<PagingDto> paging(Pageable pageable){
@@ -24,6 +27,8 @@ public class PagingService {
                         post.getId(),
                         post.getTitle(),
                         post.getUser_id(),
+                        post.getCategory(),
+                        postsService.findAddrByPost(post.getId()),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
@@ -40,9 +45,10 @@ public class PagingService {
                         post.getId(),
                         post.getTitle(),
                         post.getUser_id(),
+                        post.getCategory(),
+                        postsService.findAddrByPost(post.getId()),
                         post.getCreatedDate()
                 ));
-
         return pagingDtos;
     }
 }
