@@ -1,10 +1,8 @@
 package ShareMarket.sharemarket.service;
 
-import ShareMarket.sharemarket.domain.File.File;
-import ShareMarket.sharemarket.domain.File.FileRepository;
-import ShareMarket.sharemarket.domain.posts.Post;
+import ShareMarket.sharemarket.domain.file.File;
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.dto.FileDto;
-import ShareMarket.sharemarket.dto.PostsResponseDto;
 import ShareMarket.sharemarket.exception.AttachFileException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;

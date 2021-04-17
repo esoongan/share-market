@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @Data
 public class PagingDto {
 
-    private Long id;
-    private String title;
-    private String user_id;
-    private LocalDateTime createdDate;
+    private Long id; // 게시글의 id
+    private String title; //게시글 제목
+    private String user_id; // 게시글 작성자
+    private LocalDateTime createdDate; // 게시글 작성일 및 시간
 
     public PagingDto(Long id, String title, String user_id, LocalDateTime createdDate) {
         this.id = id;

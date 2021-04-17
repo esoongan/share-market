@@ -1,11 +1,9 @@
-package ShareMarket.sharemarket.domain.File;
+package ShareMarket.sharemarket.domain.file;
 
-import ShareMarket.sharemarket.domain.posts.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.junit.ClassRule;
 
 import javax.persistence.*;
 

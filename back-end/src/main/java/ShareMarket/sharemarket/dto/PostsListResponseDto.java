@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 
 @Getter
 public class PostsListResponseDto {
-    private Long id;
-    private String title;
-    //private String author;
-    private LocalDateTime modifiedDate;
+    private final Long id;
+    private final String title;
+    private final String user_id;
+    private final LocalDateTime modifiedDate;
 
     public PostsListResponseDto(Post entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
-        //this.author = entity.getAuthor();
+        this.user_id = entity.getUser_id();
         this.modifiedDate = entity.getModifiedDate();
     }
 }

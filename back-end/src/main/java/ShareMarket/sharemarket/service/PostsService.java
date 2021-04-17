@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.service;
 
 
-import ShareMarket.sharemarket.domain.File.FileRepository;
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
 import ShareMarket.sharemarket.dto.*;
@@ -10,11 +10,6 @@ import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor // Repository를 주입하기 위해 사용
 @Service
@@ -60,6 +55,8 @@ public class PostsService {
 
         return new PostsResponseDto(post); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
     }
+
+    
 
 //    // 게시글 목록 조회
 //    @Transactional(readOnly = true)

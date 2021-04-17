@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.dto;
 
 
-import ShareMarket.sharemarket.domain.File.File;
+import ShareMarket.sharemarket.domain.file.File;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

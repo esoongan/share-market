@@ -1,6 +1,5 @@
-package ShareMarket.sharemarket.domain.File;
+package ShareMarket.sharemarket.domain.file;
 
-import ShareMarket.sharemarket.dto.FileDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
