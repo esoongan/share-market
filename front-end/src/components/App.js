@@ -1,8 +1,9 @@
 import { HomePage, JoinPage, NotFoundPage, EditorPage } from 'pages'
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Base from 'containers/common/Base'
 import { BrowserRouter } from 'react-router-dom'
+import Container from '@material-ui/core/Container';
+import Base from 'containers/common/Base'
 import Header from 'components/common/Header'
 import Footer from 'components/common/Footer'
 
@@ -10,7 +11,7 @@ const App = () => {
     return (
         <BrowserRouter>
         <Header/>
-            <div>
+            <Container>
                 <Switch>
                     <Route exact path='/' component={HomePage} />
                     <Route exact path='/join' component={JoinPage} />
@@ -18,7 +19,7 @@ const App = () => {
                     <Route component={NotFoundPage} />
                 </Switch>
                 <Base />
-            </div>
+            </Container>
         <Footer/>
         </BrowserRouter>
 
