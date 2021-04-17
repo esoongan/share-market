@@ -12,7 +12,7 @@ import { DateRangePicker } from 'react-dates';
 import grey from '@material-ui/core/colors/grey';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {cityMarkets} from 'constant/locale'
+import {cityMarkets, categoryMarkets} from 'constant/locale'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,8 +46,18 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4),
     width: '100%',
   },
-}));
+  categoryPaper: {
+    width:'100%',
+    paddingTop: '100%', /* 1:1 Aspect Ratio */
+    position: 'relative', /* If you want text inside of it */
 
+    '& span':{
+      position:'absolute',
+      bottom:theme.spacing(2),
+      left: theme.spacing(2),
+    }
+  }
+}));
 const colourStyles = {
   control: styles => ({
     ...styles,
@@ -140,7 +150,21 @@ const HomePage = () => {
         </Grid>
       </section>
       <section className={classes.section}>
-        category
+        <Typography variant="h5" gutterBottom>
+          카테고리 별 둘러보기
+        </Typography>
+        <Grid container spacing={2}>
+          {
+            categoryMarkets.map((item) => (
+              <Grid key={item.value} item xs={12} sm={3}>
+                <Paper className={classes.categoryPaper} style={{background: 'orange'}}>
+                  <span>{item.label}</span>
+                </Paper>
+              </Grid>
+            ))
+          }
+    
+        </Grid>
       </section>
     </div>
   )
