@@ -6,6 +6,8 @@ import Container from '@material-ui/core/Container';
 import Base from 'containers/common/Base'
 import Header from 'components/common/Header'
 import Footer from 'components/common/Footer'
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 const App = () => {
     return (
