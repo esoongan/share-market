@@ -42,8 +42,9 @@ export default function LoginModal() {
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   return (
+    //todo: 고도화 필요
     <Modal style={modalStyle} className={classes.modal}
-      open={true}
+      open={false}
       onClose={() => { }}
     >
       <div className={classes.formPaper}>
