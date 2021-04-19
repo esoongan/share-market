@@ -15,7 +15,7 @@ const options = [
   { value: "인천 연수구 송도2동", label: "인천 연수구 송도2동" },
   { value: "인천 연수구 송도3동", label: "인천 연수구 송도3동" },
 ]
-
+//todo: https://react-hook-form.com/get-started#ReactWebVideoTutorial
 class JoinForm extends Component {
   handleSelect = ({ value }) => {
     console.log(value);
