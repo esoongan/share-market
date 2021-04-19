@@ -5,7 +5,9 @@ import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+    footer: {
+        display: 'flex',
+        marginTop: 'auto',
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(8),
     },
@@ -17,7 +19,7 @@ export default function Footer() {
 
     return (
         <Paper
-            className={classes.root}
+            className={classes.footer}
             component='footer'
             elevation={0}
         >
