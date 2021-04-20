@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     width: 400,
     height: 400,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'white',
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
