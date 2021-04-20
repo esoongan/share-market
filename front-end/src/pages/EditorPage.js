@@ -136,15 +136,15 @@ const EditorPage = () => {
 															width="150"
 															onClick={() => onImageUpdate(index)}
 														/>
-                            <IconButton
-                              color="primary"
-                              aria-label="delete picture"
-                              component="span"
-                            >
-                              <HighlightOffOutlinedIcon
-                                onClick={() => onImageRemove(index)}
-                              />
-                            </IconButton>
+														<IconButton
+															color="primary"
+															aria-label="delete picture"
+															component="span"
+														>
+															<HighlightOffOutlinedIcon
+																onClick={() => onImageRemove(index)}
+															/>
+														</IconButton>
 													</Grid>
 												))
 											}
