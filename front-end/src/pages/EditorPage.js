@@ -68,6 +68,7 @@ const EditorPage = () => {
         </Grid>
       </Grid>
 
+<<<<<<< HEAD
       <div className={classes.contentsForm}>
         <Grid
           container
@@ -154,6 +155,94 @@ const EditorPage = () => {
               )}
             </ReactImageUploading>
           </Grid>
+=======
+			<div className={classes.contentsForm}>
+				<Grid
+					container
+					sm={16}
+					lg={12}
+					dire
+					ction="row"
+					justify="center"
+					spacing={2}
+				>
+					<Grid item>
+						<ReactImageUploading
+							className={classes.uploader}
+							multiple
+							value={images}
+							onChange={imageList => setImages(imageList)}
+							maxNumber={5}
+							dataURLKey="data_url"
+						>
+							{({
+								imageList,
+								onImageUpload,
+								onImageRemoveAll,
+								onImageUpdate,
+								onImageRemove,
+								isDragging,
+								dragProps,
+								errors,
+							}) => (
+								// write your building UI
+								<div>
+									<IconButton
+										color="primary"
+										aria-label="upload picture"
+										component="span"
+									>
+										<AddAPhotoRoundedIcon
+											style={isDragging ? { color: 'red' } : null}
+											onClick={onImageUpload}
+											{...dragProps}
+										></AddAPhotoRoundedIcon>
+									</IconButton>
+									&nbsp;
+									<button onClick={onImageRemoveAll}>초기화</button>
+									{errors !== null && errors.maxNumber && (
+										<Alert severity="error">
+											최대 5장까지만 업로드 가능합니다.
+										</Alert>
+									)}
+									<div className={classes.preview}>
+										<Grid
+											container
+											direction="row"
+											justify="space-evenly"
+											xs={10}
+											md={8}
+											lg={6}
+										>
+											{
+												/* 미리보기 */
+												imageList.map((image, index) => (
+													<Grid item key={index}>
+														<img
+															src={image.data_url}
+															alt=""
+															width="150"
+															onClick={() => onImageUpdate(index)}
+														/>
+														<IconButton
+															color="primary"
+															aria-label="delete picture"
+															component="span"
+														>
+															<HighlightOffOutlinedIcon
+																onClick={() => onImageRemove(index)}
+															/>
+														</IconButton>
+													</Grid>
+												))
+											}
+										</Grid>
+									</div>
+								</div>
+							)}
+						</ReactImageUploading>
+					</Grid>
+>>>>>>> react-v2
 
           <Grid item>
             <TextField
