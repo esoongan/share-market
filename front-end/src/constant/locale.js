@@ -24,3 +24,12 @@ export const categoryMarkets = [
     { value: "Busan", label: "부산", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
     { value: "DaeJun", label: "대전", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
 ]
+
+export const categories = [
+    { value: "카테고리1", label: "카테고리1" },
+    { value: "카테고리2", label: "카테고리2" },
+    { value: "카테고리3", label: "카테고리3" },
+    { value: "카테고리4", label: "카테고리4" },
+    { value: "카테고리5", label: "카테고리5" },
+    { value: "카테고리6", label: "카테고리6" },
+]
