@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import 'styles/custom-bootstrap.scss'
 import axios from 'axios'
 import configure from './store/configure'
 import { tempSetUser, checkUser } from './store/modules/base';
