@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 	title: {
 		width: '100%',
-		marginBottom: theme.spacing(2),
+		paddingBottom: theme.spacing(8),
 	},
 	uploader: {
 		display: 'flex',
@@ -51,7 +51,16 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '4px',
 	},
 	uploadBtn: {
+		width: '99%',
+	},
+	priceField: {
 		width: '100%',
+	},
+	writeBtn: {
+		width: 'fit-content',
+		marginTop: theme.spacing(4),
+		marginLeft: 'auto',
+		marginRight: theme.spacing(14),
 	},
 }));
 const EditorPage = () => {
@@ -66,7 +75,7 @@ const EditorPage = () => {
 				direction="row"
 				justify="center"
 				spacing={2}
-				alignItems="center"
+				alignItems="flex-start"
 			>
 				<Grid item xs={2}>
 					<Select
@@ -87,7 +96,6 @@ const EditorPage = () => {
 					/>
 				</Grid>
 			</Grid>
-
 			<Grid
 				container
 				xs={12}
@@ -159,7 +167,6 @@ const EditorPage = () => {
 									className={classes.uploadBtn}
 									variant="contained"
 									color="primary"
-									component="span"
 									onClick={onImageUpload}
 								>
 									<AddAPhotoRoundedIcon style={{ marginRight: 8 }} />
@@ -183,28 +190,36 @@ const EditorPage = () => {
 				</Grid>
 			</Grid>
 
-			<div className={classes.priceForm}>
-				<TextField
-					label="하루 당 렌탈비"
-					id="price"
-					className={classes.priceField}
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position="start">KRW</InputAdornment>
-						),
-					}}
-				/>
-				<TextField
-					label="보증금"
-					id="deposit"
-					className={classes.priceField}
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position="start">KRW</InputAdornment>
-						),
-					}}
-				/>
-			</div>
+			<Grid container xs={12} direction="row" justify="flex-end" spacing={2}>
+				<Grid item xs={3}>
+					<TextField
+						label="하루 당 렌탈비"
+						id="price"
+						className={classes.priceField}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">KRW/1일</InputAdornment>
+							),
+						}}
+					/>
+				</Grid>
+				<Grid item xs={3}>
+					<TextField
+						label="보증금"
+						id="deposit"
+						className={classes.priceField}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="start">KRW</InputAdornment>
+							),
+						}}
+					/>
+				</Grid>
+				<Grid item xs={1} />
+			</Grid>
+			<Button className={classes.writeBtn} variant="outlined" color="primary">
+				작성하기
+			</Button>
 		</div>
 	);
 };
