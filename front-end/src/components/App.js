@@ -1,4 +1,4 @@
-import { HomePage, JoinPage, NotFoundPage, EditorPage, PostPage } from 'pages'
+import { HomePage, JoinPage, NotFoundPage, EditorPage, PostPage, ListPage } from 'pages'
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -33,6 +33,7 @@ const App = () => {
             <Route exact path='/join' component={JoinPage} />
             <Route exact path='/post/editor/:post_id?' component={EditorPage} />
             <Route exact path='/post/:post_id' component={PostPage} />
+            <Route exact path='/list/:pageNumber?' component={ListPage} />
 
             <Route component={NotFoundPage} />
           </Switch>
