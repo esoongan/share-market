@@ -67,6 +67,7 @@
     "react-dev-utils": "^11.0.3",
     "react-dom": "^17.0.1",
     "react-images-uploading": "^3.1.2",
+    "react-material-ui-carousel": "^2.2.4",
     "react-redux": "^7.2.3",
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
