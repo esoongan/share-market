@@ -3,7 +3,7 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
 import Container from '@material-ui/core/Container';
-import Base from 'containers/common/Base'
+// import Base from 'containers/common/Base'
 import Header from 'components/common/Header'
 import Footer from 'components/common/Footer'
 import 'react-dates/initialize';
@@ -37,7 +37,7 @@ const App = () => {
 
             <Route component={NotFoundPage} />
           </Switch>
-          <Base />
+          {/* <Base /> */}
         </Container>
         <Footer />
       </div>
