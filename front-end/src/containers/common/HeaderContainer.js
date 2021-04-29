@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Header from 'components/common/Header'
-import * as baseActions from 'store/modules/base'
+import * as baseActions from 'store/modules_x/base'
 
 class HeaderContainer extends Component {
     handleLoginClick = () => {

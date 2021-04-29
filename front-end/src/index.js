@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios'
 import configure from './store/configure'
-import { tempSetUser, checkUser } from './store/modules/base';
+import { tempSetUser, checkUser } from './store/modules_x/base';
 import { Provider } from 'react-redux';
 import App from 'components/App';
 

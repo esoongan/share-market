@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as joinFormActions from 'store/modules/joinForm'
+import * as joinFormActions from 'store/modules_x/joinForm'
 
 import { withRouter } from 'react-router-dom'
 import JoinForm from 'components/join/JoinForm'

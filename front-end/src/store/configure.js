@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers} from 'redux'
 import penderMiddleware from 'redux-pender'
-import * as modules from './modules'
+import * as modules from './modules_x'
 
 const reducers = combineReducers(modules)
 const middlewares = [penderMiddleware()]

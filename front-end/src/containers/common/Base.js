@@ -2,7 +2,7 @@ import LoginModalContainer from 'containers/modal/LoginModalContainer';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as baseActions from 'store/modules/base'
+import * as baseActions from 'store/modules_x/base'
 
 //App.js에서 <Switch/> 아래쪽에 렌더링됨
 class Base extends Component {

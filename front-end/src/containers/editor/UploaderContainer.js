@@ -2,7 +2,7 @@ import Uploader from 'components/editor/Uploader'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as editorActions from 'store/modules/editor'
+import * as editorActions from 'store/modules_x/editor'
 
 //<input type='files'>에서 사진 선택 시 상태 업데이트
 //선택 된 사진 미리보기 제공

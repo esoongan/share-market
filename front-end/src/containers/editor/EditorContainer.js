@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
-import * as editorActions from 'store/modules/editor'
+import * as editorActions from 'store/modules_x/editor'
 
 
 class EditorContainer extends Component {

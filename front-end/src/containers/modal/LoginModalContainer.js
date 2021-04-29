@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import * as baseActions from 'store/modules/base'
+import * as baseActions from 'store/modules_x/base'
 
 import LoginModal from 'components/modal/LoginModal'
 import { bindActionCreators } from 'redux'
