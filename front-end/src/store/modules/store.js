@@ -89,4 +89,4 @@ export default handleActions({
     logged: false,
   }),
 
-});
+}, initialState);
