@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,22 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Select from 'react-select';
 import { locations } from 'constant/locale';
-import { useDispatch } from 'react-redux';
-import postUser from 'store/modules/joinForm';
 
-//TODO: <TextField/>에 validation 적용하기
 //TODO: username, email에 중복 검사 기능 추가하기 -> api 사용
 //TODO: 중복 검사 요청 모달, 회원가입 성공 모달 추가하기
-
-const emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-const passwordExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/; //  8~16자 영문, 숫자 조합
-const usernameExp = /^[0-9a-zA-Z]{5,16}$/; //5~16자 영문, 숫자 조합
-
-const exp = {
-	email: emailExp,
-	password: passwordExp,
-	username: usernameExp,
-};
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -49,93 +36,15 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const JoinForm = ({ history }) => {
+const JoinForm = ({ username, email, password, formatError, onSubmit, onChangeInput }) => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
-	const [inputs, setInputs] = useState({
-		username: '',
-		email: '',
-		password: '',
-		addr: '',
-	});
-	const [formatError, setFormatError] = useState({
-		username: false,
-		email: false,
-		password: false,
-	});
-	const [duplicateCheck, setDuplicateCheck] = useState({
-		username: false,
-		email: false,
-	});
-	const [modal, setModal] = useState({
-		duplicateCheck: false,
-		success: false,
-	});
-
-	const onSubmit = e => {
-		e.preventDefault();
-
-		let ready = true; //포맷 에러가 하나라도 있으면 api 호출 안함
-		//중복 확인 체크 -> 중복 체크를 안했으면 체크해달라는 모달 띄우기
-		if(duplicateCheck.email || duplicateCheck.username){
-			setModal({
-				...modal,
-				duplicateCheck: true,
-			});
-			return;
-		}
-		
-		//input 포맷 체크
-		for(let field in exp) {
-			if (exp[field].test(field)) {
-				setFormatError({
-					...inputs,
-					[field]: true,
-				});
-				ready = false;
-			} else {
-				setFormatError({
-					...inputs,
-					[field]: false,
-				});
-			}
-		}
-		//포맷 에러 존재 시 request 안함
-		if (!ready) {
-			return;
-		}
-		dispatch(postUser);
-	};
-
-	const onChangeInput = e => {
+	const handleChangeInput = e => {
 		const { value, name } = e.target;
-		setInputs({
-			...inputs,
-			[name]: value,
-		});
-
-		//password 포맷 체크
-		if (name === 'password') {
-			if (!passwordExp.test(value)) {
-				setFormatError({
-					...inputs,
-					password: true,
-				});
-			} else {
-				setFormatError({
-					...inputs,
-					password: false,
-				});
-			}
-		}
-	};
-	const onSelect = ({ value }) => {
-		setInputs({
-			...inputs,
-			addr: value,
-		});
-	};
-
+		onChangeInput({value, name});
+	}
+	const onSelect = ({value}) => {
+		onChangeInput({value, name:'addr'});
+	}
 	return (
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
@@ -150,13 +59,13 @@ const JoinForm = ({ history }) => {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
-								id="userName"
-								value={inputs.username}
-								onChange={onChangeInput}
+								id="username"
+								value={username}
+								onChange={handleChangeInput}
 								error = {formatError.username}
-								helperText = ''
+								helperText = '5~16자 영문, 숫자 조합으로 입력하세요'
 								autoComplete="name"
-								name="userName"
+								name="username"
 								variant="outlined"
 								required
 								fullWidth
@@ -167,8 +76,9 @@ const JoinForm = ({ history }) => {
 						<Grid item xs={12}>
 							<TextField
 								id="email"
-								value={inputs.email}
-								onChange={onChangeInput}
+								value={email}
+								onChange={handleChangeInput}
+								error = {formatError.email}
 								variant="outlined"
 								required
 								fullWidth
@@ -180,8 +90,10 @@ const JoinForm = ({ history }) => {
 						<Grid item xs={12}>
 							<TextField
 								id="password"
-								value={inputs.password}
-								onChange={onChangeInput}
+								value={password}
+								onChange={handleChangeInput}
+								error = {formatError.password}
+								helperText = '8~16자 영문, 숫자 조합으로 입력하세요.'
 								variant="outlined"
 								required
 								fullWidth
@@ -196,7 +108,7 @@ const JoinForm = ({ history }) => {
 								id="addr"
 								options={locations}
 								onChange={onSelect}
-								placeholder="검색 또는 선택하세요."
+								placeholder="검색 또는 선택하세요. (옵션)"
 								onSelectResetsInput={false}
 								isSearchable
 							/>
