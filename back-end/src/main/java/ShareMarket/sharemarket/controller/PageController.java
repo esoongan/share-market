@@ -24,7 +24,7 @@ public class PageController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/api/posts/page")
-    public Page<PagingDto> paging(@PageableDefault(size= 10, sort = "createdDate") Pageable pageRequest) {
+    public Page<PagingDto> paging(@PageableDefault(size = 10, sort = "createdDate") Pageable pageRequest) {
         return pagingService.paging(pageRequest);
     }
 
@@ -34,4 +34,21 @@ public class PageController {
                                            @PageableDefault(size = 10, sort = "createdDate") Pageable pageRequest) {
         return pagingService.pagingByKeyword(keyword, pageRequest);
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/api/posts/page/category")
+    public Page<PagingDto> pagingByCategory(@RequestParam String category,
+                                           @PageableDefault(size = 10, sort = "createdDate") Pageable pageRequest) {
+        return pagingService.pagingByCategory(category, pageRequest);
+
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/api/posts/page/addr")
+    public Page<PagingDto> pagingByAddr(@RequestParam String addr,
+                                            @PageableDefault(size = 10, sort = "createdDate") Pageable pageRequest) {
+        return pagingService.pagingByAddr(addr, pageRequest);
+
+    }
+
 }

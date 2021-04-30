@@ -25,16 +25,27 @@ public interface PostsRepository extends JpaRepository<Post, Long> {
     )
     Page<Post> findAllSearch(@Param("keyword") String keyword, Pageable pageable);
 
-    //제목이나 내용에 해당 키워드가 들어있는 Post검색
-    //JpaRepository에서 메서드명의 By이후는 SQL의 where조건절에 대응되므로 Containing읇 붙여주면 Like검색이됨 = %{keyword}%
-    // Title한테 주는 keyword랑 Content한테 주는 Keyword 2개 줘야함
+    // 1. 제목이나 내용에 해당 키워드가 들어있는 Post검색
+    /*JpaRepository에서 메서드명의 By이후는 SQL의 where조건절에 대응되므로 Containing읇 붙여주면 Like검색이됨 = %{keyword}%
+    Title한테 주는 keyword랑 Content한테 주는 Keyword 2개 줘야함*/
     Page<Post> findAllByTitleContainingOrContentContaining(String keyword_T, String keyword_C, Pageable pageable);
 
     /*
     위에 2개함수는 똑같은 기능을 수행함
     1. 쿼리를 직접매핑하는거
     2. JPA문법에 따라서 해본것!! 둘다 똑같이 작동하는것을 확인함
+    3. 쿼리메소드의 입력변수로 Pageable변수를 추가하면 Page타입을 반환형으로 사용할 수 있다.
      */
+
+    // 2. 카테고리로 검색
+    Page<Post> findByCategory(String category, Pageable pageable);
+
+    // 3. 지역으로 검색
+    @Query(
+            value = "SELECT p FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address",
+            countQuery = "SELECT COUNT(p.id) FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address"
+    )
+    Page<Post> findAllByAddress(@Param("address") String address, Pageable pageable);
 
 }
 

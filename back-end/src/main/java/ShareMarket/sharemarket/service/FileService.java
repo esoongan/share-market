@@ -20,7 +20,8 @@ import java.util.UUID;
 public class FileService {
 
     private final FileRepository fileRepository;
-    private final String uploadPath = System.getProperty("user.dir") + "\\files";
+    // 지영 요청대로 폴더명 변경
+    private final String uploadPath = System.getProperty("user.dir") + "/files";
 
 
     //서버에 생성할 파일명을 처리할 랜덤 문자열 반  환

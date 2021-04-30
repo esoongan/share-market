@@ -22,8 +22,7 @@ public class PostsService {
 
     private final PostsRepository postsRepository;
     private final UserRepository userRepository;
-    private final FileRepository fileRepository;
-    private final ApiExceptionHandler apiExceptionHandler;
+
 
     // 게시글 저장
     @Transactional
@@ -66,14 +65,14 @@ public class PostsService {
     /*
     내가 나중에 보고 다시 기억하기 위하여 쓰는 주석
     처음에 이부분을 ResponseDto에서 작성했는데 그렇게하니까 UserRepository가 주입되지않아서 NullPointerExcetption이 났다.
-    그래서 고민하다가 PostService로 해당 로직을 이곳 Service로 이동시키고, 여기서 지역을 찾은후에 생성자 매개변수로 전달해서 ResponseDto객체를 생성했다.
+    그래서 해당 로직을 이곳 PostService로 이동시키고, 여기서 지역을 찾은후에 생성자 매개변수로 전달해서 ResponseDto객체를 생성했다.
     */
-    // 게시글 Id를 받아서 이를통해 해당 글을 작성한 유저의 지역을 알아내는 메서드 -> findById에서 사용하고 이를 ResponseDto생성자에 전달함으로 객체를 초기화한다.
+    // 게시글 pk를 받아서 이를통해 해당 글을 작성한 유저의 지역을 알아내는 메서드 -> findById메소드에서 이 함수를 호출하고 리턴값을 ResponseDto생성자에 전달함으로 객체를 초기화한다.
     public String findAddrByPost(Long id) {
         // 클라이언트로 전달받은 게시글PK로 게시글 entity를 얻음
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
-        // 게시글entity로부터 게시글 작성자 (User_id)를 찾고, Optional<User>타입의 findByUsername을 이용해서 userDetails타입말고 User타입으로 엔티티를 얻는다.
+        // 게시글entity로부터 게시글 작성자 (User_id-pk아님)를 찾고, Optional<User>타입의 findByUsername을 이용해서 userDetails타입말고 User타입으로 엔티티를 얻는다.
         // UserDetails로 받으면 email, addr 필드값의 getter함수 사용불가능
         User user = userRepository.findByUsername(post.getUser_id())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));
@@ -84,11 +83,4 @@ public class PostsService {
         return userResponseDto.getAddr();
     }
 
-//    // 게시글 목록 조회
-//    @Transactional(readOnly = true)
-//    public List<PostsListResponseDto> findAllDesc() {
-//        return postsRepository.findAllDesc().stream()
-//                .map(PostsListResponseDto::new)
-//                .collect(Collectors.toList());
-//    }
 }

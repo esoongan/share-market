@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-
-import static java.rmi.server.LogStream.log;
 
 @Slf4j
 @CrossOrigin
@@ -26,6 +23,7 @@ import static java.rmi.server.LogStream.log;
 public class PostController {
 
     private final PostsService postsService;
+
 
     // 게시글 저장 _ 로그인한 유저만 가능
     @PostMapping("/user/api/posts")
