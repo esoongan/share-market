@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { useDispatch } from 'react-redux';
 
 const modalStyle = {
   top: `30%`,
@@ -10,7 +11,11 @@ const modalStyle = {
   transform: `translate(-50%, -30%)`,
 }
 const useStyles = makeStyles((theme) => ({
-  modal: {
+
+  modalBody: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     position: 'fixed',
     width: 400,
     height: 400,
@@ -18,11 +23,6 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-  },
-  formPaper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -39,15 +39,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginModal() {
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
+  const dispatch = useDispatch();
 
   return (
     //todo: 고도화 필요
-    <Modal style={modalStyle} className={classes.modal}
-      open={false}
+    <Modal
+      open={true}
       onClose={() => { }}
     >
-      <div className={classes.formPaper}>
+      <div className={classes.modalBody} style={modalStyle} >
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
