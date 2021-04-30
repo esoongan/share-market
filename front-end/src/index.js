@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import 'styles/custom-bootstrap.scss'
 import axios from 'axios'
 import configure from './store/configure'
-import { tempSetUser, checkUser } from './store/modules/base';
+// import { tempSetUser, checkUser } from './store/modules_x/base';
 import { Provider } from 'react-redux';
 import App from 'components/App';
 
@@ -19,8 +18,8 @@ function loadUser() {
     const JWT = localStorage.getItem('JWT');
     if (!JWT) return; // 로그인 상태가 아니라면 아무것도 안함
 
-    store.dispatch(tempSetUser(JWT));
-    store.dispatch(checkUser({JWT}));
+    // store.dispatch(tempSetUser(JWT));
+    // store.dispatch(checkUser({JWT}));
   } catch (e) {
     console.log('localStorage is not working');
   }

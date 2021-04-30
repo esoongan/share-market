@@ -1,54 +1,39 @@
-import { createAction, handleActions } from 'redux-actions'
-import { Map } from 'immutable'
-import { pender } from 'redux-pender'
-import * as api from 'lib/api'
+import { createAction, handleActions } from 'redux-actions';
+import { pender } from 'redux-pender';
+import * as api from 'lib/api';
 
 //action types
-const CHANGE_INPUT = 'join/CHANGE_INPUT'
-const POST_USERS = 'join/POST_USERS'
-const INITIALIZE = 'join/INITIALIZE'
-const SELECT_ADDR = 'join/SELECT_ADDR'
-const CHECK_VALID = 'join/CHECK_VALID'
+const POST_USER = 'join/POST_USER';
 
 //action creators
-export const initialize = createAction(INITIALIZE)
-export const changeInput = createAction(CHANGE_INPUT)
-export const postUsers = createAction(POST_USERS, api.join)
-export const selectAddr = createAction(SELECT_ADDR)
-export const checkValid = createAction(CHECK_VALID)
+export const postUser = createAction(POST_USER, api.join);
 
 //initial state
-const initialState = Map({
-    username : '',
-    password : '',
-    email : '',
-    addr: '',
-    valid: Map({
-        username: '',
-        password: '',
-        email: '',
-    })
-})
+const initialState = {
+	isSucceed: null,		//api 호출 응답 (success: true, failed: false)
+	status: null,
+};
 
 //reducer
-export default handleActions({
-    [INITIALIZE]: (state, action) => initialState,
-    [CHANGE_INPUT] : (state, action) => {
-        const {name, value} = action.payload
-        return state.set(name, value)
-    },    
-    [SELECT_ADDR] : (state, action) => {
-        const { inputValue } = action.payload
-        return state.set('addr', inputValue)
-    },
-    [CHECK_VALID] : (state, action) => {
-        const {form, valid} = action.payload
-        return state.setIn(['valid', form], valid)
-    },
-    ...pender({
-        type: POST_USERS,
-        onFailure: (state, action)=>{
-            console.log(action);
-        }
-    })
-}, initialState)
+export default handleActions(
+	{
+		...pender({
+			type: POST_USER,
+			onSuccess: (state, action) => {
+        console.log(action);
+				return {...state, isSucceed: true}
+			},
+			onError: (state, action) => {
+        console.log(action);
+				return {...state, isSucceed: false }
+      },
+			onFailure: (state, action) => {
+        console.log(action);
+				let status = action.payload.response ? action.payload.response.status : action.payload.message
+				return {...state, isSucceed: false, status}
+				//status 500: 중복된 아이디
+			},
+		}),
+	},
+	initialState,
+);

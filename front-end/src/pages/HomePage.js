@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-const colourStyles = {
+const locationStyles = {
   control: styles => ({
     ...styles,
     border: 0,
@@ -98,7 +98,7 @@ const HomePage = () => {
             >
               <Select
                 placeholder='지역'
-                styles={colourStyles}
+                styles={locationStyles}
               // todo: 옵션 설정ㄴ
               />
 
