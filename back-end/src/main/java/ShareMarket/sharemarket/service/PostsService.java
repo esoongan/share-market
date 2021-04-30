@@ -1,13 +1,11 @@
 package ShareMarket.sharemarket.service;
 
 
-import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
 import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.domain.users.UserRepository;
 import ShareMarket.sharemarket.dto.*;
-import ShareMarket.sharemarket.exception.ApiExceptionHandler;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

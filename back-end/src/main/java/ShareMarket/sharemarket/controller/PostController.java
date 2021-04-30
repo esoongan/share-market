@@ -2,11 +2,9 @@ package ShareMarket.sharemarket.controller;
 
 
 import ShareMarket.sharemarket.domain.posts.Post;
-import ShareMarket.sharemarket.dto.PostsListResponseDto;
 import ShareMarket.sharemarket.service.PostsService;
 import ShareMarket.sharemarket.dto.PostsResponseDto;
 import ShareMarket.sharemarket.dto.PostsRequestDto;
-import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -1,14 +1,10 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.posts.Post;
-import ShareMarket.sharemarket.domain.posts.PostsRepository;
 import ShareMarket.sharemarket.dto.PagingDto;
 import ShareMarket.sharemarket.service.PagingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

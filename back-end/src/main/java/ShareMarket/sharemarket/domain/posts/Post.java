@@ -1,9 +1,7 @@
 package ShareMarket.sharemarket.domain.posts;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
-import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.dto.PostsRequestDto;
-import ShareMarket.sharemarket.dto.PostsUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

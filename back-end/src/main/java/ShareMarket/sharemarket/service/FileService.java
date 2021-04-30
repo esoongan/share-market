@@ -5,7 +5,7 @@ import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.dto.FileDto;
 import ShareMarket.sharemarket.exception.AttachFileException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FileService {

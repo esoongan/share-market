@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.service;
 
-import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.domain.users.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
