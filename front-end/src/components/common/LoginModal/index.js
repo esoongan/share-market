@@ -5,6 +5,7 @@ import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser, login, toggleModal } from 'store/modules/store';
+import Alert from '@material-ui/lab/Alert';
 
 //todo: getUser 오류 처리
 const modalStyle = {
@@ -47,11 +48,21 @@ export default function LoginModal() {
 	});
   const [error, setError] = useState(null);
 
-	const { open, logged, user } = useSelector(({ store }) => ({
+	const { open, logged, user, failure } = useSelector(({ store, pender }) => ({
 		open: store.modals.loginModal,
 		logged: store.logged,
     user: store.user,
+		failure: pender.failure.LOGIN,
 	}));
+	//모달의 visibility가 바뀌면 폼 초기화
+	useEffect(() => {
+		setInputs({
+			username:'',
+			password: '',
+		})
+		setError(null);
+	}, [open]);
+
   useEffect(() => {
     //로그인 성공 시
     if(logged === true){
@@ -59,7 +70,10 @@ export default function LoginModal() {
       dispatch(getUser(token)); //토큰으로 유저 정보 가져오기 -> 스토어에 저장
       dispatch(toggleModal('loginModal'));  //모달 닫기
     }
-  }, [logged, dispatch]);
+		else if(failure===true){
+			setError('다시 시도해보세요.');
+		}
+  }, [logged, dispatch, failure]);
 
 	const onChangeInput = e => {
 		const { value, name } = e.target;
@@ -125,6 +139,9 @@ export default function LoginModal() {
 						로그인
 					</Button>
 				</div>
+				{error !== null && (
+				<Alert severity="error" style={{width:'100%', marginTop:'8px'}}>{error}</Alert>
+			)}
 			</div>
 		</Modal>
 	);
