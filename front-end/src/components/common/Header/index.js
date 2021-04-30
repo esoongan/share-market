@@ -4,6 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { useDispatch } from 'react-redux';
+import { toggleModal } from 'store/modules/store';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const onClickLogin = () => {
+    dispatch(toggleModal('loginModal'));    //로그인 모달 열기
+  }
 
   return (
     <div className={classes.root}>
@@ -24,7 +30,7 @@ export default function Header() {
           <Typography variant="h6" className={classes.title}>
             로고
           </Typography>
-          <Button color="inherit">로그인</Button>
+          <Button color="inherit" onClick={onClickLogin} >로그인</Button>
           <Button variant='outlined' color="inherit">회원가입</Button>
         </Toolbar>
       </AppBar>

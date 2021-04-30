@@ -54,27 +54,41 @@ export default handleActions({
   type: LOGIN,
   onSuccess: (state, action) =>{
       const {data: token} = action.payload
+      console.log(action);
       // API 요청하는 콜마다 헤더에 token(JWT) 담아 보내도록 설정
       axios.defaults.headers.common['X-AUTH-TOKEN'] = `${token}`
-      console.log(action);
+      try {
+        //로컬스토리지에 토큰 저장
+        localStorage.setItem('X-AUTH-TOKEN', token);  
+      } catch (e) {
+        console.log('localStorage is not working');
+        return {
+          ...state,
+          logged: false,
+        }
+      }
       return {
         ...state,
         logged: true,
       }
   },
-  onError: (state, action) =>{
+  onFailure: (state, action) =>{
+      console.log(action);
+      return state;
       //로그인 실패 시      
   }
 },{
   type:GET_USER,
   onSuccess: (state, action) =>{
+    console.log(action);
     const user = action.payload;
       return {
         ...state,
         user,
       }
   },
-  onError: (state, action) =>{
+  onFailure: (state, action) =>{
+    console.log(action);
       return {
         ...state,
         user: initialState.user,
