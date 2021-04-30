@@ -10,8 +10,7 @@ import Container from '@material-ui/core/Container';
 import Select from 'react-select';
 import { locations } from 'constant/locale';
 
-//TODO: username, email에 중복 검사 기능 추가하기 -> api 사용
-//TODO: 중복 검사 요청 모달, 회원가입 성공 모달 추가하기
+//TODO: 회원가입 성공 모달 추가하기
 
 const useStyles = makeStyles(theme => ({
 	paper: {
