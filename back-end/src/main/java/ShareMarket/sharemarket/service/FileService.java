@@ -5,6 +5,7 @@ import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.dto.FileDto;
 import ShareMarket.sharemarket.exception.AttachFileException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
     // 지영 요청대로 폴더명 변경
-    private final String uploadPath = System.getProperty("user.dir") + "/files";
-
+    private final String uploadPath = System.getProperty("user.dir") + "_storage";
 
     //서버에 생성할 파일명을 처리할 랜덤 문자열 반  환
     private String getRandomString(){
