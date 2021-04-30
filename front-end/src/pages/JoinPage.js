@@ -56,7 +56,8 @@ const JoinPage = ({ history }) => {
 		if (
 			inputs.username === '' ||
 			inputs.email === '' ||
-			inputs.password === ''
+			inputs.password === ''||
+			inputs.addr === ''
 		) {
 			return;
 		}

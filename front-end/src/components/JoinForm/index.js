@@ -62,7 +62,7 @@ const JoinForm = ({ username, email, password, formatError, onSubmit, onChangeIn
 								value={username}
 								onChange={handleChangeInput}
 								error = {formatError.username}
-								helperText = '5~16자 영문, 숫자 조합으로 입력하세요'
+								helperText = '6~16자 영문, 숫자 조합으로 입력하세요'
 								autoComplete="username"
 								name="username"
 								variant="outlined"
@@ -107,7 +107,7 @@ const JoinForm = ({ username, email, password, formatError, onSubmit, onChangeIn
 								id="addr"
 								options={locations}
 								onChange={onSelect}
-								placeholder="검색 또는 선택하세요. (옵션)"
+								placeholder="검색 또는 선택하세요. (필수)"
 								onSelectResetsInput={false}
 								isSearchable
 							/>
