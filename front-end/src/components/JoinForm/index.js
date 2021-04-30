@@ -63,7 +63,7 @@ const JoinForm = ({ username, email, password, formatError, onSubmit, onChangeIn
 								onChange={handleChangeInput}
 								error = {formatError.username}
 								helperText = '5~16자 영문, 숫자 조합으로 입력하세요'
-								autoComplete="name"
+								autoComplete="username"
 								name="username"
 								variant="outlined"
 								required
@@ -115,7 +115,6 @@ const JoinForm = ({ username, email, password, formatError, onSubmit, onChangeIn
 					</Grid>
 					<Button
 						onClick={onSubmit}
-						type="submit"
 						fullWidth
 						variant="contained"
 						color="primary"
