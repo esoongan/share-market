@@ -62,7 +62,6 @@ const JoinPage = ({ history }) => {
 			return;
 		}
 		//중복 확인 체크 -> 중복 체크를 안했으면 체크해달라는 모달 띄우기
-		console.log('post!');
 		dispatch(postUser(inputs));
 	};
 
