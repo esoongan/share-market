@@ -30,11 +30,11 @@ const ImageViewer = ({images}) => {
 			{/* photo  */}
 			<Hidden mdUp>
 				<Carousel autoPlay={false}>
-					{imageList.map((image, index) => (
+					{images.map((image, index) => (
 						<img
 							className={classes.carouselImage}
 							key={index}
-							src={image.data_url}
+							src={image.filepath}
 							alt=""
 						/>
 					))}
@@ -45,16 +45,16 @@ const ImageViewer = ({images}) => {
 					<Grid item md={6}>
 						<img
 							className={classes.carouselImage}
-							src={imageList[0].data_url}
+							src={images[0].filepath}
 							alt=""
 						/>
 					</Grid>
 					<Grid container spacing={2} item md={6}>
-						{imageList.slice(1).map((image, index) => (
+						{images.slice(1).map((image, index) => (
 							<Grid key={index} item md={6}>
 								<img
 									className={classes.carouselImage}
-									src={image.data_url}
+									src={image.filepath}
 									alt=""
 								/>
 							</Grid>
