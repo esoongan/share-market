@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Editor from 'components/editor/Editor'
+import Editor from 'components/Editor'
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadFiles, writePost } from 'store/modules/editor';
 import Alert from '@material-ui/lab/Alert';
@@ -46,8 +46,8 @@ const EditorPage = () => {
 			[name]: value,
 		});
 	};
-	const onSelectImage = ({images}) => {
-		setImages(images);
+	const onSelectImages = (imageList) => {
+		setImages(imageList);
 	}
 
 	return (
@@ -60,7 +60,7 @@ const EditorPage = () => {
 				onChangeInput={onChangeInput}
 				onSubmit={onSubmit}
 				images={images}
-				onSelectImage={onSelectImage}
+				onSelectImages ={onSelectImages}
 			/>
 			{postFailure && (
 				<Alert severity="error" style={{width:'50%', marginRight:'auto', marginLeft: 'auto'}}>업로드 실패. 다시 시도해주세요.</Alert>
