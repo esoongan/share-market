@@ -34,13 +34,6 @@ export default handleActions(
 					return state;
 				},
 			},
-			{
-				type: UPLOAD_FILES,
-				onError: (state, action) => {
-					console.log('UPLOAD_FILES onError', action);
-					return state;
-				},
-			},
 		),
 	},
 	initialState,

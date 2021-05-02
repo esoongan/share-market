@@ -3,11 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PostContent, PostTitle } from 'components/post/PostBody';
 import ImageViewer from 'components/post/ImageViewer';
 import FloatingMenu from 'components/post/FloatingMenu';
-import post, { getFiles, getPost } from 'store/modules/post';
-import { pender } from 'redux-pender/lib/utils';
-// import Alert from '@material-ui/lab/Alert';
+import { getFiles, getPost } from 'store/modules/post';
 
-//writePost 성공 시 uploadFiles도 성공한다고 가정함.
 const NewPostPage = ({ match }) => {
 	const dispatch = useDispatch();
 	const post_id = match.params.post_id;
@@ -15,14 +12,18 @@ const NewPostPage = ({ match }) => {
 	const { success, post, images, failure } = useSelector(({ pender, post }) => ({
 		post: post.post,
 		images: post.images,
-		success: pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
-    failure: pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
+		success: pender.success['post/GET_POST'],
+    failure: pender.failure['post/GET_POST'],
 	}));
 
 	useEffect(() => {
 		dispatch(getPost({ post_id }));
-    dispatch(getFiles({post_id}));
 	}, [dispatch, post_id]);
+
+  useEffect(() => {
+    if(success){
+    dispatch(getFiles({post_id}));}
+  }, [dispatch, post_id, success]);
 
 	if(success){
     return (

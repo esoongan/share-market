@@ -24,44 +24,34 @@ const initialState = {
 		price: '',
 		deposit: '',
 	},
-  images: [],
+	images: null,
 };
 
 //reducer
 export default handleActions(
 	{
-		...pender(
-			{
-				// 게시물 정보 가져오기: GET /post/{post_id}
-				type: GET_POST,
-				onSuccess: (state, action) => {
-					const { data: post } = action.payload;
-          console.log(post);
-					return {
-						...state,
-						post,
-					};
-				},
-				onFailure: (state, action) => {
-					console.log(action);
-					return {
-            ...state,
-          };
-				},
+		...pender({
+			type: GET_FILES,
+			onSuccess: (state, action) => {
+				const { data: images } = action.payload;
+				return {
+					...state,
+					images,
+				};
 			},
-			{
-        // 게시물의 이미지 리스트 가져오기: GET /post/{post_id}/files
-				type: GET_FILES,
-				onSuccess: (state, action) => {
-					console.log(action);
-					const images = action.payload.data;
-					return {
-						...state,
-						images: images,
-					};
-				},
+		}),
+		...pender({
+			// 게시물 정보 가져오기: GET /post/{post_id}
+			type: GET_POST,
+			onSuccess: (state, action) => {
+				const { data: post } = action.payload;
+				console.log(post);
+				return {
+					...state,
+					post,
+				};
 			},
-		),
+		}),
 	},
 	initialState,
 );
