@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import { Button, Paper } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { DateRangePicker } from 'react-dates';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
 	floatingPaper: {
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-		padding: theme.spacing(4),
+		padding: theme.spacing(2),
 	},
 	dateRangePicker: {
 		marginBottom: theme.spacing(4),
@@ -19,13 +25,13 @@ const useStyles = makeStyles(theme => ({
 		width: '80%',
 		marginBottom: theme.spacing(1),
 	},
-	divider: {
-		marginTop: theme.spacing(4),
-		marginBottom: theme.spacing(4),
-	},
+	table:{
+		marginTop: theme.spacing(1),
+		width: '80%',
+	}
 }));
 
-export default function FloatingMenu({price, deposit}) {
+export default function FloatingMenu({ price, deposit }) {
 	const classes = useStyles();
 	const [dateRange, setDateRange] = useState({
 		startDate: null,
@@ -35,13 +41,22 @@ export default function FloatingMenu({price, deposit}) {
 	const onFocusInput = focusDate => {
 		setFocusInput(focusDate);
 	};
+	const [days, setDays] = useState(1);	//선택한 날짜의 일수
+
+	function createData(name, amount) {
+		return { name, amount: `${amount}원` };
+	}
+
+	// TODO: days가 변경될 때 다시 계산하도록 hooks 적용하기
+	const rows = [
+		createData('렌탈비', `${days}일 X ${price}`),
+		createData('보증금', `${deposit}`),
+		createData('총합', parseInt(price) * days + parseInt(deposit)),
+	];
 
 	return (
 		<Paper className={classes.floatingPaper} elevation={8}>
-			<Typography>보증금: {deposit} 렌탈비: {price}</Typography>
-			<Divider className={classes.divider} />
 			<DateRangePicker
-				//todo: 테두리 빼기 https://github.com/airbnb/react-dates#overriding-styles
 				startDate={dateRange.startDate} // momentPropTypes.momentObj or null,
 				startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
 				endDate={dateRange.endDate} // momentPropTypes.momentObj or null,
@@ -54,11 +69,24 @@ export default function FloatingMenu({price, deposit}) {
 				endDatePlaceholderText="반납일"
 				startDatePlaceholderText="대여일"
 			/>
+			<Table className={classes.table} aria-label="price-table" size='small'>
+				<TableBody>
+					{rows.map(row => (
+						<TableRow key={row.name}>
+							<TableCell component="th" scope="row">
+								{row.name}
+							</TableCell>
+							<TableCell align="right">{row.amount}</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+
 			<Button
 				className={classes.button}
 				variant="contained"
 				color="primary"
-				style={{ 'marginTop': '64px' }}
+				style={{ marginTop: '16px' }}
 			>
 				예약하기
 			</Button>
