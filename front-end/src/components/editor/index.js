@@ -24,6 +24,12 @@ const useStyles = makeStyles(theme => ({
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
 	},
+	error: {
+		width: '100%',
+		marginRight: 'auto',
+		marginLeft: 'auto',
+		marginBottom: theme.spacing(2),
+	},
 
 	title: {
 		width: '100%',
@@ -42,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 		marginTop: theme.spacing(4),
 		marginLeft: 'auto',
 		marginRight: theme.spacing(14),
-	},	
+	},
 	gridList: {
 		width: '100%',
 		height: '100%',
@@ -74,8 +80,9 @@ const Editor = ({
 	deposit,
 	onSubmit,
 	onChangeInput,
-  images,
-  onSelectImages
+	images,
+	onSelectImages,
+	error,
 }) => {
 	const classes = useStyles();
 	const handleChangeInput = e => {
@@ -86,9 +93,9 @@ const Editor = ({
 		onChangeInput({ value, name: 'category' });
 	};
 
-
 	return (
 		<div className={classes.root}>
+			{error !== null && <Alert  className={classes.error} severity="error">{error}</Alert>}
 			<Grid
 				container
 				xs={12}
@@ -219,10 +226,10 @@ const Editor = ({
 			<Grid container xs={12} direction="row" justify="flex-end" spacing={2}>
 				<Grid item xs={3}>
 					<TextField
-						label="하루 당 렌탈비"
 						id="price"
+						label="하루 당 렌탈비"
 						name="price"
-						value={price}
+						value={isNaN(price) ? '' : price}
 						onChange={handleChangeInput}
 						className={classes.priceField}
 						InputProps={{
@@ -230,6 +237,7 @@ const Editor = ({
 								<InputAdornment position="end">KRW/1일</InputAdornment>
 							),
 						}}
+						error={isNaN(price) ? true : false}
 					/>
 				</Grid>
 				<Grid item xs={3}>
@@ -245,6 +253,7 @@ const Editor = ({
 								<InputAdornment position="start">KRW</InputAdornment>
 							),
 						}}
+						error={isNaN(deposit) ? true : false}
 					/>
 				</Grid>
 				<Grid item xs={1} />
