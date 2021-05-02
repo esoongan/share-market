@@ -92,7 +92,7 @@ export default handleActions({
       return {
         ...state,
         user: initialState.user,
-        logged: false,
+        // logged: false,
       }
   }
 }),

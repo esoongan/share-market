@@ -2,8 +2,8 @@ import Select from 'react-select';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { categories } from 'constant/locale';
+import Button from '@material-ui/core/Button';
 import {
-	Button,
 	Grid,
 	InputAdornment,
 	TextField,
@@ -42,7 +42,8 @@ const useStyles = makeStyles(theme => ({
 		marginTop: theme.spacing(4),
 		marginLeft: 'auto',
 		marginRight: theme.spacing(14),
-	},	gridList: {
+	},	
+	gridList: {
 		width: '100%',
 		height: '100%',
 		border: 'solid 1px grey',
@@ -84,6 +85,7 @@ const Editor = ({
 	const onSelect = ({ value }) => {
 		onChangeInput({ value, name: 'category' });
 	};
+
 
 	return (
 		<div className={classes.root}>
@@ -248,10 +250,10 @@ const Editor = ({
 				<Grid item xs={1} />
 			</Grid>
 			<Button
+				onClick={onSubmit}
 				className={classes.writeBtn}
 				variant="outlined"
 				color="primary"
-				onClick={onSubmit}
 			>
 				작성하기
 			</Button>
