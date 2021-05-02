@@ -21,3 +21,5 @@ front-end/.env.production.local
 front-end/npm-debug.log*
 front-end/yarn-debug.log*
 front-end/yarn-error.log*
+
+back-end/files/
