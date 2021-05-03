@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Editor from 'components/editor';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadFiles, writePost } from 'store/modules/editor';
-import Alert from '@material-ui/lab/Alert';
-// import Alert from '@material-ui/lab/Alert';
 
 //writePost 성공 시 uploadFiles도 성공한다고 가정함.
-const EditorPage = () => {
+const EditorPage = ({history}) => {
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: false,
@@ -17,9 +15,10 @@ const EditorPage = () => {
 	});
 	const [error, setError] = useState(null);
 	const [images, setImages] = useState([]);
-	const { postFailure, post_id } = useSelector(({ pender, editor }) => ({
+	const { postFailure, post_id, uploadSuccess } = useSelector(({ pender, editor }) => ({
 		postFailure: pender.failure['editor/WRITE_POST'],
 		post_id: editor.post_id,
+		uploadSuccess: pender.success['editor/UPLOAD_FILES'],
 	}));
 
 	const onSubmit = e => {
@@ -64,7 +63,14 @@ const EditorPage = () => {
 			}
 			dispatch(uploadFiles({ post_id, formData, config }));
 		}
-	}, [post_id, dispatch, images]);
+	}, [post_id, dispatch, images, history]);
+
+	useEffect(()=>{
+		//사진 업로드까지 완료하면 해당 포스트 페이지로 이동
+		if(uploadSuccess === true){
+			history.push(`/post/${post_id}`)
+		}
+	}, [history, uploadSuccess, post_id])
 
 	//POST /user/api/posts 실패 시 alert 띄움
 	useEffect(() => {
