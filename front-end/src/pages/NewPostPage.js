@@ -32,6 +32,7 @@ const NewPostPage = ({ match }) => {
 				<Grid container spacing={4}>
 					<Grid item xs={12} md={8}>
 						<PostContent
+							writer={post.user_id}
 							category={post.category}
 							addr={post.addr}
 							content={post.content}
