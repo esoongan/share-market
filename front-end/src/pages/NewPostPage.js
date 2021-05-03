@@ -14,20 +14,15 @@ const NewPostPage = ({ match }) => {
 		({ pender, post }) => ({
 			post: post.post,
 			images: post.images,
-			success: pender.success['post/GET_POST'],
-			failure: pender.failure['post/GET_POST'],
+			success: pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
+			failure: pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
 		}),
 	);
 
 	useEffect(() => {
 		dispatch(getPost({ post_id }));
+		dispatch(getFiles({ post_id }));
 	}, [dispatch, post_id]);
-
-	useEffect(() => {
-		if (success) {
-			dispatch(getFiles({ post_id }));
-		}
-	}, [dispatch, post_id, success]);
 
 	if (success) {
 		return (
