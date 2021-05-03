@@ -1,11 +1,9 @@
-package ShareMarket.sharemarket.domain.File;
+package ShareMarket.sharemarket.domain.file;
 
-import ShareMarket.sharemarket.domain.posts.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.junit.ClassRule;
 
 import javax.persistence.*;
 
@@ -18,11 +16,6 @@ public class File { //사진(파일) 엔티티클래스
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // 게시글 번호 - FK
-//    @ManyToOne
-//    @JoinColumn(name="post_id")
-//    private Post post;
 
     @Column(nullable = false)
     private Long post_id;

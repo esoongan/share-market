@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.domain.posts;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
+import ShareMarket.sharemarket.dto.PostsRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,16 @@ import javax.persistence.*;
 @Entity // JPA가 관리할 테이블이다. -> 테이블과 링크될 클래스임을 나타냄
 public class Post extends BaseTimeEntity {
 
+
     @Id // PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment로 pk자동생성
     private Long id;  // mysql 기준으로 long - bigint
 
-    private String user_id; // 작성자의 기본키값 -> User테이블의 기본키
+    private String user_id; // FK - 작성자 username(PK아님 - 유니크키임)
+
+//    @ManyToOne // 여러개의 포스트가 하나의 user를 가지므로 --> 추후에 조인을 JPA로 할때 쓸수도잇어서 주석처리함
+//    @JoinColumn(name="username")
+//    private User user;
 
     @Column(length = 500, nullable = false) // 컬럼 어노테이션은 굳이 선언하지않아도 해당클래스 필드는 모두 컬럼이 되지만 추가변경이 필요한 옵션이잇을때 사용 (여기서는 문자열이 원래 VARCHAR(255)인데 500으로 늘림)
     private String title; //제목
@@ -27,7 +33,6 @@ public class Post extends BaseTimeEntity {
     private String category;
     private String price;
     private String deposit;
-    private String photo;
 
 
     @Builder // 해당 클래스의 빌더패턴 클래스 생성 -> 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함 -> 빌더를 이용해 데이터 삽입
@@ -38,13 +43,14 @@ public class Post extends BaseTimeEntity {
         this.category = category;
         this.price = price;
         this.deposit = deposit;
-        this.photo = photo;
     }
 
-    //미완성
-    public void update(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void update(PostsRequestDto postsUpdateRequestDto) {
+        this.title = postsUpdateRequestDto.getTitle();
+        this.content = postsUpdateRequestDto.getContent();
+        this.category = postsUpdateRequestDto.getCategory();
+        this.price = postsUpdateRequestDto.getPrice();
+        this.deposit = postsUpdateRequestDto.getDeposit();
     }
 }
 

@@ -1,19 +1,15 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.users.MemberType;
 import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.dto.UserRequestDto;
 import ShareMarket.sharemarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Response;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -32,6 +28,7 @@ public class UserController {
         log.info("resource -> {}", userRequestDto);
         User user = userService.register(userRequestDto); // 회원등록
         log.info("user -> {}", user);
+        log.info("회원가입 성공");
         URI url = new URI(String.format("/users/%s", user.getId()));
         return ResponseEntity.created(url).body(user);
     }
@@ -43,8 +40,8 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
-    //현재 요청헤더에 담긴 사용자 정보조회
-    @GetMapping("/current")
+    //현재 요청 토큰에 담긴 사용자 정보조회
+    @GetMapping("/user/api/check")
     @ResponseBody
     public UserDetails currentUserName(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

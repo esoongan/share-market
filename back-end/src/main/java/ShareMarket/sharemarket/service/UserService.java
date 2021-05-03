@@ -37,6 +37,7 @@ public class UserService {
     public User register(UserRequestDto userRequestDto) {
         Boolean existed = userRepository.existsByUsername(userRequestDto.getUsername());
 
+        // 이미 존재하는 유저아이디이면
         if (existed) {
             throw new IllegalArgumentException(userRequestDto.getUsername());
         }

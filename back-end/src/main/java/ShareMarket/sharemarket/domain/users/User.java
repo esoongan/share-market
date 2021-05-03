@@ -8,16 +8,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,13 +30,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment로 pk자동생성
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String username;
-    @Column
+    @Column(nullable = false)
     private String email;
-    @Column
+    @Column(nullable = false)
     private String password;
-    @Column
+    @Column(nullable = false)
     private String addr;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -61,6 +57,7 @@ public class User implements UserDetails {
     public String getPassword(){
         return password;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

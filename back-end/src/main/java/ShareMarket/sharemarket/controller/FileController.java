@@ -1,7 +1,6 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.File.File;
-import ShareMarket.sharemarket.domain.File.FileRepository;
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.dto.FileDto;
 import ShareMarket.sharemarket.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,9 @@ public class FileController {
     @Autowired
     private FileRepository fileRepository;
 
+
+    // 사진 업로드하는 api
+    // 요청에서 파일객체를 받아 FileDto리스트에 담아서 DB에 저장하고 결과를 반환함
     @PostMapping("/uploadMultipleFiles/{id}")
     public List<FileDto> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @PathVariable Long id) {
         List<FileDto> fileDtoList = fileService.uploadFiles(files, id);

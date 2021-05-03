@@ -1,12 +1,11 @@
 package ShareMarket.sharemarket.service;
 
-import ShareMarket.sharemarket.domain.File.File;
-import ShareMarket.sharemarket.domain.File.FileRepository;
-import ShareMarket.sharemarket.domain.posts.Post;
+import ShareMarket.sharemarket.domain.file.File;
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.dto.FileDto;
-import ShareMarket.sharemarket.dto.PostsResponseDto;
 import ShareMarket.sharemarket.exception.AttachFileException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +16,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FileService {
 
     private final FileRepository fileRepository;
-    private final String uploadPath = System.getProperty("user.dir") + "\\files";
-
+    // 지영 요청대로 폴더명 변경
+    private final String uploadPath = System.getProperty("user.dir") + "_storage";
 
     //서버에 생성할 파일명을 처리할 랜덤 문자열 반  환
     private String getRandomString(){
