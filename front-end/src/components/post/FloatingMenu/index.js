@@ -55,9 +55,9 @@ export default function FloatingMenu({ price, deposit }) {
 		<Paper className={classes.floatingPaper} elevation={8}>
 			<DateRangePicker
 				startDate={dateRange.startDate} // momentPropTypes.momentObj or null,
-				startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+				startDateId="start_date" // PropTypes.string.isRequired,
 				endDate={dateRange.endDate} // momentPropTypes.momentObj or null,
-				endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+				endDateId="end_date" // PropTypes.string.isRequired,
 				onDatesChange={({ startDate, endDate }) =>
 					setDateRange({ startDate, endDate })
 				} // PropTypes.func.isRequired,

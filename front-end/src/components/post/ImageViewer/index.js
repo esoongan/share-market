@@ -27,7 +27,7 @@ const ImageViewer = ({ images }) => {
 						<img
 							className={classes.carouselImage}
 							key={index}
-							src={image.filepath}
+							src={image.filepath+'/'+image.filename}
 							alt=""
 						/>
 					))}
@@ -38,7 +38,7 @@ const ImageViewer = ({ images }) => {
 					<Grid item md={6}>
 						<img
 							className={classes.carouselImage}
-							src={images[0].filepath}
+							src={images[0].filepath+'/'+images[0].filename}
 							alt=""
 						/>
 					</Grid>
@@ -47,7 +47,7 @@ const ImageViewer = ({ images }) => {
 							<Grid key={index} item md={6}>
 								<img
 									className={classes.carouselImage}
-									src={image.filepath}
+									src={image.filepath+'/'+image.filename}
 									alt=""
 								/>
 							</Grid>
