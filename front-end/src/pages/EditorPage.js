@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Editor from 'components/editor';
+import Editor from 'components/Editor';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadFiles, writePost } from 'store/modules/editor';
 
