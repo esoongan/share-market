@@ -50,7 +50,6 @@ export default handleActions(
 			type: LOGIN,
 			onSuccess: (state, action) => {
 				const { data: token } = action.payload;
-				console.log(action);
 				// API 요청하는 콜마다 헤더에 token(JWT) 담아 보내도록 설정
 				axios.defaults.headers.common['X-AUTH-TOKEN'] = `${token}`;
 				try {
@@ -69,7 +68,6 @@ export default handleActions(
 				};
 			},
 			onFailure: (state, action) => {
-				console.log(action);
 				return state;
 				//로그인 실패 시
 			},
@@ -77,7 +75,6 @@ export default handleActions(
 		...pender({
 			type: GET_USER,
 			onSuccess: (state, action) => {
-				console.log(action);
 				const user = action.payload.data;
 				return {
 					...state,
@@ -85,7 +82,6 @@ export default handleActions(
 				};
 			},
 			onFailure: (state, action) => {
-				console.log(action);
 				return {
 					...state,
 					user: initialState.user,

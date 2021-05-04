@@ -20,15 +20,12 @@ export default handleActions(
 		...pender({
 			type: POST_USER,
 			onSuccess: (state, action) => {
-        console.log(action);
 				return {...state, isSucceed: true}
 			},
 			onError: (state, action) => {
-        console.log(action);
 				return {...state, isSucceed: false }
       },
 			onFailure: (state, action) => {
-        console.log(action);
 				let status = action.payload.response ? action.payload.response.status : action.payload.message
 				return {...state, isSucceed: false, status}
 				//status 500: 중복된 아이디
