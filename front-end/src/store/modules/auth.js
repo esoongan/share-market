@@ -18,7 +18,9 @@ export const tempSetLogged = createAction(TEMP_SET_LOGGED)
 //initial state
 const initialState = {
 	logged: false,
-	user: null,
+	user: {
+		username: false,
+	},
 };
 
 //reducer

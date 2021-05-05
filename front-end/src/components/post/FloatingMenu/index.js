@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function FloatingMenu({ price, deposit }) {
+export default function FloatingMenu({ price, deposit, editable }) {
 	const classes = useStyles();
 	const [dateRange, setDateRange] = useState({
 		startDate: null,
@@ -39,7 +39,7 @@ export default function FloatingMenu({ price, deposit }) {
 		setFocusInput(focusDate);
 	};
 	const [days, setDays] = useState(1);	//선택한 날짜의 일수
-
+	// https://github.com/airbnb/react-dates#overriding-styles
 	function createData(name, amount) {
 		return { name, amount: `${amount}원` };
 	}
@@ -84,10 +84,11 @@ export default function FloatingMenu({ price, deposit }) {
 				variant="contained"
 				color="primary"
 				style={{ marginTop: '16px' }}
+				disabled={editable}
 			>
 				예약하기
 			</Button>
-			<Button className={classes.button} variant="contained" color="secondary">
+			<Button className={classes.button} variant="contained" color="secondary" disabled={editable}>
 				쪽지보내기
 			</Button>
 		</Paper>
