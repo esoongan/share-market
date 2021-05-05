@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { DateRangePicker } from 'react-dates';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { cityMarkets } from 'constant/locale';
+import { categories } from 'constant/locale';
 
 const useStyles = makeStyles(theme => ({
 	searchBox: {
@@ -44,14 +44,15 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 }));
-const locationStyles = {
+const categoryStyles = {
 	control: styles => ({
 		...styles,
 		border: 0,
-		width: 160,
+		width: 140,
 	}),
 	indicatorSeparator: styles => ({ ...styles, backgroundColor: 0 }),
 };
+const categoryOption = [{label: '전체', value:''}, ...categories];
 
 export default function Searchbar() {
 	const classes = useStyles();
@@ -67,10 +68,10 @@ export default function Searchbar() {
 	return (
 		<Paper className={classes.searchBox} elevation={6}>
 			<Select
-        id="addr"
-				placeholder="지역"
-				styles={locationStyles}
-        options={cityMarkets}
+        id="category"
+				placeholder="카테고리"
+				styles={categoryStyles}
+        options={categoryOption}
         //onChange={onSelect}
         onSelectResetsInput={false}
         isSearchable
@@ -88,6 +89,8 @@ export default function Searchbar() {
 				} // PropTypes.func.isRequired,
 				focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
 				onFocusChange={onFocusInput} // PropTypes.func.isRequired,
+				startDatePlaceholderText='대여일'
+				endDatePlaceholderText='반납일'
         noBorder
 			/>
 
