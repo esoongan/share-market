@@ -13,7 +13,7 @@ const TEMP_SET_LOGGED = 'authTEMP_SET_LOGGED'
 export const login = createAction(LOGIN, api.login);
 export const logout = createAction(LOGOUT);
 export const checkUser = createAction(CHECK_USER, api.checkUser);
-export const tempSetUser = createAction(TEMP_SET_LOGGED)
+export const tempSetLogged = createAction(TEMP_SET_LOGGED)
 
 //initial state
 const initialState = {
