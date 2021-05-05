@@ -48,7 +48,7 @@ export const PostTitle = ({ title }) => {
 	);
 };
 
-export const PostContent = ({ writer, category, addr, content, editable}) => {
+export const PostContent = ({ writer, category, addr, content, editable, onClickEdit, onClickDelete}) => {
 	const classes = useStyles();
 
 	return (
@@ -61,8 +61,8 @@ export const PostContent = ({ writer, category, addr, content, editable}) => {
 			</div>
 			{editable && 
 			<div className={classes.editableButton}>
-				<Button color="primary">수정하기</Button>
-				<Button color="secondary">삭제하기</Button>
+				<Button color="primary" onClick={onClickEdit}>수정하기</Button>
+				<Button color="secondary" onClick={onClickDelete}>삭제하기</Button>
 			</div>}
 			<Divider className={classes.divider} />
 			<Typography component="p" variant="body1">

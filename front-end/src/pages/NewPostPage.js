@@ -3,20 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PostContent, PostTitle } from 'components/post/PostBody';
 import ImageViewer from 'components/post/ImageViewer';
 import FloatingMenu from 'components/post/FloatingMenu';
-import { getFiles, getPost } from 'store/modules/post';
+import { deletePost, getFiles, getPost } from 'store/modules/post';
 import Grid from '@material-ui/core/Grid';
+import { toggleEditMode } from 'store/modules/editor';
 
-const NewPostPage = ({ match }) => {
+const NewPostPage = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const post_id = match.params.post_id;
 	const [editable, setEditable] = useState(false);
-	const { success, post, images, failure, myId } = useSelector(
+	const { success, post, images, failure, myId, deleteSuccess } = useSelector(
 		({ pender, post, auth }) => ({
 			post: post.post,
 			images: post.images,
 			success: pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
 			failure: pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
 			myId: auth.user.username,		//현재 로그인한 유저의 username -> 내가 작성한 포스트일 때 수정 및 삭제 가능하도록
+			deleteSuccess: pender.success['post/DELETE_POST'],
 		}),
 	);
 
@@ -28,7 +30,23 @@ const NewPostPage = ({ match }) => {
 		}
 	}, [dispatch, post_id, myId, post.user_id]);
 
+	useEffect(() => {
+		if(deleteSuccess){
+			history.pop();
+		}
+	}, [deleteSuccess, history]);
+
 	if (success) {
+		//내가 작성한 게시물 수정
+		const onClickEdit = () =>{
+			dispatch(toggleEditMode(true));
+			history.push('/post/editor');
+		}
+
+		//내가 작성한 게시물 삭제
+		const onClickDelete = () =>{	
+			dispatch(deletePost(post_id));
+		}
 		return (
 			<div>
 				<PostTitle 
@@ -43,6 +61,8 @@ const NewPostPage = ({ match }) => {
 							addr={post.addr}
 							editable={editable}
 							content={post.content}
+							onClickModify = {onClickEdit}
+							onClickDelete = {onClickDelete}
 						/>
 					</Grid>
 					<Grid item xs={12} md={4}>

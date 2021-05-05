@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uploadFiles, writePost } from 'store/modules/editor';
 
 //writePost 성공 시 uploadFiles도 성공한다고 가정함.
+// todo: editMode === true 일때 처리하기
 const EditorPage = ({history}) => {
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
@@ -15,11 +16,12 @@ const EditorPage = ({history}) => {
 	});
 	const [error, setError] = useState(null);
 	const [images, setImages] = useState([]);
-	const { logged, postFailure, post_id, uploadSuccess } = useSelector(({ pender, editor, auth }) => ({
+	const { logged, postFailure, post_id, uploadSuccess, editMode } = useSelector(({ pender, editor, auth }) => ({
 		logged: auth.logged,
 		postFailure: pender.failure['editor/WRITE_POST'],
 		post_id: editor.post_id,
 		uploadSuccess: pender.success['editor/UPLOAD_FILES'],
+		editMode: editor.editMode,
 	}));
 
 	const onSubmit = e => {
