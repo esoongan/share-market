@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.domain.posts;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
-import ShareMarket.sharemarket.dto.PostsRequestDto;
+import ShareMarket.sharemarket.dto.post.PostsRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +36,7 @@ public class Post extends BaseTimeEntity {
 
 
     @Builder // 해당 클래스의 빌더패턴 클래스 생성 -> 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함 -> 빌더를 이용해 데이터 삽입
-    public Post(String user_id, String title, String content, String category, String price, String deposit, String photo){
+    public Post(String user_id, String title, String content, String category, String price, String deposit){
         this.user_id = user_id;
         this.title = title;
         this.content = content;
@@ -52,6 +52,10 @@ public class Post extends BaseTimeEntity {
         this.price = postsUpdateRequestDto.getPrice();
         this.deposit = postsUpdateRequestDto.getDeposit();
     }
+
+
+
+
 }
 
 /* Entity클래스에서는 절대 Setter메소드를 만들지 않는다.

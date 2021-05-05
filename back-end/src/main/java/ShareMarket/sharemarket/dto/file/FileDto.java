@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.dto;
+package ShareMarket.sharemarket.dto.file;
 
 
 import ShareMarket.sharemarket.domain.file.File;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class FileDto {
-    private Long post_id;
+    private Long postId;
     private String origFilename;
     private String filename;
     private String filepath;
@@ -18,7 +18,7 @@ public class FileDto {
     // FileRequestDto -> Dto에 담긴 값으로 Entity객체를 만들고 디비에 저장하기위한 메소드
     public File toEntity(){
         return File.builder()
-                .post_id(post_id)
+                .postId(postId)
                 .origFilename(origFilename)
                 .filename(filename)
                 .filepath(filepath)
@@ -27,7 +27,7 @@ public class FileDto {
 
     // FileResponseDto -> Entity객체를 인자로 줘서 FileDto객체로 만들어주는 생성자
     public FileDto(File entity) {
-        this.post_id = entity.getPost_id();
+        this.postId = entity.getPostId();
         this.origFilename = entity.getOrigFilename();
         this.filename = entity.getFilename();
         this.filepath = entity.getFilepath();

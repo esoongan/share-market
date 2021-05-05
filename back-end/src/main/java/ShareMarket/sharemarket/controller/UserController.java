@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.controller;
 
 import ShareMarket.sharemarket.domain.users.User;
-import ShareMarket.sharemarket.dto.UserRequestDto;
+import ShareMarket.sharemarket.dto.user.UserRequestDto;
 import ShareMarket.sharemarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

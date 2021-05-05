@@ -18,7 +18,7 @@ public class File { //사진(파일) 엔티티클래스
     private Long id;
 
     @Column(nullable = false)
-    private Long post_id;
+    private Long postId;
 
     // 원본파일명
     @Column(nullable = false) // null값 허용x
@@ -33,8 +33,8 @@ public class File { //사진(파일) 엔티티클래스
 
 
     @Builder
-    public File(Long post_id, String origFilename, String filename, String filepath) {
-        this.post_id = post_id;
+    public File(Long postId, String origFilename, String filename, String filepath) {
+        this.postId = postId;
         this.origFilename = origFilename;
         this.filename = filename;
         this.filepath = filepath;

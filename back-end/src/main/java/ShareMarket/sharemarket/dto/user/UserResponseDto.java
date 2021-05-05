@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.dto;
+package ShareMarket.sharemarket.dto.user;
 
 import ShareMarket.sharemarket.domain.users.User;
 import lombok.Getter;
@@ -11,12 +11,14 @@ import java.util.Optional;
 @Getter
 public class UserResponseDto {
 
+    private Long id;
     private String username;
     private String password;
     private String email;
     private String addr;
 
     public UserResponseDto(User entity) {
+        this.id = entity.getId();
         this.username = entity.getUsername();
         this.password = entity.getPassword();
         this.email = entity.getEmail();

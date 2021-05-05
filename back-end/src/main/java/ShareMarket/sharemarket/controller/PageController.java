@@ -1,6 +1,6 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.dto.PagingDto;
+import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.service.PagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

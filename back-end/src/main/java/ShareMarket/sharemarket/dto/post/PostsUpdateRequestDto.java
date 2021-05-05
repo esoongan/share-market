@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.dto;
+package ShareMarket.sharemarket.dto.post;
 
 import ShareMarket.sharemarket.domain.posts.Post;
 import lombok.AllArgsConstructor;

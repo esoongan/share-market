@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.dto;
+package ShareMarket.sharemarket.dto.paging;
 
 import lombok.Data;
 

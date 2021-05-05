@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.controller;
 
 import ShareMarket.sharemarket.domain.file.FileRepository;
-import ShareMarket.sharemarket.dto.FileDto;
+import ShareMarket.sharemarket.dto.file.FileDto;
 import ShareMarket.sharemarket.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

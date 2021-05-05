@@ -1,13 +1,10 @@
 package ShareMarket.sharemarket.domain.posts;
 
-import ShareMarket.sharemarket.dto.PostsListResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 // 리포지토리 - 데이터베이스에 접근하는 영역 ( 구 개발방식에서 dao의 역할)
 // 제네릭타입에는 Entity클래스와 PK의 타입을 명시하면됨

@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.dto;
+package ShareMarket.sharemarket.dto.post;
 
 import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.domain.users.User;
@@ -37,5 +37,15 @@ public class PostsResponseDto {
         this.addr = addr;
         this.price = entity.getPrice();
         this.deposit = entity.getDeposit();
+    }
+
+    public PostsResponseDto(Post postEntity) {
+        this.id = postEntity.getId();
+        this.user_id = postEntity.getUser_id();
+        this.title = postEntity.getTitle();
+        this.content = postEntity.getContent();
+        this.category = postEntity.getCategory();
+        this.price = postEntity.getPrice();
+        this.deposit = postEntity.getDeposit();
     }
 }

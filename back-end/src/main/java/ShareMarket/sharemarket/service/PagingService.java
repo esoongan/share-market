@@ -2,7 +2,7 @@ package ShareMarket.sharemarket.service;
 
 import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.domain.posts.PostsRepository;
-import ShareMarket.sharemarket.dto.PagingDto;
+import ShareMarket.sharemarket.dto.paging.PagingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ public class PagingService {
                         post.getTitle(),
                         post.getUser_id(),
                         post.getCategory(),
-                        postsService.findAddrByPost(post.getId()),
+                        postsService.getUserDtoByPostPk(post.getId()).getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
@@ -45,7 +45,7 @@ public class PagingService {
                         post.getTitle(),
                         post.getUser_id(),
                         post.getCategory(),
-                        postsService.findAddrByPost(post.getId()),
+                        postsService.getUserDtoByPostPk(post.getId()).getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
@@ -63,7 +63,7 @@ public class PagingService {
                         post.getTitle(),
                         post.getUser_id(),
                         post.getCategory(),
-                        postsService.findAddrByPost(post.getId()),
+                        postsService.getUserDtoByPostPk(post.getId()).getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;

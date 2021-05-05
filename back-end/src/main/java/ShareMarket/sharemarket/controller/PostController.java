@@ -3,8 +3,8 @@ package ShareMarket.sharemarket.controller;
 
 import ShareMarket.sharemarket.domain.posts.Post;
 import ShareMarket.sharemarket.service.PostsService;
-import ShareMarket.sharemarket.dto.PostsResponseDto;
-import ShareMarket.sharemarket.dto.PostsRequestDto;
+import ShareMarket.sharemarket.dto.post.PostsResponseDto;
+import ShareMarket.sharemarket.dto.post.PostsRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +25,10 @@ public class PostController {
 
     // 게시글 저장 _ 로그인한 유저만 가능
     @PostMapping("/user/api/posts")
-    public ResponseEntity<Post> savePost(@RequestBody PostsRequestDto postsRequestDto, Authentication authentication) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
-        Post post = postsService.save(postsRequestDto);
-        URI url = new URI(String.format("/posts/$s", post.getId()));
-        return ResponseEntity.created(url).body(post);
+    public ResponseEntity<PostsResponseDto> savePost(@RequestBody PostsRequestDto postsRequestDto, Authentication authentication) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
+        PostsResponseDto postsResponseDto = postsService.save(postsRequestDto, authentication);
+        URI url = new URI(String.format("/posts/$s", postsResponseDto.getId()));
+        return ResponseEntity.created(url).body(postsResponseDto);
     }
 
     // 게시글 수정 _ 로그인한 유저중에서도 본인글만 가능

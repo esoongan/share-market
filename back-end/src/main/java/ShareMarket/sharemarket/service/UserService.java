@@ -4,7 +4,7 @@ import ShareMarket.sharemarket.config.security.JwtTokenProvider;
 import ShareMarket.sharemarket.domain.users.MemberType;
 import ShareMarket.sharemarket.domain.users.User;
 import ShareMarket.sharemarket.domain.users.UserRepository;
-import ShareMarket.sharemarket.dto.UserRequestDto;
+import ShareMarket.sharemarket.dto.user.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +12,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Collections;
 
 @Slf4j
@@ -43,11 +45,11 @@ public class UserService {
         }
 
         return userRepository.save(User.builder()
-                    .username(userRequestDto.getUsername())
-                    .password(passwordEncoder.encode(userRequestDto.getPassword()))
-                    .email(userRequestDto.getEmail())
-                    .addr(userRequestDto.getAddr())
-                    .roles(Collections.singletonList(MemberType.USER))
+                .username(userRequestDto.getUsername())
+                .password(passwordEncoder.encode(userRequestDto.getPassword()))
+                .email(userRequestDto.getEmail())
+                .addr(userRequestDto.getAddr())
+                .roles(Collections.singletonList(MemberType.USER))
                 .build());
     }
 
@@ -76,4 +78,15 @@ public class UserService {
         }
 
     }
-}
+
+    public Long getUserPkByToken(Object principal) {
+        String userName = ((UserDetails) principal).getUsername();
+        User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));
+        log.info("토큰으로부터 사용자PK추출"+user.getId().toString());
+        return user.getId();
+    }
+
+    public String getUserNameByToken(Object principal) {
+        return ((UserDetails) principal).getUsername();
+    }}
