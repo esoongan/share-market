@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.domain.users;
+package ShareMarket.sharemarket.domain.user;
 
 
 // 실제 회원정보에 해당하는 클래스

@@ -1,6 +1,6 @@
 package ShareMarket.sharemarket.web;
 
-import ShareMarket.sharemarket.domain.posts.PostsRepository;
+import ShareMarket.sharemarket.domain.post.PostRepository;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class PostControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private PostsRepository postsRepository;
+    private PostRepository postsRepository;
 
     @After
     public void tearDown() throws Exception {

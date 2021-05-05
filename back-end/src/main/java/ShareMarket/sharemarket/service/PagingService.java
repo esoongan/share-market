@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.service;
 
-import ShareMarket.sharemarket.domain.posts.Post;
-import ShareMarket.sharemarket.domain.posts.PostsRepository;
+import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.dto.paging.PagingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PagingService {
 
-    private final PostsRepository postsRepository;
-    private final PostsService postsService;
+    private final PostRepository postsRepository;
+    private final PostService postService;
 
     // 페이징으로 게시글 반환
     public Page<PagingDto> paging(Pageable pageable){
@@ -26,7 +26,7 @@ public class PagingService {
                         post.getTitle(),
                         post.getUser_id(),
                         post.getCategory(),
-                        postsService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
@@ -45,7 +45,7 @@ public class PagingService {
                         post.getTitle(),
                         post.getUser_id(),
                         post.getCategory(),
-                        postsService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
@@ -63,7 +63,7 @@ public class PagingService {
                         post.getTitle(),
                         post.getUser_id(),
                         post.getCategory(),
-                        postsService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;

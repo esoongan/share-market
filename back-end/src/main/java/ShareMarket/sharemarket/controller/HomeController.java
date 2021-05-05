@@ -13,11 +13,6 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/dto")
-    public HomeResponseDto homeDto(@RequestParam("name") String name,
-                                   @RequestParam("amount") int amount){
-        return new HomeResponseDto(name, amount);
-    }
 }
 // RequestParam() -> 외부에서 API로 넘긴 파라미터를 가져오는 어노테이션
 // 외부에서 name이라는 이름으로 넘긴 파라미터를 메소드 파라미터 name에 저장함!

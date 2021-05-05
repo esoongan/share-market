@@ -1,23 +1,13 @@
 package ShareMarket.sharemarket.dto.contract;
 
 import ShareMarket.sharemarket.domain.contract.Contract;
-import ShareMarket.sharemarket.domain.users.User;
-import ShareMarket.sharemarket.domain.users.UserRepository;
-import ShareMarket.sharemarket.dto.user.UserResponseDto;
-import ShareMarket.sharemarket.service.PostsService;
-import ShareMarket.sharemarket.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 // Dto -> Entity
-
-@Slf4j
 @Setter
 @Getter
 @NoArgsConstructor

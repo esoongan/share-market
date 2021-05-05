@@ -1,7 +1,7 @@
-package ShareMarket.sharemarket.domain.posts;
+package ShareMarket.sharemarket.domain.post;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
-import ShareMarket.sharemarket.dto.post.PostsRequestDto;
+import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,12 +45,12 @@ public class Post extends BaseTimeEntity {
         this.deposit = deposit;
     }
 
-    public void update(PostsRequestDto postsUpdateRequestDto) {
-        this.title = postsUpdateRequestDto.getTitle();
-        this.content = postsUpdateRequestDto.getContent();
-        this.category = postsUpdateRequestDto.getCategory();
-        this.price = postsUpdateRequestDto.getPrice();
-        this.deposit = postsUpdateRequestDto.getDeposit();
+    public void update(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+        this.category = postRequestDto.getCategory();
+        this.price = postRequestDto.getPrice();
+        this.deposit = postRequestDto.getDeposit();
     }
 
 

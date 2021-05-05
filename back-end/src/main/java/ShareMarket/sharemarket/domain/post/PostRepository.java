@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.domain.posts;
+package ShareMarket.sharemarket.domain.post;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,11 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 // 리포지토리 - 데이터베이스에 접근하는 영역 ( 구 개발방식에서 dao의 역할)
 // 제네릭타입에는 Entity클래스와 PK의 타입을 명시하면됨
-public interface PostsRepository extends JpaRepository<Post, Long> {
-
-    // 페이징함수 선언
-    Page<Post> findAll(Pageable pageable);
-
+public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 레포지토리 함수에 실제 실행될 쿼리를 매핑할 수 있음
     // 페이징 관련 쿼리는 페이징할 총 개시물갯수와 실제값 2개를 전부 가져와야 하므로 2가지에 해당하는 쿼리를 적어줌
@@ -43,6 +39,11 @@ public interface PostsRepository extends JpaRepository<Post, Long> {
             countQuery = "SELECT COUNT(p.id) FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address"
     )
     Page<Post> findAllByAddress(@Param("address") String address, Pageable pageable);
+
+    //4. 키워드+카테고리
+    //5. 키워드+지역
+    //6. 카테고리+지역
+    //7. 키워드+카테고리+지역
 
 }
 

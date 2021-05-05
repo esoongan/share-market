@@ -1,9 +1,9 @@
 package ShareMarket.sharemarket.service;
 
 import ShareMarket.sharemarket.config.security.JwtTokenProvider;
-import ShareMarket.sharemarket.domain.users.MemberType;
-import ShareMarket.sharemarket.domain.users.User;
-import ShareMarket.sharemarket.domain.users.UserRepository;
+import ShareMarket.sharemarket.domain.user.MemberType;
+import ShareMarket.sharemarket.domain.user.User;
+import ShareMarket.sharemarket.domain.user.UserRepository;
 import ShareMarket.sharemarket.dto.user.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.Collections;
 
 @Slf4j

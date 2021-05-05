@@ -1,4 +1,4 @@
-package ShareMarket.sharemarket.domain.users;
+package ShareMarket.sharemarket.domain.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

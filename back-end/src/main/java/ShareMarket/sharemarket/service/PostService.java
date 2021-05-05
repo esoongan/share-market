@@ -1,18 +1,17 @@
 package ShareMarket.sharemarket.service;
 
 
-import ShareMarket.sharemarket.domain.posts.Post;
-import ShareMarket.sharemarket.domain.posts.PostsRepository;
-import ShareMarket.sharemarket.domain.users.User;
-import ShareMarket.sharemarket.domain.users.UserRepository;
-import ShareMarket.sharemarket.dto.post.PostsRequestDto;
-import ShareMarket.sharemarket.dto.post.PostsResponseDto;
+import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.domain.post.PostRepository;
+import ShareMarket.sharemarket.domain.user.User;
+import ShareMarket.sharemarket.domain.user.UserRepository;
+import ShareMarket.sharemarket.dto.post.PostRequestDto;
+import ShareMarket.sharemarket.dto.post.PostResponseDto;
 import ShareMarket.sharemarket.dto.user.UserResponseDto;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,40 +19,31 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor // Repository를 주입하기 위해 사용
 @Service
-public class PostsService {
+public class PostService {
 
-    private final PostsRepository postsRepository;
+    private final PostRepository postsRepository;
     private final UserRepository userRepository;
     private final UserService userService;
 
-
-//    // 게시글 저장
-//    @Transactional
-//    public Post save(PostsRequestDto postsRequestDto){
-//        //JpaRepository에 정의된 메소드save() -> DB에 INSERT와 UPDATE를 담당한다. (자동생성)
-//        //매개변수로는 ""Entity""를 전달함
-//        return postsRepository.save(postsRequestDto.toEntity()); // Post Entity객체
-//    }
-
     // 게시글 저장
     @Transactional
-    public PostsResponseDto save(PostsRequestDto postsRequestDto, Authentication authentication){
-        postsRequestDto.setUser_id(userService.getUserNameByToken(authentication.getPrincipal()));
+    public PostResponseDto save(PostRequestDto postRequestDto, Authentication authentication){
+        postRequestDto.setUser_id(userService.getUserNameByToken(authentication.getPrincipal()));
         //JpaRepository에 정의된 메소드save() -> DB에 INSERT와 UPDATE를 담당한다. (자동생성)
         //매개변수로는 ""Entity""를 전달함
-        Post post = postsRepository.save(postsRequestDto.toEntity()); // Post Entity객체
-        return new PostsResponseDto(post, getUserDtoByPostPk(post.getId()).getAddr());
+        Post post = postsRepository.save(postRequestDto.toEntity()); // Post Entity객체
+        return new PostResponseDto(post, getUserDtoByPostPk(post.getId()).getAddr());
     }
 
     // 게시글 수정
     @Transactional
-    public Post update(Long id, PostsRequestDto postsRequestDto) {
+    public Post update(Long id, PostRequestDto postRequestDto) {
         // id로 디비에서 게시글을 찾고
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         // 전달받은 게시글로 업데이트
-        post.update(postsRequestDto);
+        post.update(postRequestDto);
         return post; // 엔티티객체 바로 리턴하면 안되서 추후에 수정해야함.
     }
 
@@ -68,11 +58,11 @@ public class PostsService {
 
     // 게시글 1개 조회 by게시글PK
     @Transactional(readOnly = true)
-    public PostsResponseDto findById(Long id) {
+    public PostResponseDto findById(Long id) {
         // JpaRepository에서 제공하는 findById를 이용해서 클라이언트가 보낸 id로 Post Entity를 얻은후 ResponseDto를 리턴
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
-        return new PostsResponseDto(post, getUserDtoByPostPk(id).getAddr()); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
+        return new PostResponseDto(post, getUserDtoByPostPk(id).getAddr()); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
     }
 
     /*
