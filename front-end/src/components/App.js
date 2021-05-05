@@ -36,8 +36,10 @@ const App = () => {
             <Route exact path='/post/:post_id' component={NewPostPage} />
 
             <Route exact path='/list/:pageNumber?' component={ListPage} />
+           {/* 
             <Route exact path='/mypage/borrower' component={BorrowerPage} />
-            <Route exact path='/mypage/borrowee' component={BorroweePage} />
+            <Route exact path='/mypage/borrowee' component={BorroweePage} /> */}
+          
 
             <Route component={NotFoundPage} />
           </Switch>

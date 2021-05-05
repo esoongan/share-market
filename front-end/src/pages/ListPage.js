@@ -1,7 +1,7 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import Pagination from '@material-ui/lab/Pagination';
-import ItemCard from 'components/ItemCard';
+import ItemCard from 'components/itemCard';
 
 const useStyles = makeStyles(theme => ({
 	root: {},
