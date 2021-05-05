@@ -15,7 +15,8 @@ const EditorPage = ({history}) => {
 	});
 	const [error, setError] = useState(null);
 	const [images, setImages] = useState([]);
-	const { postFailure, post_id, uploadSuccess } = useSelector(({ pender, editor }) => ({
+	const { logged, postFailure, post_id, uploadSuccess } = useSelector(({ pender, editor, auth }) => ({
+		logged: auth.logged,
 		postFailure: pender.failure['editor/WRITE_POST'],
 		post_id: editor.post_id,
 		uploadSuccess: pender.success['editor/UPLOAD_FILES'],
@@ -47,6 +48,13 @@ const EditorPage = ({history}) => {
 		dispatch(writePost(inputs)); // POST /user/api/posts
 		// 성공 시 post_id 값 채워짐: null -> integer
 	};
+	useEffect(()=>{
+		//로그인 상태가 아니면 로그인 모달 띄우기
+		if(!logged){
+			alert('먼저 로그인을 해주세요.');
+			history.push('/');
+		}
+	}, [logged, history])
 
 	useEffect(() => {
 		if (post_id !== null) {
