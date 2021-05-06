@@ -70,23 +70,8 @@ export default function Album() {
 
   return (
     <React.Fragment>
-
-
-     {/*    
-      <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
      
-     
-     
-     
-      <main>
+ <main>
 
 <section className={classes.navtab}>
   <NavTab/>
@@ -143,7 +128,7 @@ export default function Album() {
          
     <Grid container spacing={4}>
             {cards.map((card) => (
-      <Grid item key={card} xs={12} sm={6} md={4}>
+      <Grid item key={card} xs={6} sm={3} md={2}>
         <Card className={classes.card}>
             <CardMedia
                     className={classes.cardMedia}
