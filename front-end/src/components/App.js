@@ -1,4 +1,4 @@
-import { HomePage, JoinPage, NotFoundPage, EditorPage, PostPage, ListPage, NewPostPage } from 'pages'
+import { HomePage, JoinPage, NotFoundPage, EditorPage, PostPage, ListPage, NewPostPage, BorroweePage, BorrowerPage } from 'pages'
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -36,10 +36,10 @@ const App = () => {
             <Route exact path='/post/:post_id' component={NewPostPage} />
 
             <Route exact path='/list/:pageNumber?' component={ListPage} />
-           
-           {/*  <Route exact path='/mypage/borrower' component={BorrowerPage} />
+          
+            <Route exact path='/mypage/borrower' component={BorrowerPage} /> 
             
-            <Route exact path='/mypage/borrowee' component={BorroweePage} /> */}
+            <Route exact path='/mypage/borrowee' component={BorroweePage} />  
            
 
             <Route component={NotFoundPage} />

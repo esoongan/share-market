@@ -92,4 +92,4 @@ export default function NavTabs() {
   );
 };
 
-export default stateTab;
+/* export default stateTab; */
