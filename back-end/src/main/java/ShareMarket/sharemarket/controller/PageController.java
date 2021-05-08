@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 // 페이지별로 게시글목록을 조회
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 public class PageController {
@@ -20,6 +21,44 @@ public class PageController {
     private final PagingService pagingService;
 
     //컨트롤러메소드에 pageble타입의 파라미터가 존재하면 요청파라미터를 토대로 PageableHandlerMethodArgumentResolver가 pageRequest를 생성함
+
+    @GetMapping("/api/post/page")
+    public Page<PagingDto> getPaging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest,
+                                     @RequestParam(required = false) String keyword,
+                                     @RequestParam(required = false) String category,
+                                     @RequestParam(required = false) String addr
+                                     ){
+
+        return pagingService.searchPaging(keyword,category,addr,pageRequest);
+
+//        // default페이징 (아무인자없이)
+//        if (keyword==null && category==null && addr == null) {
+//                return pagingService.searchPaging(keyword,null,null,pageRequest);
+//        } // 키워드로 검색
+//        else if(keyword!=null && category==null && addr == null){
+//
+//        }// 카테고리로 검색
+//        else if(category!=null && keyword==null && addr == null){
+//            return pagingService.pagingByCategory(category, pageRequest);
+//        } // 지역으로 검색
+//        else if(keyword==null && category==null && addr != null){
+//
+//        } // 키워드 + 카테고리
+//        else if(keyword!=null && category!=null && addr == null){
+//
+//        } // 키워드 + 지역
+//        else if(keyword!=null && category==null && addr != null){
+//
+//        } // 카테고리 + 지역
+//        else if(keyword==null && category!=null && addr != null){
+//
+//        } // 키워드 + 카테고리 + 지역
+//        else{
+//            return
+//        }
+    }
+
+
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/api/posts/page")

@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.domain.post;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
+import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Post extends BaseTimeEntity {
     private String user_id; // FK - 작성자 username(PK아님 - 유니크키임)
 
 //    @ManyToOne // 여러개의 포스트가 하나의 user를 가지므로 --> 추후에 조인을 JPA로 할때 쓸수도잇어서 주석처리함
-//    @JoinColumn(name="username")
+//    @JoinColumn(name="username") // 매핑할 외래키 이름
 //    private User user;
 
     @Column(length = 500, nullable = false) // 컬럼 어노테이션은 굳이 선언하지않아도 해당클래스 필드는 모두 컬럼이 되지만 추가변경이 필요한 옵션이잇을때 사용 (여기서는 문자열이 원래 VARCHAR(255)인데 500으로 늘림)
