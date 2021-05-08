@@ -40,7 +40,8 @@ public class UserService {
 
         // 이미 존재하는 유저아이디이면
         if (existed) {
-            throw new IllegalArgumentException(userRequestDto.getUsername());
+            return null;
+            //throw new IllegalArgumentException(userRequestDto.getUsername());
         }
 
         return userRepository.save(User.builder()
@@ -78,12 +79,12 @@ public class UserService {
 
     }
 
-    public Long getUserPkByToken(Object principal) {
+    public User getUserPkByToken(Object principal) {
         String userName = ((UserDetails) principal).getUsername();
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));
         log.info("토큰으로부터 사용자PK추출"+user.getId().toString());
-        return user.getId();
+        return user;
     }
 
     public String getUserNameByToken(Object principal) {

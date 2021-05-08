@@ -34,7 +34,8 @@ public class PostSpecification {
     public static Specification<Post> equalAddr(String addr) {
         return new Specification<Post>() {
             public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Post, User> postUserJoin = root.join("user_id", JoinType.INNER);
+                //얘를 위해서 jpa연관관게를 가지는 조인컬럼을 지정
+                Join<Post, User> postUserJoin = root.join("user", JoinType.INNER);
 
                 return cb.equal(postUserJoin.get("addr"), addr);
 

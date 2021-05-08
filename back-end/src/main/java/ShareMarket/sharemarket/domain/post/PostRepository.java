@@ -12,6 +12,9 @@ import org.springframework.data.repository.query.Param;
 // 제네릭타입에는 Entity클래스와 PK의 타입을 명시하면됨
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
+
+    Page<PostMapping> findAllBy(Pageable pageable);
+
     // 레포지토리 함수에 실제 실행될 쿼리를 매핑할 수 있음
     // 페이징 관련 쿼리는 페이징할 총 개시물갯수와 실제값 2개를 전부 가져와야 하므로 2가지에 해당하는 쿼리를 적어줌
     @Query(
@@ -36,11 +39,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     Page<Post> findByCategory(String category, Pageable pageable);
 
     // 3. 지역으로 검색
-    @Query(
-            value = "SELECT p FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address",
-            countQuery = "SELECT COUNT(p.id) FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address"
-    )
-    Page<Post> findAllByAddress(@Param("address") String address, Pageable pageable);
+//    @Query(
+//            value = "SELECT p FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address",
+//            countQuery = "SELECT COUNT(p.id) FROM Post p, User u WHERE p.user_id=u.username AND u.addr=:address"
+//    )
+//    Page<Post> findAllByAddress(@Param("address") String address, Pageable pageable);
 
     //4. 키워드+카테고리
     //5. 키워드+지역

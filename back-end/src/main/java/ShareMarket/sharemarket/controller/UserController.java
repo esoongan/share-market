@@ -2,9 +2,14 @@ package ShareMarket.sharemarket.controller;
 
 import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.dto.user.UserRequestDto;
+import ShareMarket.sharemarket.model.DefaultRes;
+import ShareMarket.sharemarket.model.HttpResponseMessage;
+import ShareMarket.sharemarket.model.HttpStatusCode;
 import ShareMarket.sharemarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.dialect.unique.DefaultUniqueDelegate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +35,10 @@ public class UserController {
         log.info("user -> {}", user);
         log.info("회원가입 성공");
         URI url = new URI(String.format("/users/%s", user.getId()));
-        return ResponseEntity.created(url).body(user);
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.OK,
+                HttpResponseMessage.CREATED_USER,
+                user), HttpStatus.OK);
     }
 
     //로그인

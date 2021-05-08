@@ -7,6 +7,7 @@ import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.domain.user.UserRepository;
 import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import ShareMarket.sharemarket.dto.post.PostResponseDto;
+import ShareMarket.sharemarket.dto.post.PostUpdateDto;
 import ShareMarket.sharemarket.dto.user.UserResponseDto;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,23 +29,24 @@ public class PostService {
     // 게시글 저장
     @Transactional
     public PostResponseDto save(PostRequestDto postRequestDto, Authentication authentication){
-        postRequestDto.setUser_id(userService.getUserNameByToken(authentication.getPrincipal()));
+        postRequestDto.setUser(userService.getUserPkByToken(authentication.getPrincipal()));
+        //postRequestDto.setUser_id(userService.getUserNameByToken(authentication.getPrincipal()));
         //JpaRepository에 정의된 메소드save() -> DB에 INSERT와 UPDATE를 담당한다. (자동생성)
         //매개변수로는 ""Entity""를 전달함
         Post post = postsRepository.save(postRequestDto.toEntity()); // Post Entity객체
-        return new PostResponseDto(post, getUserDtoByPostPk(post.getId()).getAddr());
+        return new PostResponseDto(post);
     }
 
     // 게시글 수정
     @Transactional
-    public Post update(Long id, PostRequestDto postRequestDto) {
+    public PostResponseDto update(Long id, PostUpdateDto postUpdateDto) {
         // id로 디비에서 게시글을 찾고
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
-        // 전달받은 게시글로 업데이트
-        post.update(postRequestDto);
-        return post; // 엔티티객체 바로 리턴하면 안되서 추후에 수정해야함.
+        // 전달받은 게시글로 업데이트 (5개 필드만 바꾸는)
+        post.update(postUpdateDto);
+        return new PostResponseDto(post); // 엔티티객체 바로 리턴하면 안되서 추후에 수정해야함.
     }
 
     // 게시글 삭제
@@ -62,7 +64,7 @@ public class PostService {
         // JpaRepository에서 제공하는 findById를 이용해서 클라이언트가 보낸 id로 Post Entity를 얻은후 ResponseDto를 리턴
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
-        return new PostResponseDto(post, getUserDtoByPostPk(id).getAddr()); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
+        return new PostResponseDto(post); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
     }
 
     /*
@@ -78,7 +80,7 @@ public class PostService {
         // 게시글entity로부터 게시글 작성자 (User_id-pk아님)를 찾고, Optional<User>타입의 findByUsername을 이용해서 userDetails타입말고 User타입으로 엔티티를 얻는다.
         // UserDetails로 받으면 email, addr 필드값의 getter함수 사용불가능
         // 이부분 UserService아니면 어쨋든 다른데로 빼내기
-        User user = userRepository.findByUsername(post.getUser_id())
+        User user = userRepository.findByUsername(post.getUser().getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));
         // User Entity를 바로 사용하기는 위험하느로 userResponseDto객체를 생성한다.
         UserResponseDto userResponseDto = new UserResponseDto(user);

@@ -19,9 +19,9 @@ public class PagingService {
 
     public Page<PagingDto> searchPaging(String keyword, String category, String addr, Pageable pageable) {
         Specification<Post> spec = null;
-        // 키워드 - 제목에서 검색후 내용에서 한번더 검색
+        // 키워드 - 제목이나 내용
         if (keyword != null) {
-            spec = PostSpecification.likeTitle(keyword).and(PostSpecification.likeContent(keyword));
+            spec = PostSpecification.likeTitle(keyword).or(PostSpecification.likeContent(keyword));
         }
         // 카테고리
         if (category != null) {
@@ -52,9 +52,9 @@ public class PagingService {
                 post -> new PagingDto(
                         post.getId(),
                         post.getTitle(),
-                        post.getUser_id(),
+                        post.getUser().getUsername(),
                         post.getCategory(),
-                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        post.getUser().getAddr(),
                         post.getCreatedDate()
                 ));
     }
@@ -68,9 +68,9 @@ public class PagingService {
                 post -> new PagingDto(
                         post.getId(),
                         post.getTitle(),
-                        post.getUser_id(),
+                        post.getUser().getUsername(),
                         post.getCategory(),
-                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        post.getUser().getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
@@ -78,57 +78,57 @@ public class PagingService {
 
     // 제목, 내용에서 키워드검색
     // 키워드와 Pageable을 인자로 받아서 레포지토리에서 제목, 내용안의 키워드로 검색하고 결과 게시글들을 PageDto객체로 반환
-    public Page<PagingDto> pagingByKeyword(String keyword, Pageable pageable) {
-
-        Page<Post> postList = postsRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable);
-
-        // postList에 담겨있는 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-        Page<PagingDto> pagingDtos = postList.map(
-                post -> new PagingDto(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getUser_id(),
-                        post.getCategory(),
-                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
-                        post.getCreatedDate()
-                ));
-        return pagingDtos;
-    }
-
-    // 카테고리
-    public Page<PagingDto> pagingByCategory(String category, Pageable pageable) {
-        Page<Post> postList = postsRepository.findByCategory(category, pageable);
-
-        // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-        Page<PagingDto> pagingDtos = postList.map(
-                post -> new PagingDto(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getUser_id(),
-                        post.getCategory(),
-                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
-                        post.getCreatedDate()
-                ));
-        return pagingDtos;
-    }
-
-
-    // 지역
-    public Page<PagingDto> pagingByAddr(String addr, Pageable pageable) {
-
-        Page<Post> postList = postsRepository.findAllByAddress(addr, pageable);
-
-        // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-        Page<PagingDto> pagingDtos = postList.map(
-                post -> new PagingDto(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getUser_id(),
-                        post.getCategory(),
-                        addr,
-                        //postsService.findAddrByPost(post.getId()),
-                        post.getCreatedDate()
-                ));
-        return pagingDtos;
-    }
+//    public Page<PagingDto> pagingByKeyword(String keyword, Pageable pageable) {
+//
+//        Page<Post> postList = postsRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable);
+//
+//        // postList에 담겨있는 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
+//        Page<PagingDto> pagingDtos = postList.map(
+//                post -> new PagingDto(
+//                        post.getId(),
+//                        post.getTitle(),
+//                        post.getUser_id(),
+//                        post.getCategory(),
+//                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
+//                        post.getCreatedDate()
+//                ));
+//        return pagingDtos;
+//    }
+//
+//    // 카테고리
+//    public Page<PagingDto> pagingByCategory(String category, Pageable pageable) {
+//        Page<Post> postList = postsRepository.findByCategory(category, pageable);
+//
+//        // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
+//        Page<PagingDto> pagingDtos = postList.map(
+//                post -> new PagingDto(
+//                        post.getId(),
+//                        post.getTitle(),
+//                        post.getUser_id(),
+//                        post.getCategory(),
+//                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
+//                        post.getCreatedDate()
+//                ));
+//        return pagingDtos;
+//    }
+//
+//
+//    // 지역
+//    public Page<PagingDto> pagingByAddr(String addr, Pageable pageable) {
+//
+//        Page<Post> postList = postsRepository.findAllByAddress(addr, pageable);
+//
+//        // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
+//        Page<PagingDto> pagingDtos = postList.map(
+//                post -> new PagingDto(
+//                        post.getId(),
+//                        post.getTitle(),
+//                        post.getUser_id(),
+//                        post.getCategory(),
+//                        addr,
+//                        //postsService.findAddrByPost(post.getId()),
+//                        post.getCreatedDate()
+//                ));
+//        return pagingDtos;
+//    }
 }

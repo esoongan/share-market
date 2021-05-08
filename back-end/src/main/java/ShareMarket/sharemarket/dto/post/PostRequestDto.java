@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.dto.post;
 
 import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,17 +20,17 @@ public class PostRequestDto {
 
     private String title;
     private String content;
-    private String user_id;
+    private User user;
     private String category;
-    private String price;
-    private String deposit;
+    private Integer price;
+    private Integer deposit;
 
     // 디비에 저장하기 위해 요청DTO를 엔티티로 변환하기위함
     public Post toEntity() {
         return Post.builder()
                 .title(title)
                 .content(content)
-                .user_id(user_id) // 토큰으로 아이디 조회후 디비에 저장
+                .user(user)
                 .category(category)
                 .price(price)
                 .deposit(deposit)

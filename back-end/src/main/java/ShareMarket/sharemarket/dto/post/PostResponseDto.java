@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.dto.post;
 
 import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.domain.user.User;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,21 +14,21 @@ import lombok.extern.slf4j.Slf4j;
 public class PostResponseDto {
 
     private Long id;
-    private String user_id;
+    private String username;
     private String title;
     private String content;
     private String category;
     private String addr; // Post응답Dto에만 있으면 됨 ( request에는 없어도되고 디비에 중복으로 저장할필요도 없음)
-    private String price;
-    private String deposit;
+    private Integer price;
+    private Integer deposit;
 
-    public PostResponseDto(Post entity, String addr) {
+    public PostResponseDto(Post entity) {
         this.id = entity.getId();
-        this.user_id = entity.getUser_id();
+        this.username = entity.getUser().getUsername();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.category = entity.getCategory();
-        this.addr = addr;
+        this.addr = entity.getUser().getAddr();
         this.price = entity.getPrice();
         this.deposit = entity.getDeposit();
     }

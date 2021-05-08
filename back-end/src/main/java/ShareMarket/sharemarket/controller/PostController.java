@@ -2,11 +2,16 @@ package ShareMarket.sharemarket.controller;
 
 
 import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.dto.post.PostUpdateDto;
+import ShareMarket.sharemarket.model.DefaultRes;
+import ShareMarket.sharemarket.model.HttpResponseMessage;
+import ShareMarket.sharemarket.model.HttpStatusCode;
 import ShareMarket.sharemarket.service.PostService;
 import ShareMarket.sharemarket.dto.post.PostResponseDto;
 import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +30,20 @@ public class PostController {
 
     // 게시글 저장 _ 로그인한 유저만 가능
     @PostMapping("/uauth/api/post")
+    //ResponseEntity : 응답헤더에 대한 구현체로, 스프링에서 제공하는 클래스
     public ResponseEntity<PostResponseDto> savePost(@RequestBody PostRequestDto postRequestDto, Authentication authentication) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
         PostResponseDto postResponseDto = postService.save(postRequestDto, authentication);
-        URI url = new URI(String.format("/posts/$s", postResponseDto.getId()));
-        return ResponseEntity.created(url).body(postResponseDto);
+//        URI url = new URI(String.format("/posts/$s", postResponseDto.getId()));
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.OK,
+                HttpResponseMessage.CREATE_POST,
+                postResponseDto), HttpStatus.OK);
     }
 
     // 게시글 수정 _ 로그인한 유저중에서도 본인글만 가능(프론트에서 체크)
     @PutMapping("/uauth/api/post/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
-        return postService.update(id, postRequestDto); //
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
+        return postService.update(id, postUpdateDto); //
     }
 
     // 게시글 삭제 _ 로그인한 유저중에서도 본인글만 가능 (프론트에서 체크)
