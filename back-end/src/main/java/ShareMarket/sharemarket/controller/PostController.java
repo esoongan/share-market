@@ -1,7 +1,7 @@
 package ShareMarket.sharemarket.controller;
 
 
-import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.dto.post.PostContractResponseDto;
 import ShareMarket.sharemarket.dto.post.PostUpdateDto;
 import ShareMarket.sharemarket.model.DefaultRes;
 import ShareMarket.sharemarket.model.HttpResponseMessage;
@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @Slf4j
 @CrossOrigin
@@ -57,11 +57,23 @@ public class PostController {
     //게시글 하나 조회
     @GetMapping("/api/post/{id}")
     public PostResponseDto findById(@PathVariable Long id) {
-        log.info("api호출");
         return postService.findById(id);
     }
 
     //게시글 거래완료된 날짜 조회 by pk,month
+//    @GetMapping("/api/post/{id}/contract")
+//    public List<PostContractResponseDto> findContractByPostId(@PathVariable Long id) {
+//        return postService.findAcceptContractByPostId(id);
+//    }
+
+    @GetMapping("/api/post/{id}/contract")
+    public ResponseEntity<List<PostContractResponseDto>> findContractByPostId(@PathVariable Long id) {
+        List<PostContractResponseDto> responseDtoList = postService.findAcceptContractByPostId(id);
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.OK,
+                id + HttpResponseMessage.READ_ACCEPT_CONTRACT,
+                responseDtoList), HttpStatus.OK);
+    }
 
 }
 

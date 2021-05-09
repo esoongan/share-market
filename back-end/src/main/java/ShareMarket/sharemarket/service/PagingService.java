@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @RequiredArgsConstructor
 @Service
 public class PagingService {
@@ -76,24 +79,23 @@ public class PagingService {
         return pagingDtos;
     }
 
-    // 제목, 내용에서 키워드검색
-    // 키워드와 Pageable을 인자로 받아서 레포지토리에서 제목, 내용안의 키워드로 검색하고 결과 게시글들을 PageDto객체로 반환
-//    public Page<PagingDto> pagingByKeyword(String keyword, Pageable pageable) {
-//
-//        Page<Post> postList = postsRepository.findAllByTitleContainingOrContentContaining(keyword, keyword, pageable);
-//
-//        // postList에 담겨있는 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-//        Page<PagingDto> pagingDtos = postList.map(
-//                post -> new PagingDto(
-//                        post.getId(),
-//                        post.getTitle(),
-//                        post.getUser_id(),
-//                        post.getCategory(),
-//                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
-//                        post.getCreatedDate()
-//                ));
-//        return pagingDtos;
-//    }
+    //기간 테스트
+    public Page<PagingDto> testStartDate(Date startDate, Pageable pageable) {
+        Specification<Post> spec = PostSpecification.beforeStartDate(startDate);
+        Page<Post> postList = postsRepository.findAll(spec, pageable);
+
+        // postList에 담겨있는 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
+        Page<PagingDto> pagingDtos = postList.map(
+                post -> new PagingDto(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getUser().getUsername(),
+                        post.getCategory(),
+                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        post.getCreatedDate()
+                ));
+        return pagingDtos;
+    }
 //
 //    // 카테고리
 //    public Page<PagingDto> pagingByCategory(String category, Pageable pageable) {

@@ -1,10 +1,14 @@
 package ShareMarket.sharemarket.service;
 
 
+import ShareMarket.sharemarket.domain.contract.Contract;
+import ShareMarket.sharemarket.domain.contract.ContractRepository;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.domain.user.UserRepository;
+import ShareMarket.sharemarket.dto.file.FileDto;
+import ShareMarket.sharemarket.dto.post.PostContractResponseDto;
 import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import ShareMarket.sharemarket.dto.post.PostResponseDto;
 import ShareMarket.sharemarket.dto.post.PostUpdateDto;
@@ -17,12 +21,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor // Repository를 주입하기 위해 사용
 @Service
 public class PostService {
 
     private final PostRepository postsRepository;
+    private final ContractRepository contractRepository;
     private final UserRepository userRepository;
     private final UserService userService;
 
@@ -65,6 +74,31 @@ public class PostService {
         Post post = postsRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
         return new PostResponseDto(post); // 바로 entity를 응답하지 않고 Dto객체로 한번 감싸서 리턴
+    }
+
+    //게시글 성사거래 조회 by 게시글 PK
+    @Transactional(readOnly = true)
+    public List<PostContractResponseDto> findAcceptContractByPostId(Long id) {
+
+        List<PostContractResponseDto> responseDtoList = new ArrayList<>();
+
+        // postId로 post 찾음
+        Post post = postsRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+        // 찾은 post로 해당하는 contract전부 찾기
+        List<Contract> contractList = contractRepository.findAllByPost(post);
+        PostContractResponseDto responseDto = new PostContractResponseDto();
+
+        for (Contract contract : contractList) {
+            //성사된거래면 response에 set하고 응답리스트에 추가
+            if (contract.getState().equals("accept")) {
+                responseDto.setStartDate(contract.getStartDate());
+                responseDto.setEndDate(contract.getEndDate());
+
+                responseDtoList.add(responseDto);
+            }
+        }
+        return responseDtoList;
     }
 
     /*

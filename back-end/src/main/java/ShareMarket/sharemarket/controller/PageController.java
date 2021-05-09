@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+
 // 페이지별로 게시글목록을 조회
 @CrossOrigin
 @RequiredArgsConstructor
@@ -47,12 +50,16 @@ public class PageController {
         return pagingService.paging(pageRequest);
     }
 
-//    @CrossOrigin(origins = "*", allowedHeaders = "*")
-//    @GetMapping("/api/posts/page/search")
-//    public Page<PagingDto> pagingByKeyword(@RequestParam String keyword,
-//                                           @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
-//        return pagingService.pagingByKeyword(keyword, pageRequest);
-//    }
+    // 기간 테스트~~~~~~
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/api/posts/page/testDate")
+    public Page<PagingDto> pagingByKeyword(@RequestParam String startDate,
+                                           @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) throws ParseException {
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date date = format.parse(startDate);
+        return pagingService.testStartDate(date, pageRequest);
+    }
+
 //
 //    @CrossOrigin(origins = "*", allowedHeaders = "*")
 //    @GetMapping("/api/posts/page/category")

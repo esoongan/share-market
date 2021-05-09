@@ -23,6 +23,7 @@ public class ContractController {
     //거래요청
     @PostMapping("/uauth/api/contract")
     public ResponseEntity<ContractResponseDto> requestContract(@RequestBody ContractRequestDto contractRequestDto, Authentication authentication) throws URISyntaxException {
+        // requestDto에 String으로 받은 날짜값 LocalDate로 변환해서 request함수인자로 줘야함!!!
         ContractResponseDto contractResponseDto = contractService.request(contractRequestDto, authentication);
         URI url = new URI(String.format("/posts/$s", contractResponseDto.getId()));
         return ResponseEntity.created(url).body(contractResponseDto);

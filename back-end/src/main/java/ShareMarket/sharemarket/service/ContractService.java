@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -25,8 +27,13 @@ public class ContractService {
     // 거래요청 - state:default
     @Transactional
     public ContractResponseDto request(ContractRequestDto contractRequestDto, Authentication authentication) {
-        contractRequestDto.setSellerId(getUserPkByPostId(contractRequestDto.getPostId()));
-        contractRequestDto.setState("default");
+//        contractRequestDto.setSellerId(getUserPkByPostId(contractRequestDto.getPost().getId()));
+        // JPA연관관계 후 : getPost -> getUser -> getId (getUserPKByPostID함수 사용할필요 없음)
+        Post post = postRepository.findById(contractRequestDto.getPostId())
+                .orElseThrow(() -> new PostNotFoundException(contractRequestDto.getPostId()));
+        contractRequestDto.setPost(post);
+        contractRequestDto.setSellerId(contractRequestDto.getPost().getUser().getId());
+        contractRequestDto.setState("accept");
         contractRequestDto.setBuyerId(userService.getUserPkByToken(authentication.getPrincipal()).getId());
         // DB에 저장
         Contract contract = contractRepository.save(contractRequestDto.toEntity());
@@ -37,8 +44,6 @@ public class ContractService {
 
     // update -> state:accept
     // delete -> 거절
-
-
 
 
     public Long getUserPkByPostId(Long id) {

@@ -1,5 +1,6 @@
 package ShareMarket.sharemarket.domain.post;
 
+import ShareMarket.sharemarket.domain.contract.Contract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -50,8 +51,10 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     //6. 카테고리+지역
     //7. 키워드+카테고리+지역
 
+    // 구현한 Specificaion객체를 파라미터에 넣어주기만 하면 해당조건에 부합되는 객체를 조회할수 있따.
     @Override
     Page<Post> findAll(Specification<Post> spec, Pageable pageable);
+
 }
 
 /*
