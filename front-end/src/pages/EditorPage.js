@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Editor from 'components/Editor';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadFiles, writePost } from 'store/modules/editor';
-import { categories } from 'constant/locale';
+import { editFiles, editPost, uploadFiles, writePost } from 'store/modules/editor';
 
 //writePost 성공 시 uploadFiles도 성공한다고 가정함.
-// todo: editMode === true 일때 처리하기
 const EditorPage = ({ history }) => {
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
@@ -25,15 +23,24 @@ const EditorPage = ({ history }) => {
 		editMode,
 		old_post,
 		old_img,
-	} = useSelector(({ pender, editor, auth, post }) => ({
-		logged: auth.logged,
-		postFailure: pender.failure['editor/WRITE_POST'],
-		post_id: editor.post_id, //POST 게시물 api 성공 시 새로 작성한 post의 pk
-		uploadSuccess: pender.success['editor/UPLOAD_FILES'],
-		editMode: editor.editMode,
-		old_post: post.post, //수정모드일 때 대상 post 정보
-		old_img: post.images,
-	}));
+	} = useSelector(({ pender, editor, auth, post }) => {
+		let action = { post: 'editor/WRITE_POST', files: 'editor/UPLOAD_FILES' };
+		if (editor.editMode) {
+			action = {
+				post: 'editor/EDIT_POST',
+				files: 'editor/EDIT_FILES',
+			}
+		}
+		return {
+			logged: auth.logged,
+			postFailure: pender.failure[action.post],
+			post_id: editor.post_id, //POST 게시물 api 성공 시 새로 작성한 post의 pk
+			uploadSuccess: pender.success[action.files],
+			editMode: editor.editMode,
+			old_post: post.post, //수정모드일 때 대상 post 정보
+			old_img: post.images,
+		};
+	});
 
 	useEffect(() => {
 		// 수정모드일 때는 원래 데이터 모두 불러오기
@@ -48,32 +55,6 @@ const EditorPage = ({ history }) => {
 		}
 	}, []);
 
-	const onSubmit = e => {
-		e.preventDefault();
-		const { category, title, content, price, deposit } = inputs;
-
-		if (
-			!category ||
-			title === '' ||
-			content === '' ||
-			price === '' ||
-			deposit === ''
-		) {
-			setError('모든 필드를 입력해주세요.');
-			return;
-		} else if (isNaN(price) || isNaN(deposit)) {
-			setError('가격은 숫자만 입력가능합니다.');
-			return;
-		} else if (images.length === 0) {
-			setError('최소 1장 이상의 사진을 등록해주세요.');
-			return;
-		} else {
-			setError(null);
-		}
-
-		dispatch(writePost(inputs)); // POST /user/api/posts
-		// 성공 시 post_id 값 채워짐: null -> integer
-	};
 	useEffect(() => {
 		//로그인 상태가 아니면 로그인 모달 띄우기
 		if (!logged) {
@@ -95,9 +76,12 @@ const EditorPage = ({ history }) => {
 			for (let i = 0; i < images.length; i++) {
 				formData.append('files', images[i].file);
 			}
-			dispatch(uploadFiles({ post_id, formData, config }));
+			if(editMode)
+				dispatch(editFiles({post_id, formData, config}));
+			else
+				dispatch(uploadFiles({ post_id, formData, config }));
 		}
-	}, [post_id, dispatch, images, history]);
+	}, [post_id, dispatch, images, history, editMode]);
 
 	useEffect(() => {
 		//사진 업로드까지 완료하면 해당 포스트 페이지로 이동
@@ -129,6 +113,36 @@ const EditorPage = ({ history }) => {
 		setImages(imageList);
 	};
 
+	const onSubmit = e => {
+		e.preventDefault();
+		const { category, title, content, price, deposit } = inputs;
+
+		if (
+			!category ||
+			title === '' ||
+			content === '' ||
+			price === '' ||
+			deposit === ''
+		) {
+			setError('모든 필드를 입력해주세요.');
+			return;
+		} else if (isNaN(price) || isNaN(deposit)) {
+			setError('가격은 숫자만 입력가능합니다.');
+			return;
+		} else if (images.length === 0) {
+			setError('최소 1장 이상의 사진을 등록해주세요.');
+			return;
+		} else {
+			setError(null);
+		}
+		if (editMode) {
+			dispatch();
+		}
+		if (editMode) dispatch(editPost(inputs));	// PUT /user/api/posts
+		else dispatch(writePost(inputs)); // POST /user/api/posts
+		// 성공 시 post_id 값 채워짐: null -> integer
+	};
+
 	return (
 		<>
 			<Editor
@@ -140,7 +154,7 @@ const EditorPage = ({ history }) => {
 				onSubmit={onSubmit}
 				images={images}
 				onSelectImages={onSelectImages}
-				editMode = {editMode}
+				editMode={editMode}
 				error={error}
 			/>
 		</>

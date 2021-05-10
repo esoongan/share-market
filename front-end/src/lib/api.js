@@ -8,8 +8,12 @@ export const checkUser = ({token}) => {
   return axios.get('/user/api/check', data, config );
 }
 export const writePost = ({title, content, category, price, deposit}) => axios.post('/user/api/posts', {title, content, category, price, deposit});
+export const editPost = ({title, content, category, price, deposit}) => axios.put('/user/api/posts', {title, content, category, price, deposit});
+
 export const deletePost = ({post_id})=> axios.delete(`/user/api/posts/${post_id}`);
 export const getPost = ({post_id})=> axios.get(`/api/posts/${post_id}`);
 
 export const uploadFiles = ({post_id, formData, config}) => axios.post(`/uploadMultipleFiles/${post_id}`, formData, config);
+export const editFiles = ({post_id, formData, config}) => axios.put(`/uploadMultipleFiles/${post_id}`, formData, config);
+
 export const getFiles = ({post_id})=> axios.get(`/post/${post_id}/files`);

@@ -274,7 +274,7 @@ const Editor = ({
 				variant="outlined"
 				color="primary"
 			>
-				작성하기
+				{editMode? '수정하기' : '작성하기'}
 			</Button>
 		</div>
 	);
