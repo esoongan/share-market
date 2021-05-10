@@ -1,8 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
 import * as api from 'lib/api';
-import axios from 'axios';
-import produce from 'immer';
 
 //action types
 const GET_POST = 'post/GET_POST';
@@ -41,6 +39,7 @@ export default handleActions(
 					images,
 				};
 			},
+			onFailure: (state, action) => initialState,
 		}),
 		...pender({
 			// 게시물 정보 가져오기: GET /posts/{post_id}
@@ -52,6 +51,7 @@ export default handleActions(
 					post,
 				};
 			},
+			onFailure: (state, action) => initialState,
 		}),
 		...pender({
 			// 게시물 삭제하기: DELETE /posts/{post_id}
