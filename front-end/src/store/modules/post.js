@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
 import * as api from 'lib/api';
+import { categories } from 'constant/locale';
 
 //action types
 const GET_POST = 'post/GET_POST';
@@ -45,7 +46,10 @@ export default handleActions(
 			// 게시물 정보 가져오기: GET /posts/{post_id}
 			type: GET_POST,
 			onSuccess: (state, action) => {
-				const { data: post } = action.payload;
+				let { data: post } = action.payload;
+				// 서버에서 받는 값은 category.value -> category.label로 바꿔서 저장하기
+				const category = categories.filter(x => x.value === post.category);
+				post.category = category[0].label;
 				return {
 					...state,
 					post,

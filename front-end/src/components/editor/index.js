@@ -16,6 +16,7 @@ import ReactImageUploading from 'react-images-uploading';
 import Alert from '@material-ui/lab/Alert';
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
+import EmptyBackground from './empty.png'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -62,11 +63,9 @@ const useStyles = makeStyles(theme => ({
 		height: 400,
 	},
 	empty: {
-		width: '100%',
-		height: '100%',
-		border: 'solid 1px grey',
-		background: 'grey',
+		height: 366,
 		borderRadius: '4px',
+		objectFit: 'contain'
 	},
 	uploadBtn: {
 		width: '99%',
@@ -82,6 +81,7 @@ const Editor = ({
 	onChangeInput,
 	images,
 	onSelectImages,
+	editMode,
 	error,
 }) => {
 	const classes = useStyles();
@@ -95,7 +95,11 @@ const Editor = ({
 
 	return (
 		<div className={classes.root}>
-			{error !== null && <Alert  className={classes.error} severity="error">{error}</Alert>}
+			{error !== null && (
+				<Alert className={classes.error} severity="error">
+					{error}
+				</Alert>
+			)}
 			<Grid
 				container
 				direction="row"
@@ -147,13 +151,13 @@ const Editor = ({
 							onImageUpload,
 							onImageUpdate,
 							onImageRemove,
-							// isDragging,
+							isDragging,
 							dragProps,
 							errors,
 						}) => (
 							<div
 								className={classes.uploader}
-								// style={isDragging ? {backgroundColor: 'darkGrey' } : null}
+								style={isDragging ? {backgroundColor: 'rgba(0,0,0,0.05)' } : null}
 								{...dragProps}
 							>
 								{errors !== null && errors.maxNumber && (
@@ -161,37 +165,45 @@ const Editor = ({
 										최대 5장까지만 업로드 가능합니다.
 									</Alert>
 								)}
-								<GridList
-									className={
-										imageList.length === 0 ? classes.empty : classes.gridList
-									}
-									cellHeight={160}
-									cols={2}
-								>
-									{imageList.map((image, index) => (
-										<GridListTile key={index} cols={1}>
-											<img
-												src={image.data_url}
-												alt=""
-												onClick={() => onImageUpdate(index)}
-											/>
-											<GridListTileBar
-												title={image.file.name}
-												actionIcon={
-													<IconButton
-														aria-label={`delete`}
-														className={classes.icon}
-														onClick={() => onImageRemove(index)}
-													>
-														<HighlightOffOutlinedIcon
-															style={{ color: 'white' }}
-														/>
-													</IconButton>
-												}
-											/>
-										</GridListTile>
-									))}
-								</GridList>
+								{imageList.length === 0 ? (
+									<img
+										className={classes.empty}
+										alt="empty"
+										src={EmptyBackground}
+									/>
+								) : (
+									<GridList
+										className={
+											imageList.length === 0 ? classes.empty : classes.gridList
+										}
+										cellHeight={160}
+										cols={2}
+									>
+										{imageList.map((image, index) => (
+											<GridListTile key={index} cols={1}>
+												<img
+													src={image.data_url}
+													alt=""
+													onClick={() => onImageUpdate(index)}
+												/>
+												<GridListTileBar
+													title={image.file.name}
+													actionIcon={
+														<IconButton
+															aria-label={`delete`}
+															className={classes.icon}
+															onClick={() => onImageRemove(index)}
+														>
+															<HighlightOffOutlinedIcon
+																style={{ color: 'white' }}
+															/>
+														</IconButton>
+													}
+												/>
+											</GridListTile>
+										))}
+									</GridList>
+								)}
 								<Button
 									className={classes.uploadBtn}
 									variant="contained"

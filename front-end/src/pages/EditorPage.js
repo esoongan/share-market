@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Editor from 'components/Editor';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadFiles, writePost } from 'store/modules/editor';
+import { categories } from 'constant/locale';
 
 //writePost 성공 시 uploadFiles도 성공한다고 가정함.
 // todo: editMode === true 일때 처리하기
-const EditorPage = ({history}) => {
+const EditorPage = ({ history }) => {
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: false,
@@ -16,13 +17,36 @@ const EditorPage = ({history}) => {
 	});
 	const [error, setError] = useState(null);
 	const [images, setImages] = useState([]);
-	const { logged, postFailure, post_id, uploadSuccess, editMode } = useSelector(({ pender, editor, auth }) => ({
+	const {
+		logged,
+		postFailure,
+		post_id,
+		uploadSuccess,
+		editMode,
+		old_post,
+		old_img,
+	} = useSelector(({ pender, editor, auth, post }) => ({
 		logged: auth.logged,
 		postFailure: pender.failure['editor/WRITE_POST'],
-		post_id: editor.post_id,
+		post_id: editor.post_id, //POST 게시물 api 성공 시 새로 작성한 post의 pk
 		uploadSuccess: pender.success['editor/UPLOAD_FILES'],
 		editMode: editor.editMode,
+		old_post: post.post, //수정모드일 때 대상 post 정보
+		old_img: post.images,
 	}));
+
+	useEffect(() => {
+		// 수정모드일 때는 원래 데이터 모두 불러오기
+		if (editMode) {
+			setInputs({
+				// category: old_post.category,
+				title: old_post.title,
+				content: old_post.content,
+				price: old_post.price,
+				deposit: old_post.deposit,
+			});
+		}
+	}, []);
 
 	const onSubmit = e => {
 		e.preventDefault();
@@ -50,13 +74,13 @@ const EditorPage = ({history}) => {
 		dispatch(writePost(inputs)); // POST /user/api/posts
 		// 성공 시 post_id 값 채워짐: null -> integer
 	};
-	useEffect(()=>{
+	useEffect(() => {
 		//로그인 상태가 아니면 로그인 모달 띄우기
-		if(!logged){
+		if (!logged) {
 			alert('먼저 로그인을 해주세요.');
 			history.push('/');
 		}
-	}, [logged, history])
+	}, [logged, history]);
 
 	useEffect(() => {
 		if (post_id !== null) {
@@ -75,12 +99,12 @@ const EditorPage = ({history}) => {
 		}
 	}, [post_id, dispatch, images, history]);
 
-	useEffect(()=>{
+	useEffect(() => {
 		//사진 업로드까지 완료하면 해당 포스트 페이지로 이동
-		if(uploadSuccess === true){
-			history.push(`/post/${post_id}`)
+		if (uploadSuccess === true) {
+			history.push(`/post/${post_id}`);
 		}
-	}, [history, uploadSuccess, post_id])
+	}, [history, uploadSuccess, post_id]);
 
 	//POST /user/api/posts 실패 시 alert 띄움
 	useEffect(() => {
@@ -116,6 +140,7 @@ const EditorPage = ({history}) => {
 				onSubmit={onSubmit}
 				images={images}
 				onSelectImages={onSelectImages}
+				editMode = {editMode}
 				error={error}
 			/>
 		</>
