@@ -6,7 +6,6 @@ import grey from '@material-ui/core/colors/grey';
 import Typography from '@material-ui/core/Typography';
 import { cities, categories } from 'constant/locale';
 import Searchbar from 'components/common/Searchbar';
-import RoomIcon from '@material-ui/icons/Room';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import clsx from 'clsx';
 
@@ -88,7 +87,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const HomePage = () => {
+const HomePage = ({history}) => {
 	const classes = useStyles();
 
 	return (
@@ -107,7 +106,7 @@ const HomePage = () => {
 				<Grid container spacing={1}>
 					{cities.map(item => (
 						<Grid item key={item.value} xs={6} sm={6} md={3}>
-							<div className={classes.clickable}>
+							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/1?city=${item.value}`)}>
 								<Grid
 									container
 									spacing={0}
@@ -142,7 +141,7 @@ const HomePage = () => {
 				<Grid container spacing={2}>
 					{categories.map(item => (
 						<Grid key={item.value} item xs={12} sm={6} md={4} >
-							<Paper className={clsx(classes.category, classes.clickable)} elevation={3}>
+							<Paper className={clsx(classes.category, classes.clickable)} elevation={3} onClick={()=> history.push(`list/1?category=${item.value}`)}>
 								<img className={classes.categoryImg} src={item.img} alt={item.label} />
 								<div className={classes.categoryCover}>
 									<Typography variant='h4' component='span' className={classes.categoryLabel} >{item.label}</Typography>
