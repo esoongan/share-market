@@ -7,7 +7,7 @@ export const locations = [
     { value: "인천 연수구 송도3동", label: "인천 연수구 송도3동" },
 ]
 
-export const cityMarkets = [
+export const cities = [
     { value: "Seoul", label: "서울", img: "https://a0.muscache.com/im/pictures/71e23854-a3c7-491c-b715-6e86233a293f.jpg?im_q=medq&im_w=240"},
     { value: "Incheon", label: "인천", img: "https://a0.muscache.com/im/pictures/b654084a-1abc-4819-ab37-8c9471bfe917.jpg?im_q=medq&im_w=240"},
     { value: "GyeongGi", label: "경기", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},

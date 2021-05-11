@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import grey from '@material-ui/core/colors/grey';
 import Typography from '@material-ui/core/Typography';
-import { cityMarkets, categories } from 'constant/locale';
+import { cities, categories } from 'constant/locale';
 import Searchbar from 'components/common/Searchbar';
 import RoomIcon from '@material-ui/icons/Room';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -105,7 +105,7 @@ const HomePage = () => {
 					지역별 마켓 둘러보기
 				</Typography>
 				<Grid container spacing={1}>
-					{cityMarkets.map(item => (
+					{cities.map(item => (
 						<Grid item key={item.value} xs={6} sm={6} md={3}>
 							<div className={classes.clickable}>
 								<Grid

@@ -2,6 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
 import * as api from 'lib/api';
 import { categories } from 'constant/locale';
+import { getLabel } from 'lib/util';
 
 //action types
 const GET_POST = 'post/GET_POST';
@@ -48,8 +49,7 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				let { data: post } = action.payload;
 				// 서버에서 받는 값은 category.value -> category.label로 바꿔서 저장하기
-				const category = categories.filter(x => x.value === post.category);
-				post.category = category[0].label;
+				post.category = getLabel(categories, post.category);
 				return {
 					...state,
 					post,
