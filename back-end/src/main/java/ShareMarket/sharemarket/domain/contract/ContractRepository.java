@@ -11,6 +11,9 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
 
     List<Contract> findAllByPost(Post post);
 
+    List<Contract> findAllBySellerIdAndState(Long sellerId, String state);
+
+    List<Contract> findAllByBuyerIdAndState(Long buyerId, String state);
 
 
 

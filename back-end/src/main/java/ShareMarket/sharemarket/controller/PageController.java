@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,21 +61,15 @@ public class PageController {
         return pagingService.testStartDate(date, pageRequest);
     }
 
-//
-//    @CrossOrigin(origins = "*", allowedHeaders = "*")
-//    @GetMapping("/api/posts/page/category")
-//    public Page<PagingDto> pagingByCategory(@RequestParam String category,
-//                                           @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
-//        return pagingService.pagingByCategory(category, pageRequest);
-//
-//    }
-//
-//    @CrossOrigin(origins = "*", allowedHeaders = "*")
-//    @GetMapping("/api/posts/page/addr")
-//    public Page<PagingDto> pagingByAddr(@RequestParam String addr,
-//                                            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
-//        return pagingService.pagingByAddr(addr, pageRequest);
-//
-//    }
+    @GetMapping("/uauth/api/post")
+    public ResponseEntity<Page<PagingDto>> pagingByWriter(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
+                                          Authentication authentication) {
+        Page<PagingDto> pagingDtos = pagingService.pagingByWriter(pageRequest, authentication);
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.OK,
+                "토큰소유자가 작성한 "+ HttpResponseMessage.READ_POST,
+                pagingDtos), HttpStatus.OK);
+
+    }
 
 }

@@ -36,9 +36,9 @@ public class UserController {
         log.info("회원가입 성공");
         URI url = new URI(String.format("/users/%s", user.getId()));
         return new ResponseEntity(DefaultRes.response(
-                HttpStatusCode.OK,
+                HttpStatusCode.CREATED,
                 HttpResponseMessage.CREATED_USER,
-                user), HttpStatus.OK);
+                user), HttpStatus.CREATED);
     }
 
     //로그인

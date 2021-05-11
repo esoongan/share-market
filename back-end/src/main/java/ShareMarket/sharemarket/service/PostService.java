@@ -7,7 +7,6 @@ import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.domain.user.UserRepository;
-import ShareMarket.sharemarket.dto.file.FileDto;
 import ShareMarket.sharemarket.dto.post.PostContractResponseDto;
 import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import ShareMarket.sharemarket.dto.post.PostResponseDto;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -38,7 +36,7 @@ public class PostService {
     // 게시글 저장
     @Transactional
     public PostResponseDto save(PostRequestDto postRequestDto, Authentication authentication){
-        postRequestDto.setUser(userService.getUserPkByToken(authentication.getPrincipal()));
+        postRequestDto.setUser(userService.getUserByToken(authentication.getPrincipal()));
         //postRequestDto.setUser_id(userService.getUserNameByToken(authentication.getPrincipal()));
         //JpaRepository에 정의된 메소드save() -> DB에 INSERT와 UPDATE를 담당한다. (자동생성)
         //매개변수로는 ""Entity""를 전달함

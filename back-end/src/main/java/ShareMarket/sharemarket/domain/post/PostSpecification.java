@@ -14,6 +14,15 @@ import java.util.Date;
 // Specification : 검색조건을 추상화한 객체
 public class PostSpecification {
 
+    //작성자
+    public static Specification<Post> equalWriter(final User user) {
+        return new Specification<Post>() {
+            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(root.get("user"), user);
+            }
+        };
+    }
+
 
     //제목에 키워드
     public static Specification<Post> likeTitle(final String searchKey) {

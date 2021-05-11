@@ -79,7 +79,7 @@ public class UserService {
 
     }
 
-    public User getUserPkByToken(Object principal) {
+    public User getUserByToken(Object principal) {
         String userName = ((UserDetails) principal).getUsername();
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));

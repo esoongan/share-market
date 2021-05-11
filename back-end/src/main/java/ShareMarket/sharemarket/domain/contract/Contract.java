@@ -55,4 +55,9 @@ public class Contract extends BaseTimeEntity {
         this.endDate = endDate;
         this.state = state;
     }
+
+    public void update(String state) {
+        this.state = state;
+    }
+
 }

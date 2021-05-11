@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -33,11 +34,12 @@ public class PostController {
     //ResponseEntity : 응답헤더에 대한 구현체로, 스프링에서 제공하는 클래스
     public ResponseEntity<PostResponseDto> savePost(@RequestBody PostRequestDto postRequestDto, Authentication authentication) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
         PostResponseDto postResponseDto = postService.save(postRequestDto, authentication);
-//        URI url = new URI(String.format("/posts/$s", postResponseDto.getId()));
+        URI url = new URI(String.format("/posts/$d", postResponseDto.getId()));
+//        return ResponseEntity.created(url).body(postResponseDto);
         return new ResponseEntity(DefaultRes.response(
-                HttpStatusCode.OK,
+                HttpStatusCode.CREATED,
                 HttpResponseMessage.CREATE_POST,
-                postResponseDto), HttpStatus.OK);
+                postResponseDto), HttpStatus.CREATED);
     }
 
     // 게시글 수정 _ 로그인한 유저중에서도 본인글만 가능(프론트에서 체크)
