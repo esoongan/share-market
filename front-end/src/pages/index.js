@@ -8,3 +8,4 @@ export { default as NewPostPage } from './NewPostPage'
 export { default as ListPage } from './ListPage'
 export { default as BorrowerPage } from './BorrowerPage'
 export { default as BorroweePage } from './BorroweePage'
+/* export { default as ChatPage } from './ChatPage' */

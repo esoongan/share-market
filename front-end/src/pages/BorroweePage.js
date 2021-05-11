@@ -8,12 +8,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
+
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import NavTab from 'components/mypage/NavTab'
+import Navigation from 'components/mypage/Navigation';
 
 function Copyright() {
   return (
@@ -52,9 +52,16 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '56.25%', // 16:9
     
   },
-  cardContent: {
-    flexGrow: 1,
+  navTab:{
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
   },
+
+
+
+ /*  cardContent: {
+    flexGrow: 1,
+  }, */
   section: {
     paddingTop: theme.spacing(50),
     paddingBottom: theme.spacing(16),
@@ -73,8 +80,9 @@ export default function Album() {
      
  <main>
 
-<section className={classes.navtab}>
-  <NavTab/>
+<section className={classes.navTab}>
+{/**이곳에 탭 두어야 한다 */}
+<Navigation/>
 </section>        
   
       
@@ -153,7 +161,7 @@ export default function Album() {
          
     <Grid container spacing={4}>
             {cards.map((card) => (
-      <Grid item key={card} xs={12} sm={6} md={4}>
+      <Grid item key={card} xs={6} sm={3} md={2}>
         <Card className={classes.card}>
             <CardMedia
                     className={classes.cardMedia}
