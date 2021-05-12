@@ -10,6 +10,7 @@ front-end/coverage
 
 # production
 front-end/build
+back-end/out/production
 
 # misc
 **/.DS_Store

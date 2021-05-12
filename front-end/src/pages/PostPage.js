@@ -1,165 +1,84 @@
-import React, { useState } from 'react';
-import Hidden from '@material-ui/core/Hidden';
-import image from './1000.jpg';
-import { makeStyles } from '@material-ui/core/styles';
-import Carousel from 'react-material-ui-carousel';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import { Button, Paper, Grid } from '@material-ui/core';
-import { DateRangePicker } from 'react-dates';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PostContent, PostTitle } from 'components/post/PostBody';
+import ImageViewer from 'components/post/ImageViewer';
+import FloatingMenu from 'components/post/FloatingMenu';
+import { deletePost, getFiles, getPost } from 'store/modules/post';
+import Grid from '@material-ui/core/Grid';
+import { toggleEditMode } from 'store/modules/editor';
 
-const useStyles = makeStyles(theme => ({
-	root: {},
-	titleSection: {
-		marginTop: theme.spacing(2),
-		marginBottom: theme.spacing(4),
-	},
-	photoSection: {
-		marginBottom: theme.spacing(4),
-	},
-	carouselImage: {
-		width: '100%',
-	},
-	contentSection: {
-  },
-	content: {
-    padding: theme.spacing(4),
-    minHeight: 300,
-  },
-	floatingPaper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(4),
-  },
-  dateRangePicker: {
-    marginBottom: theme.spacing(4),
-  },
-  button: {
-    width: '80%',
-    marginBottom: theme.spacing(1),
-  },
-  divider: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-  }
+const NewPostPage = ({ match, history }) => {
+	const dispatch = useDispatch();
+	const post_id = match.params.post_id;
+	const [editable, setEditable] = useState(false);
+	const { success, post, images, failure, myId, deleteSuccess } = useSelector(
+		({ pender, post, auth }) => ({
+			post: post.post,
+			images: post.images,
+			success: pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
+			failure: pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
+			myId: auth.user.username,		//현재 로그인한 유저의 username -> 내가 작성한 포스트일 때 수정 및 삭제 가능하도록
+			deleteSuccess: pender.success['post/DELETE_POST'],
+		}),
+	);
 
-}));
+	useEffect(() => {
+		dispatch(getPost({ post_id }));		//POST 게시물 api 호출
+		dispatch(getFiles({ post_id }));	//POST 파일 api 호출
+		if(myId === post.user_id){	//내가 쓴 게시물일 때
+			setEditable(true);
+		}
+	}, [dispatch, post_id, myId, post.user_id]);
 
-const imageList = [
-	{ data_url: image },
-	{ data_url: image },
-	{ data_url: image },
-	{ data_url: image },
-	{ data_url: image },
-];
+	useEffect(() => {
+		if(deleteSuccess){
+			history.replace('/');
+			//todo: 삭제 확인 모달에서 처리하기
+		}
+	}, [deleteSuccess, history]);
 
-const PostPage = () => {
-	const classes = useStyles();
-	const [dateRange, setDateRange] = useState({
-		startDate: null,
-		endDate: null,
-	});
-	const [focusedInput, setFocusInput] = useState(null);
+	if (success) {
+		//내가 작성한 게시물 수정
+		const onClickEdit = () =>{
+			dispatch(toggleEditMode(true));
+			history.push('/post/editor');
+		}
 
-	const onFocusInput = focusDate => {
-		setFocusInput(focusDate);
-	};
+		//내가 작성한 게시물 삭제
+		const onClickDelete = (post_id) =>{	
+			dispatch(deletePost({post_id}));		//DELETE 게시물 api 호출
+			//todo: 정말 삭제할 지 모달 띄우기
 
-	return (
-		<div>
-			<section className={classes.titleSection}>
-				<Typography component="h2" variant="h4" gutterBottom>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-					blanditiis tenetur
-				</Typography>
-			</section>
-
-			<section className={classes.photoSection}>
-				{/* photo  */}
-				<Hidden mdUp>
-					<Carousel>
-						{imageList.map((image, index) => (
-							<img
-								className={classes.carouselImage}
-								key={index}
-								src={image.data_url}
-								alt=""
-							/>
-						))}
-					</Carousel>
-				</Hidden>
-				<Hidden smDown>
-					<Grid container spacing={2}>
-						<Grid item md={6}>
-							<img
-								className={classes.carouselImage}
-								src={imageList[0].data_url}
-								alt=""
-							/>
-						</Grid>
-						<Grid container spacing={2} item md={6}>
-							{imageList.slice(1).map((image, index) => (
-								<Grid key={index} item md={6}>
-									<img
-										className={classes.carouselImage}
-										src={image.data_url}
-										alt=""
-									/>
-								</Grid>
-							))}
-						</Grid>
-					</Grid>
-				</Hidden>
-			</section>
-
-			<section className={classes.contentSection}>
-				{/* contents  */}
+		}
+		return (
+			<div>
+				<PostTitle 
+					title={post.title}
+				/>
+				<ImageViewer images={images} />
 				<Grid container spacing={4}>
-					<Grid item md={8}>
-						<Paper className={classes.content}>              
-              <Typography component='p' variant='body1'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla efficitur, dui vel consequat gravida, lectus nulla consectetur mauris, in viverra urna augue ac arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla lorem neque, sagittis eu molestie at, ultrices et ipsum. Ut blandit ullamcorper consequat. Aenean maximus odio eget cursus aliquet. In in varius lectus. Nulla sit amet efficitur magna. Praesent ut felis quis nisl mattis convallis vel id elit. Morbi pulvinar egestas hendrerit. Fusce rhoncus fermentum risus. Phasellus auctor tempus cursus. Suspendisse potenti. Aliquam urna nunc, sollicitudin eu venenatis in, porta non eros. In eget lobortis purus. Nam a neque sit amet enim pulvinar vulputate. Morbi congue, libero et pretium rhoncus, sem mauris mattis orci, id convallis tellus massa et orci.
-              Donec luctus mi nec hendrerit tincidunt. Duis sed risus nec lorem vulputate dapibus. Nulla facilisi. Maecenas quis dictum dolor, eu fermentum arcu. Vestibulum pretium augue eget nibh dignissim euismod. Nulla rutrum porta ipsum et sodales. Curabitur nec dui pellentesque, consectetur nibh eget, imperdiet ex. Phasellus nec massa vehicula, aliquet nibh nec, vestibulum dolor. Sed tincidunt tincidunt velit, faucibus semper enim aliquet vel. Integer eu sapien sem. Fusce lacinia urna in viverra vestibulum.
-              </Typography>
-
-              <Divider className={classes.divider} />
-
-
-            
-            </Paper>
+					<Grid item xs={12} md={8}>
+						<PostContent
+							post_id={post_id}
+							writer={post.user_id}
+							category={post.category}
+							addr={post.addr}
+							editable={editable}
+							content={post.content}
+							onClickEdit = {onClickEdit}
+							onClickDelete = {onClickDelete}
+						/>
 					</Grid>
-					<Grid item md={4}>
-						<Paper className={classes.floatingPaper}>
-              <Typography>$5,500</Typography>
-              <Divider className={classes.divider} />
-							<DateRangePicker
-                className={classes.dateRangePicker}
-								//todo: 테두리 빼기 https://github.com/airbnb/react-dates#overriding-styles
-								startDate={dateRange.startDate} // momentPropTypes.momentObj or null,
-								startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-								endDate={dateRange.endDate} // momentPropTypes.momentObj or null,
-								endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-								onDatesChange={({ startDate, endDate }) =>
-									setDateRange({ startDate, endDate })
-								} // PropTypes.func.isRequired,
-								focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-								onFocusChange={onFocusInput} // PropTypes.func.isRequired
-                endDatePlaceholderText='반납일'
-                startDatePlaceholderText='대여일'
-							/>
-							<Button className={classes.button} variant="contained" color="primary" style={{'margin-top' : '64px'}}>
-								예약하기
-							</Button>
-              <Button className={classes.button} variant="contained" color="secondary">
-								쪽지보내기
-							</Button>
-						</Paper>
+					<Grid item xs={12} md={4}>
+						<FloatingMenu deposit={post.deposit} price={post.price} editable={editable} />
 					</Grid>
 				</Grid>
-			</section>
-		</div>
-	);
+			</div>
+		);
+	} else if (failure) {
+		return <div> 없는 포스트 </div>;
+	} else if (!(success === true)) {
+		return <div>Loading...</div>;
+	}
 };
-
-export default PostPage;
+export default NewPostPage;

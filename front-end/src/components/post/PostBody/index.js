@@ -5,20 +5,35 @@ import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import RoomIcon from '@material-ui/icons/Room';
+import Button from '@material-ui/core/Button';
+
 const useStyles = makeStyles(theme => ({
-	root: {},
 	titleSection: {
-		marginTop: theme.spacing(2),
+		marginTop: theme.spacing(4),
 		marginBottom: theme.spacing(4),
 	},
-	contentSection: {},
+	editableButton:{
+		display:'flex',
+		justifyContent:'flex-end',
+		paddingTop: theme.spacing(1),
+	},
+
 	content: {
 		padding: theme.spacing(4),
 		minHeight: 300,
 	},
 	divider: {
-		marginTop: theme.spacing(4),
+		marginTop: theme.spacing(2),
 		marginBottom: theme.spacing(4),
+	},
+	writer:{
+		flexGrow:1,
+		color: 'grey',
+	},
+	info: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
 	},
 }));
 
@@ -33,18 +48,25 @@ export const PostTitle = ({ title }) => {
 	);
 };
 
-export const PostContent = ({ category, addr, content }) => {
+export const PostContent = ({ post_id, writer, category, addr, content, editable, onClickEdit, onClickDelete}) => {
 	const classes = useStyles();
 
+	const handleClickDelete = () =>{
+		onClickDelete(post_id)
+	}
 	return (
 		<Paper className={classes.content}>
 			<div className={classes.info}>
+				<Typography className={classes.writer} >작성자 {writer}</Typography>
 				<Chip color="primary" label={category} size="small" />
-				<div className={classes.addr}>
-					<RoomIcon />
-					<Typography component="span">{addr}</Typography>
-				</div>
+				<RoomIcon />
+				<Typography component="span">{addr}</Typography>
 			</div>
+			{editable && 
+			<div className={classes.editableButton}>
+				<Button color="primary" onClick={onClickEdit}>수정하기</Button>
+				<Button color="secondary" onClick={handleClickDelete}>삭제하기</Button>
+			</div>}
 			<Divider className={classes.divider} />
 			<Typography component="p" variant="body1">
 				{content}

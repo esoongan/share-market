@@ -7,29 +7,28 @@ export const locations = [
     { value: "인천 연수구 송도3동", label: "인천 연수구 송도3동" },
 ]
 
-export const cityMarkets = [
-    { value: "Seoul", label: "서울" },
-    { value: "Incheon", label: "인천" },
-    { value: "GyeongGi", label: "경기" },
-    { value: "DaeGu", label: "대구" },
-    { value: "Busan", label: "부산" },
-    { value: "DaeJun", label: "대전" },
-]
-
-export const categoryMarkets = [
-    { value: "Seoul", label: "서울", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "Incheon", label: "인천", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "GyeongGi", label: "경기", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "DaeGu", label: "대구", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "Busan", label: "부산", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "DaeJun", label: "대전", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+export const cities = [
+    { value: "Seoul", label: "서울", img: "https://a0.muscache.com/im/pictures/71e23854-a3c7-491c-b715-6e86233a293f.jpg?im_q=medq&im_w=240"},
+    { value: "Incheon", label: "인천", img: "https://a0.muscache.com/im/pictures/b654084a-1abc-4819-ab37-8c9471bfe917.jpg?im_q=medq&im_w=240"},
+    { value: "GyeongGi", label: "경기", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    { value: "DaeGu", label: "대구", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    { value: "Busan", label: "부산", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    { value: "DaeJun", label: "대전", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    // { value: "Chungcheong", label: '충청'}, 
+    // { value: "Jeolla", label: "전라도"} ,
+    // { value: "KangWon", label: '강원도'},
+    // { value: "GyeongSang", label:'경상도'}, 
+    // { value: "Jeju", label: "제주",},
+    // { value: "Sejong", label: "세종",},
+    { value: "Ulsan", label: "울산", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    { value: "GwangJu", label: "광주", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
 ]
 
 export const categories = [
-    { value: "카테고리1", label: "카테고리1" },
-    { value: "카테고리2", label: "카테고리2" },
-    { value: "카테고리3", label: "카테고리3" },
-    { value: "카테고리4", label: "카테고리4" },
-    { value: "카테고리5", label: "카테고리5" },
-    { value: "카테고리6", label: "카테고리6" },
+    { value: "mobility", label: "모빌리티", img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS33Ki8Xonuhd2S43FutoyAKZNuIqGxuK40Zg&usqp=CAU' },
+    { value: "camera", label: "카메라", img:'https://photographyconcentrate.com/wp-content/uploads/best-camera-for-landscape-photography-scaled.jpg' },
+    { value: "carrier", label: "케리어", img:'https://newsimg.sedaily.com/2020/06/12/1Z3ZZOKI8W_1.jpg' },
+    { value: "sports", label: "스포츠/헬스", img:'https://blog.lgchem.com/wp-content/themes/bucket_child/images/post/20180717/img_headline.jpg' },
+    { value: "baking", label: "베이킹", img:'https://previews.123rf.com/images/brebca/brebca1511/brebca151100014/49171436-%EC%BC%80%EC%9D%B4%ED%81%AC-%EB%98%90%EB%8A%94-%EC%BF%A0%ED%82%A4-%EC%9A%A9-%EC%9E%AC%EB%A3%8C%EB%A1%9C-%EB%B2%A0%EC%9D%B4%ED%82%B9-%EC%9A%A9%ED%92%88.jpg' },
+    { value: "fashion", label: "패션", img:'https://cdn.pixabay.com/photo/2015/11/07/11/46/fashion-1031469__480.jpg' },
 ]

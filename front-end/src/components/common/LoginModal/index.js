@@ -4,7 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser, login, toggleModal } from 'store/modules/store';
+import { hideModal, toggleModal } from 'store/modules/base';
+import { checkUser, login} from 'store/modules/auth'
 import Alert from '@material-ui/lab/Alert';
 
 //todo: getUser 오류 처리
@@ -48,11 +49,10 @@ export default function LoginModal() {
 	});
   const [error, setError] = useState(null);
 
-	const { open, logged, user, failure } = useSelector(({ store, pender }) => ({
-		open: store.modals.loginModal,
-		logged: store.logged,
-    user: store.user,
-		failure: pender.failure.LOGIN,
+	const { open, logged, failure } = useSelector(({ auth, base, pender }) => ({
+		open: base.modals.loginModal,
+		logged: auth.logged,
+		failure: pender.failure['auth/LOGIN'],
 	}));
 	//모달의 visibility가 바뀌면 폼 초기화
 	useEffect(() => {
@@ -64,11 +64,11 @@ export default function LoginModal() {
 	}, [open]);
 
   useEffect(() => {
-    //로그인 성공 시
+    //로그인 성공 시 (logged = true)
     if(logged === true){
       let token = localStorage.getItem('X-AUTH-TOKEN');
-      dispatch(getUser(token)); //토큰으로 유저 정보 가져오기 -> 스토어에 저장
-      dispatch(toggleModal('loginModal'));  //모달 닫기
+      dispatch(checkUser({token})); //토큰으로 유저 정보 가져오기 -> 스토어에 저장
+      dispatch(hideModal('loginModal'));  //모달 닫기
     }
 		else if(failure===true){
 			setError('다시 시도해보세요.');
@@ -130,6 +130,7 @@ export default function LoginModal() {
 						autoComplete="current-password"
 					/>
 					<Button
+					//todo: 엔터키를 눌러도 로그인 되도록
 						onClick={onSubmit}
 						fullWidth
 						variant="contained"
