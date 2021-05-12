@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Editor from 'components/Editor';
 import { useDispatch, useSelector } from 'react-redux';
-import { editFiles, editPost, uploadFiles, writePost } from 'store/modules/editor';
+import {
+	editFiles,
+	editPost,
+	uploadFiles,
+	writePost,
+} from 'store/modules/editor';
 
 //writePost 성공 시 uploadFiles도 성공한다고 가정함.
 const EditorPage = ({ history }) => {
@@ -29,7 +34,7 @@ const EditorPage = ({ history }) => {
 			action = {
 				post: 'editor/EDIT_POST',
 				files: 'editor/EDIT_FILES',
-			}
+			};
 		}
 		return {
 			logged: auth.logged,
@@ -76,17 +81,15 @@ const EditorPage = ({ history }) => {
 			for (let i = 0; i < images.length; i++) {
 				formData.append('files', images[i].file);
 			}
-			if(editMode)
-				dispatch(editFiles({post_id, formData, config}));
-			else
-				dispatch(uploadFiles({ post_id, formData, config }));
+			if (editMode) dispatch(editFiles({ post_id, formData, config }));
+			else dispatch(uploadFiles({ post_id, formData, config }));
 		}
 	}, [post_id]);
 
 	useEffect(() => {
 		//사진 업로드까지 완료하면 해당 포스트 페이지로 이동
 		if (uploadSuccess === true) {
-			history.push(`/post/${post_id}`);
+			history.replace(`/post/${post_id}`);
 		}
 	}, [history, uploadSuccess, post_id]);
 
@@ -135,7 +138,9 @@ const EditorPage = ({ history }) => {
 		} else {
 			setError(null);
 		}
-		if (editMode && old_post.id) dispatch(editPost({...inputs, post_id:old_post.id}));	// PUT /user/api/posts
+		if (editMode && old_post.id)
+			dispatch(editPost({ ...inputs, post_id: old_post.id }));
+		// PUT /user/api/posts
 		else dispatch(writePost(inputs)); // POST /user/api/posts
 		// 성공 시 post_id 값 채워짐: null -> integer
 	};

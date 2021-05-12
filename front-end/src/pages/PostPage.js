@@ -46,9 +46,11 @@ const NewPostPage = ({ match, history }) => {
 
 		//내가 작성한 게시물 삭제
 		const onClickDelete = (post_id) =>{	
-			dispatch(deletePost({post_id}));		//DELETE 게시물 api 호출
-			//todo: 정말 삭제할 지 모달 띄우기
-
+			let result = window.confirm('정말 삭제하시겠습니까?');
+			if(result){
+				dispatch(deletePost({post_id}));		//DELETE 게시물 api 호출
+				history.push('/');
+			}
 		}
 		return (
 			<div>
