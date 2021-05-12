@@ -2,7 +2,7 @@ package ShareMarket.sharemarket.service;
 
 import ShareMarket.sharemarket.domain.file.File;
 import ShareMarket.sharemarket.domain.file.FileRepository;
-import ShareMarket.sharemarket.dto.FileDto;
+import ShareMarket.sharemarket.dto.file.FileDto;
 import ShareMarket.sharemarket.exception.AttachFileException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class FileService {
 
     // 서버에 첨부파일을 생성하고 업로드 파일목록 반환하는 함수 _ 인자로 파일리스트와 게시글아이디받음
     // MultipartFile[]타입의 files에는 업로드할 파일의 정보가 담겨있음
-    public List<FileDto> uploadFiles(MultipartFile[] files, Long post_id) {
+    public List<FileDto> uploadFiles(MultipartFile[] files, Long postId) {
 
         // 파일이 비어있으면 비어있는 리스트 반환
         if (files[0].getSize() < 1){
@@ -67,7 +67,7 @@ public class FileService {
                 FileDto fileDto = new FileDto();
 
                 // fileDto에 게시글번호, 원본파일명, 서버파일명 저장후 DB에 저장!
-                fileDto.setPost_id(post_id);
+                fileDto.setPostId(postId);
                 fileDto.setOrigFilename(file.getOriginalFilename());
                 fileDto.setFilename(saveName);
                 fileDto.setFilepath(uploadPath);
@@ -88,7 +88,7 @@ public class FileService {
 
     @Transactional
     public List<FileDto> getFile(Long id) {
-        List<File> fileList = fileRepository.findAllByPost_id(id);
+        List<File> fileList = fileRepository.findAllByPostId(id);
         List<FileDto> fileDtoList = new ArrayList<>();
 
         for (File file : fileList) {

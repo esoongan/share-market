@@ -1,20 +1,13 @@
 package ShareMarket.sharemarket.web;
 
-import ShareMarket.sharemarket.domain.posts.Post;
-import ShareMarket.sharemarket.domain.posts.PostsRepository;
-import ShareMarket.sharemarket.dto.PostsRequestDto;
+import ShareMarket.sharemarket.domain.post.PostRepository;
 import org.junit.After;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +23,7 @@ public class PostControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private PostsRepository postsRepository;
+    private PostRepository postsRepository;
 
     @After
     public void tearDown() throws Exception {
