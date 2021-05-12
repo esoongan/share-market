@@ -17,3 +17,5 @@ export const uploadFiles = ({post_id, formData, config}) => axios.post(`/api/fil
 export const editFiles = ({post_id, formData, config}) => axios.put(`/api/file/upload/${post_id}`, formData, config);
 
 export const getFiles = ({post_id})=> axios.get(`/api/file/${post_id}`);
+
+export const search = ({params, page, size}) => axios.get(`/api/post/page${params}page=${page}&size=${size}`);

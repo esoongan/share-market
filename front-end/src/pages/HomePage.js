@@ -106,7 +106,7 @@ const HomePage = ({history}) => {
 				<Grid container spacing={1}>
 					{cities.map(item => (
 						<Grid item key={item.value} xs={6} sm={6} md={3}>
-							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/1?city=${item.value}`)}>
+							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/0?addr=${item.value}`)}>
 								<Grid
 									container
 									spacing={0}
@@ -141,7 +141,7 @@ const HomePage = ({history}) => {
 				<Grid container spacing={2}>
 					{categories.map(item => (
 						<Grid key={item.value} item xs={12} sm={6} md={4} >
-							<Paper className={clsx(classes.category, classes.clickable)} elevation={3} onClick={()=> history.push(`list/1?category=${item.value}`)}>
+							<Paper className={clsx(classes.category, classes.clickable)} elevation={3} onClick={()=> history.push(`list/0?category=${item.value}`)}>
 								<img className={classes.categoryImg} src={item.img} alt={item.label} />
 								<div className={classes.categoryCover}>
 									<Typography variant='h4' component='span' className={classes.categoryLabel} >{item.label}</Typography>

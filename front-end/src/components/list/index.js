@@ -83,17 +83,24 @@ const items = [
 	},
 ];
 
-const List = ({city, category, keyword, period}) => {
+const List = ({city, category, keyword, period, items, totalElements, page, onMovePage, maximumPage}) => {
 	const classes = useStyles();
+	const handleMovePage = (event, value) =>{
+		onMovePage(value);
+	}
+
 	return (
 		<>
 			<section className={classes.subjectSection}>
 				{/* TODO: period */}
         <Typography component="h2" variant="h4">
-					4월10일-4월20일, {city}의 {category}
+					{period}, {city}의 {category}
 				</Typography>
 				<Typography component="h1" variant="h2">
 					{keyword}
+				</Typography>
+				<Typography variant='caption'>
+					{`검색결과 총 ${totalElements}개`}
 				</Typography>
 			</section>
 			<section className={classes.listSection}>
@@ -107,7 +114,7 @@ const List = ({city, category, keyword, period}) => {
 			</section>
 
 			<section className={classes.paginationSection}>
-				<Pagination count={10} />
+				<Pagination page={Number(page)} onChange={handleMovePage} count = {maximumPage}/>
 			</section>
 		</>
 	);
