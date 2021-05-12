@@ -17,8 +17,8 @@ const EditorPage = ({ history }) => {
 	const [images, setImages] = useState([]);
 	const {
 		logged,
-		postFailure,
 		post_id,
+		postFailure,
 		uploadSuccess,
 		editMode,
 		old_post,
@@ -64,7 +64,7 @@ const EditorPage = ({ history }) => {
 	}, [logged, history]);
 
 	useEffect(() => {
-		if (post_id !== null) {
+		if (post_id) {
 			//POST /user/api/posts 성공 시
 			//해당 id로 이미지 업로드 api 호출 -> POST /uploadMultipleFiles/{id}
 			const config = {
@@ -81,7 +81,7 @@ const EditorPage = ({ history }) => {
 			else
 				dispatch(uploadFiles({ post_id, formData, config }));
 		}
-	}, [post_id, dispatch, images, history, editMode]);
+	}, [post_id]);
 
 	useEffect(() => {
 		//사진 업로드까지 완료하면 해당 포스트 페이지로 이동
@@ -135,10 +135,7 @@ const EditorPage = ({ history }) => {
 		} else {
 			setError(null);
 		}
-		if (editMode) {
-			dispatch();
-		}
-		if (editMode) dispatch(editPost(inputs));	// PUT /user/api/posts
+		if (editMode && old_post.id) dispatch(editPost({...inputs, post_id:old_post.id}));	// PUT /user/api/posts
 		else dispatch(writePost(inputs)); // POST /user/api/posts
 		// 성공 시 post_id 값 채워짐: null -> integer
 	};

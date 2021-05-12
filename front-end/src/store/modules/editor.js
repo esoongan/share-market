@@ -34,14 +34,29 @@ export default handleActions(
 			{
 				type: WRITE_POST,
 				onSuccess: (state, action) => {
-					const { id } = action.payload.data;
+					const { id } = action.payload.data.data;
 					return {
 						...state,
 						post_id: id,
 					};
 				},
+				onFailure: (state, action) => (initialState),
 			},
 		),
+		...pender(
+			{
+				type: EDIT_POST,
+				onSuccess: (state, action) => {
+					const { id } = action.payload.data;
+					return {
+						...state,
+						post_id: id,
+						editMode:false,
+					};
+				},
+				onFailure: (state, action) => ({...initialState, editMode:true}),
+			},
+		)
 	},
 	initialState,
 );

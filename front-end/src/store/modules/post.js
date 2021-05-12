@@ -47,7 +47,7 @@ export default handleActions(
 			// 게시물 정보 가져오기: GET /posts/{post_id}
 			type: GET_POST,
 			onSuccess: (state, action) => {
-				let { data: post } = action.payload;
+				let post = action.payload.data;
 				// 서버에서 받는 값은 category.value -> category.label로 바꿔서 저장하기
 				post.category = getLabel(categories, post.category);
 				return {

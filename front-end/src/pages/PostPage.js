@@ -25,10 +25,10 @@ const NewPostPage = ({ match, history }) => {
 	useEffect(() => {
 		dispatch(getPost({ post_id }));		//POST 게시물 api 호출
 		dispatch(getFiles({ post_id }));	//POST 파일 api 호출
-		if(myId === post.user_id){	//내가 쓴 게시물일 때
+		if(myId === post.username){	//내가 쓴 게시물일 때
 			setEditable(true);
 		}
-	}, [dispatch, post_id, myId, post.user_id]);
+	}, [dispatch, post_id, myId, post.username]);
 
 	useEffect(() => {
 		if(deleteSuccess){
@@ -60,7 +60,7 @@ const NewPostPage = ({ match, history }) => {
 					<Grid item xs={12} md={8}>
 						<PostContent
 							post_id={post_id}
-							writer={post.user_id}
+							writer={post.username}
 							category={post.category}
 							addr={post.addr}
 							editable={editable}
