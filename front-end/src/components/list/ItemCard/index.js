@@ -9,18 +9,20 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import RoomIcon from '@material-ui/icons/Room';
+import { getLabel } from 'lib/util';
+import { categories } from 'constant/locale';
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		
 	},
 	media: {
-		height: 320,
+		height: 200,
 	},
   itemInfo:{
     display:'flex',
     justifyContent:'space-between',
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   addr:{
     display:'flex',
@@ -28,8 +30,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ItemCard = ({ title, category, addr, createdDate, img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => {
+const ItemCard = ({ title, category, addr, createdDate, userId, img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => {
 	const classes = useStyles();
+  const categoryLabel = getLabel(categories, category);
   return (
 		<Card className={classes.root}>
 			<CardActionArea>
@@ -42,8 +45,12 @@ const ItemCard = ({ title, category, addr, createdDate, img='https://images.unsp
 			</CardActionArea>
       <CardContent>
         <div className={classes.itemInfo}>
-          <Chip color='primary' label={category} size="small"/>
+          <Chip color='primary' label={categoryLabel} size="small"/>
           <div className={classes.addr}><RoomIcon/><Typography component='span'>{addr}</Typography></div>
+        </div>
+        <div className={classes.itemInfo}>
+          <Typography color='textSecondary'>작성자: {userId}</Typography> 
+          <Typography color='textSecondary'>{createdDate.substring(0,10)} </Typography>
         </div>
         <div>
           <Typography gutterBottom variant="h5" component="h2">
