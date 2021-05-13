@@ -5,6 +5,7 @@ import { categories, cities } from 'constant/locale';
 import { getLabel } from 'lib/util';
 import { useDispatch, useSelector } from 'react-redux';
 import { search } from 'store/modules/list';
+import Searchbar from 'components/common/Searchbar';
 
 const ListPage = ({ location, match, history }) => {
 	const dispatch = useDispatch();
@@ -37,6 +38,10 @@ const ListPage = ({ location, match, history }) => {
 		load(page-1);
 	}, []);
 
+	useEffect(()=>{
+		load(match.params.page-1);
+	}, [match]);
+
 	const onMovePage = (value) =>{
 		let nextUrl = '/list/';
 		nextUrl += (value) + "";
@@ -44,15 +49,25 @@ const ListPage = ({ location, match, history }) => {
 			nextUrl+= location.search;
 		}
 		history.push(nextUrl)
-		load(value-1);
 	}
 	const onClickItem = (post_id) => {
 		history.push(`/post/${post_id}`);
+	}
+	const searchbarStyle = {
+		display: 'flex',
+		justifyContent: 'center',
+		marginTop: 32,
+		paddingLeft: 36,
+		paddingRight: 36,
 	}
 
 	const maximumPage = parseInt(Number(totalElements)/size) + 1;
 	return (
 		<>
+		<div style = {searchbarStyle}>
+			{/* TODO: 라우터 추가 */}
+			<Searchbar/>
+		</div>
 			{failure ? (
 				<div>리스트 불러오기 실패</div>
 			) : (

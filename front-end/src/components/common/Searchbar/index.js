@@ -8,6 +8,7 @@ import { DateRangePicker } from 'react-dates';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { categories } from 'constant/locale';
+import { withRouter } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
 	searchBox: {
@@ -54,9 +55,11 @@ const categoryStyles = {
 };
 const categoryOption = [{label: '전체', value:''}, ...categories];
 
-export default function Searchbar() {
+function Searchbar({history}) {
 	const classes = useStyles();
 	const [focusedInput, setFocusInput] = useState(null);
+	const [category, setCategory] = useState(null);
+	const [keyword, setKeyword] = useState('');
 	const [dateRange, setDateRange] = useState({
 		startDate: null,
 		endDate: null,
@@ -64,7 +67,31 @@ export default function Searchbar() {
 	const onFocusInput = focusDate => {
 		setFocusInput(focusDate);
 	};
-
+	const onSelect = ({value}) => {
+		setCategory(value);
+	}
+	const onInputChange = (e) => {
+		setKeyword(e.target.value);
+	}
+	const onSearch = () => {
+		let url = '/list/1?';
+		let query = '';
+		if(category!==null && category !== ''){
+			query+='&category='+category;
+		}
+		if(keyword!==''){
+			query+='&keyword=' +keyword;
+		}
+		if(dateRange.startDate){
+			let start = dateRange.startDate.toJSON().substring(0,9);	//2020-12-25
+			query+=`&start=${start}`
+		}
+		if(dateRange.endDate){
+			let end = dateRange.endDate.toJSON().substring(0,9);
+			query+=`&end=${end}`
+		}
+		history.push(url+query);
+	}
 	return (
 		<Paper className={classes.searchBox} elevation={6}>
 			<Select
@@ -72,7 +99,7 @@ export default function Searchbar() {
 				placeholder="카테고리"
 				styles={categoryStyles}
         options={categoryOption}
-        //onChange={onSelect}
+        onChange={onSelect}
         onSelectResetsInput={false}
         isSearchable
 			/>
@@ -92,6 +119,7 @@ export default function Searchbar() {
 				startDatePlaceholderText='대여일'
 				endDatePlaceholderText='반납일'
         noBorder
+				small
 			/>
 
 			<Divider className={classes.divider} orientation="vertical" />
@@ -100,6 +128,8 @@ export default function Searchbar() {
 				className={classes.input}
 				placeholder="검색어"
 				inputProps={{ 'aria-label': 'keyword' }}
+				onChange={onInputChange}
+				value={keyword}
 			/>
 
 			<Divider className={classes.divider} orientation="vertical" />
@@ -107,9 +137,11 @@ export default function Searchbar() {
 				color="primary"
 				className={classes.iconButton}
 				aria-label="directions"
+				onClick={onSearch}
 			>
 				<SearchIcon />
 			</IconButton>
 		</Paper>
 	);
 }
+export default withRouter(Searchbar);
