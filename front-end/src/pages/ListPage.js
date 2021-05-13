@@ -24,24 +24,27 @@ const ListPage = ({ location, match, history }) => {
 	const { addr, category, keyword, period } = query; //없는 key에는 undefined가 들어감
 	//period 포맷: 200101200107 => 20/01/01 ~ 20/01/07
 
-	//최초 렌더링 시 콘텐츠 불러오기
-	useEffect(() => {
+	const load = (page) => {
 		if(location.search){
 			dispatch(search({ params: location.search+'&', page, size}));
 		}
 		else{
 			dispatch(search({params: '?', page, size}));
 		}
+	}
+	//최초 렌더링 시 콘텐츠 불러오기
+	useEffect(() => {
+		load(page-1);
 	}, []);
 
 	const onMovePage = (value) =>{
 		let nextUrl = '/list/';
-		nextUrl += (value-1) + "";
+		nextUrl += (value) + "";
 		if(location.search){
 			nextUrl+= location.search;
 		}
 		history.push(nextUrl)
-		
+		load(value-1);
 	}
 
 	const maximumPage = parseInt(Number(totalElements)/size) + 1;

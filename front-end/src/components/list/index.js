@@ -99,11 +99,12 @@ const List = ({city, category, keyword, period, items, totalElements, page, onMo
 				<Typography component="h1" variant="h2">
 					{keyword}
 				</Typography>
-				<Typography variant='caption'>
-					{`검색결과 총 ${totalElements}개`}
-				</Typography>
+				
 			</section>
 			<section className={classes.listSection}>
+				<Typography variant='body2' style={{textAlign:'end'}}>
+					{`검색결과 총 ${totalElements}개`}
+				</Typography>
 				<Grid container spacing={2}>
 					{items.map(item => (
 						<Grid key={item.id} item md={3} sm={4} xs={6}>
