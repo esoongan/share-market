@@ -30,16 +30,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ItemCard = ({ title, category, addr, createdDate, userId, img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => {
+const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem, img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => {
 	const classes = useStyles();
   const categoryLabel = getLabel(categories, category);
+  const handleClickItem = () => {
+    onClickItem(id);
+  }
   return (
 		<Card className={classes.root}>
 			<CardActionArea>
 				<CardMedia
 					className={classes.media}
 					image={img}
-					title="Contemplative Reptile"
+          onClick= {handleClickItem}
 				/>
 
 			</CardActionArea>

@@ -83,7 +83,7 @@ const items = [
 	},
 ];
 
-const List = ({city, category, keyword, period, items, totalElements, page, onMovePage, maximumPage}) => {
+const List = ({city, category, keyword, period, items, totalElements, page, onMovePage, maximumPage, onClickItem}) => {
 	const classes = useStyles();
 	const handleMovePage = (event, value) =>{
 		onMovePage(value);
@@ -108,7 +108,9 @@ const List = ({city, category, keyword, period, items, totalElements, page, onMo
 				<Grid container spacing={2}>
 					{items.map(item => (
 						<Grid key={item.id} item md={3} sm={4} xs={6}>
-							<ItemCard {...item}  />
+							<ItemCard {...item}  
+								onClickItem = {onClickItem}
+							/>
 						</Grid>
           ))}
 				</Grid>

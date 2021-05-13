@@ -46,6 +46,9 @@ const ListPage = ({ location, match, history }) => {
 		history.push(nextUrl)
 		load(value-1);
 	}
+	const onClickItem = (post_id) => {
+		history.push(`/post/${post_id}`);
+	}
 
 	const maximumPage = parseInt(Number(totalElements)/size) + 1;
 	return (
@@ -63,6 +66,7 @@ const ListPage = ({ location, match, history }) => {
 					page={page}
 					onMovePage={onMovePage}
 					maximumPage={maximumPage}
+					onClickItem = {onClickItem}
 				/>
 			)}
 		</>
