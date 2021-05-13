@@ -106,7 +106,7 @@ const HomePage = ({history}) => {
 				<Grid container spacing={1}>
 					{cities.map(item => (
 						<Grid item key={item.value} xs={6} sm={6} md={3}>
-							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/1?addr=${item.value}`)}>
+							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/1?addr=${item.label}`)}>
 								<Grid
 									container
 									spacing={0}

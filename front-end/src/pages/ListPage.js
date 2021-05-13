@@ -54,7 +54,7 @@ const ListPage = ({ location, match, history }) => {
 				<div>리스트 불러오기 실패</div>
 			) : (
 				<List
-					city={addr ? getLabel(cities, addr) : '모든 도시'}
+					city={addr ? addr : '모든 도시'}
 					category={category ? getLabel(categories, category) : '모든 카테고리'}
 					keyword={keyword ? keyword : '전체'}
 					period={period ? period : '모든 기간'}
