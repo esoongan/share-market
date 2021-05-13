@@ -54,11 +54,15 @@ const ListPage = ({ location, match, history }) => {
 		history.push(`/post/${post_id}`);
 	}
 	const searchbarStyle = {
-		display: 'flex',
-		justifyContent: 'center',
-		marginTop: 32,
-		paddingLeft: 36,
-		paddingRight: 36,
+		// position: 'absolute',
+		// top: '1px',
+		// left: '18vw',
+		// width: '64vw',
+		// zIndex: 100,
+		marginTop:8,
+		marginBottom: 8,
+		marginLeft:'auto',
+		marginRight:'auto',
 	}
 
 	const maximumPage = parseInt(Number(totalElements)/size) + 1;
