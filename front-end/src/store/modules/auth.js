@@ -67,21 +67,13 @@ export default handleActions(
 			},
 			onFailure: (state, action) => {
         localStorage.removeItem('X-AUTH-TOKEN');  //저장된 토큰 지움  
-				return {
-					...state,
-					user: null,
-					logged: false,
-				};
+				return initialState;
 			},
 		}),
 		[LOGOUT]: (state, action) => {
       localStorage.removeItem('X-AUTH-TOKEN');  //저장된 토큰 지움
 			axios.defaults.headers.common['X-AUTH-TOKEN'] = ``;
-      return {
-				...state,
-				user: null,
-				logged: false,
-			};
+      return initialState;
 		},
     [TEMP_SET_LOGGED]: (state, action) =>{
 			axios.defaults.headers.common['X-AUTH-TOKEN'] = `${action.payload}`;
