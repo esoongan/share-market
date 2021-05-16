@@ -8,11 +8,13 @@ import { getLabel } from 'lib/util';
 const GET_POST = 'post/GET_POST';
 const GET_FILES = 'post/GET_FILES';
 const DELETE_POST = 'post/DELETE_POST';
+const RESERVE = 'post/RESERVE';
 
 //action creators
 export const getPost = createAction(GET_POST, api.getPost);
 export const getFiles = createAction(GET_FILES, api.getFiles);
 export const deletePost = createAction(DELETE_POST, api.deletePost);
+export const reserve = createAction(RESERVE, api.reserve);
 
 //initial state
 const initialState = {

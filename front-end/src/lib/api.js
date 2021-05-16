@@ -12,6 +12,7 @@ export const editPost = ({post_id, title, content, category, price, deposit}) =>
 
 export const deletePost = ({post_id})=> axios.delete(`/uauth/api/post/${post_id}`);
 export const getPost = ({post_id})=> axios.get(`/api/post/${post_id}`);
+export const reserve = ({postId, startDate, endDate}) => axios.post(`/uauth/api/contract`, {postId, startDate, endDate});
 
 export const uploadFiles = ({post_id, formData, config}) => axios.post(`/api/file/upload/${post_id}`, formData, config);
 export const editFiles = ({post_id, formData, config}) => axios.put(`/api/file/upload/${post_id}`, formData, config);
