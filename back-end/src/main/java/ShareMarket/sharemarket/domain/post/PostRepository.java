@@ -14,8 +14,6 @@ import org.springframework.data.repository.query.Param;
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
 
-    Page<PostMapping> findAllBy(Pageable pageable);
-
     // 레포지토리 함수에 실제 실행될 쿼리를 매핑할 수 있음
     // 페이징 관련 쿼리는 페이징할 총 개시물갯수와 실제값 2개를 전부 가져와야 하므로 2가지에 해당하는 쿼리를 적어줌
     @Query(

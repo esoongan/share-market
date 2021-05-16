@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.controller;
 
 import ShareMarket.sharemarket.dto.paging.PagingDto;
+import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import ShareMarket.sharemarket.model.DefaultRes;
 import ShareMarket.sharemarket.model.HttpResponseMessage;
 import ShareMarket.sharemarket.model.HttpStatusCode;
@@ -31,6 +32,7 @@ public class PageController {
 
     //컨트롤러메소드에 pageble타입의 파라미터가 존재하면 요청파라미터를 토대로 PageableHandlerMethodArgumentResolver가 pageRequest를 생성함
 
+    // 페이징 조회 통합 ( 디폴트 / 검색(키워드, 카테고리, 지역) 기간 추가 해야함)
     @GetMapping("/api/post/page")
     public ResponseEntity<Page<PagingDto>> getPaging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest,
                                     @RequestParam(required = false) String keyword,
@@ -45,10 +47,27 @@ public class PageController {
                 pagingDtos), HttpStatus.OK);
     }
 
+    // 토큰 소유자가 작성한 게시글페이징 조회
+    @GetMapping("/uauth/api/post")
+    public ResponseEntity<Page<PagingDto>> pagingByWriter(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
+                                                          Authentication authentication) {
+        Page<PagingDto> pagingDtos = pagingService.pagingByWriter(pageRequest, authentication);
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.OK,
+                "토큰소유자가 작성한 "+ HttpResponseMessage.READ_POST,
+                pagingDtos), HttpStatus.OK);
+
+    }
+
+    // 썸네일 추가 테스트~~~
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/api/posts/page")
-    public Page<PagingDto> paging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest) {
-        return pagingService.paging(pageRequest);
+    public ResponseEntity<Page<PagingResponseDto>> paging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest) {
+        Page<PagingResponseDto> pagingDtos =  pagingService.test(pageRequest);
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.OK,
+                HttpResponseMessage.READ_POST,
+                pagingDtos), HttpStatus.OK);
     }
 
     // 기간 테스트~~~~~~
@@ -61,15 +80,6 @@ public class PageController {
         return pagingService.testStartDate(date, pageRequest);
     }
 
-    @GetMapping("/uauth/api/post")
-    public ResponseEntity<Page<PagingDto>> pagingByWriter(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
-                                          Authentication authentication) {
-        Page<PagingDto> pagingDtos = pagingService.pagingByWriter(pageRequest, authentication);
-        return new ResponseEntity(DefaultRes.response(
-                HttpStatusCode.OK,
-                "토큰소유자가 작성한 "+ HttpResponseMessage.READ_POST,
-                pagingDtos), HttpStatus.OK);
 
-    }
 
 }

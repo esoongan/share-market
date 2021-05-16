@@ -1,9 +1,13 @@
 package ShareMarket.sharemarket.service;
 
+import ShareMarket.sharemarket.domain.file.File;
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.post.PostSpecification;
+import ShareMarket.sharemarket.dto.file.FileResponseDto;
 import ShareMarket.sharemarket.dto.paging.PagingDto;
+import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,12 +16,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class PagingService {
 
     private final PostRepository postsRepository;
+    private final FileRepository fileRepository;
     private final PostService postService;
     private final UserService userService;
 
@@ -72,6 +78,25 @@ public class PagingService {
         Page<PagingDto> pagingDtos = postList.map(
                 post -> new PagingDto(
                         post.getId(),
+                        post.getTitle(),
+                        post.getUser().getUsername(),
+                        post.getCategory(),
+                        post.getUser().getAddr(),
+                        post.getCreatedDate()
+                ));
+        return pagingDtos;
+    }
+
+    // 사진필드 추가 테스트
+    public Page<PagingResponseDto> test(Pageable pageable){
+
+        Page<Post> postList = postsRepository.findAll(pageable);
+
+        // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
+        Page<PagingResponseDto> pagingDtos = postList.map(
+                post -> new PagingResponseDto(
+                        post.getId(),
+                        new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
                         post.getTitle(),
                         post.getUser().getUsername(),
                         post.getCategory(),
