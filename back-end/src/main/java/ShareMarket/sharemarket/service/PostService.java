@@ -49,7 +49,7 @@ public class PostService {
     public PostResponseDto update(Long id, PostUpdateDto postUpdateDto) {
         // id로 디비에서 게시글을 찾고
         Post post = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+                .orElseThrow(() -> new PostNotFoundException(id));
 
         // 전달받은 게시글로 업데이트 (5개 필드만 바꾸는)
         post.update(postUpdateDto);
@@ -60,7 +60,7 @@ public class PostService {
     @Transactional
     public void delete (Long id) {
         Post post = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+                .orElseThrow(() -> new PostNotFoundException(id));
 
         postsRepository.delete(post);
     }

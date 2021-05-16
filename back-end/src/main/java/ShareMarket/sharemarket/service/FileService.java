@@ -3,7 +3,10 @@ package ShareMarket.sharemarket.service;
 import ShareMarket.sharemarket.domain.file.File;
 import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.dto.file.FileDto;
+import ShareMarket.sharemarket.dto.file.FileResponseDto;
 import ShareMarket.sharemarket.exception.AttachFileException;
+import ShareMarket.sharemarket.exception.FileNotFoundException;
+import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -11,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,21 +25,21 @@ public class FileService {
     // 지영 요청대로 폴더명 변경
     private final String uploadPath = System.getProperty("user.dir") + "_storage";
 
-    //서버에 생성할 파일명을 처리할 랜덤 문자열 반  환
+    //서버에 생성할 파일명을 처리할 랜덤 문자열 반환
     private String getRandomString(){
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     // 서버에 첨부파일을 생성하고 업로드 파일목록 반환하는 함수 _ 인자로 파일리스트와 게시글아이디받음
     // MultipartFile[]타입의 files에는 업로드할 파일의 정보가 담겨있음
-    public List<FileDto> uploadFiles(MultipartFile[] files, Long postId) {
+    public List<FileResponseDto> uploadFiles(MultipartFile[] files, Long postId) {
 
         // 파일이 비어있으면 비어있는 리스트 반환
         if (files[0].getSize() < 1){
             return Collections.emptyList();
         }
         //업로드 파일 정보를 담을 비어있는 리스트
-        List<FileDto> attachList = new ArrayList<>();
+        List<FileResponseDto> attachList = new ArrayList<>();
 
         //uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든디렉토리 생성
         java.io.File dir = new java.io.File(uploadPath);
@@ -72,11 +72,12 @@ public class FileService {
                 fileDto.setFilename(saveName);
                 fileDto.setFilepath(uploadPath);
 
-                // Dto객체를 엔티티에 담아 디비에 저장
-                fileRepository.save(fileDto.toEntity());
+                // Dto객체 -> entity로 변환후 저장 -> 저장된 엔티티로 생성된 id값을 포함하는 reponseDto를 리턴
+                File entity = fileRepository.save(fileDto.toEntity());
+                FileResponseDto responseDto = new FileResponseDto(entity);
 
                 // 파일 정보 추가
-                attachList.add(fileDto);
+                attachList.add(responseDto);
 
             } catch (Exception e) {
                 throw new AttachFileException("[" + file.getOriginalFilename() + "] failed to save file...");
@@ -87,16 +88,24 @@ public class FileService {
     }
 
     @Transactional
-    public List<FileDto> getFile(Long id) {
+    public List<FileResponseDto> getFile(Long id) {
         List<File> fileList = fileRepository.findAllByPostId(id);
-        List<FileDto> fileDtoList = new ArrayList<>();
+        List<FileResponseDto> fileDtoList = new ArrayList<>();
 
         for (File file : fileList) {
-            FileDto fileDto = new FileDto(file);
+            FileResponseDto responseDto = new FileResponseDto(file);
 
-            fileDtoList.add(fileDto);
+            fileDtoList.add(responseDto);
         }
         return fileDtoList;
+    }
+
+    @Transactional
+    public void deleteFile(Long fileId){
+        File file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException(fileId));
+
+        fileRepository.delete(file);
     }
 
 }
