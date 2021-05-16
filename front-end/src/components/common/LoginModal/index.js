@@ -4,7 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideModal, toggleModal } from 'store/modules/base';
+import { toggleModal } from 'store/modules/base';
 import { checkUser, login} from 'store/modules/auth'
 import Alert from '@material-ui/lab/Alert';
 
@@ -68,7 +68,7 @@ export default function LoginModal() {
     if(logged === true){
       let token = localStorage.getItem('X-AUTH-TOKEN');
       dispatch(checkUser({token})); //토큰으로 유저 정보 가져오기 -> 스토어에 저장
-      dispatch(hideModal('loginModal'));  //모달 닫기
+      dispatch(toggleModal({modal:'loginModal', visible: false}));  //모달 닫기
     }
 		else if(failure===true){
 			setError('다시 시도해보세요.');
@@ -90,7 +90,7 @@ export default function LoginModal() {
 	};
 
 	const handleClose = () => {
-		dispatch(toggleModal('loginModal'));
+		dispatch(toggleModal({modal: 'loginModal', visible: false}));
 	};
 
 	return (

@@ -24,7 +24,7 @@ export default function Header() {
 	const dispatch = useDispatch();
 	const { logged } = useSelector(({ auth }) => ({ logged: auth.logged }));
 	const onClickLogin = () => {
-		dispatch(toggleModal('loginModal')); //로그인 모달 열기
+		dispatch(toggleModal({modal:'loginModal', visible: true})); //로그인 모달 열기
 	};
 	const onClickLogout = () =>{
 		dispatch(logout());
