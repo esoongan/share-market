@@ -4,8 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {Link, Route, Switch } from 'react-router-dom';
-import BorrowerPage from '/pages/mypage/borrower';
-import BorroweePage from '/pages/mypage/borrowee';
+import BorrowerPage from 'src/pages/mypage/BorrowerPage';
+import BorroweePage from 'src/pages/mypage/BorroweePage';
 
 
 
@@ -33,13 +33,13 @@ export default function CenteredTabs({history}) {
         centered
         className={classes.navTab}
       >
-        <Tab className={classes.navTab} label="Borrowee" component={Link} to "pages/mypage/borrowee" />
-        <Tab className={classes.navTab} label="Borrower" component={Link} to "pages/mypage/borrower" />       
+        <Tab className={classes.navTab} label="Borrowee" component={Link} to BorroweePage />
+        <Tab className={classes.navTab} label="Borrower" component={Link} to BorrowerPage />       
       </Tabs>
 
       <Switch>
-       <Route exact path='/mypage/borrower' component={BorrowerPage} /> 
-       <Route exact path='/mypage/borrowee' component={BorroweePage} /> 
+       <Route exact path='src/pages/mypage/BorrowerPage' component={BorrowerPage} /> 
+       <Route exact path='src/pages/mypage/BorroweePage' component={BorroweePage} /> 
     </Switch>
          
     </Paper>

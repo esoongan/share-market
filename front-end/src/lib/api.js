@@ -1,4 +1,7 @@
 import axios from 'axios'
+import qs from 'qs';
+
+
 
 export const join = ({username, password, email, addr}) => axios.post('/join', {username, password, email, addr});
 export const login = ({username, password}) => axios.post('/login', {username, password});
@@ -11,3 +14,6 @@ export const writePost = ({title, content, category, price, deposit}) => axios.p
 export const uploadFiles = ({post_id, formData, config}) => axios.post(`/uploadMultipleFiles/${post_id}`, formData, config);
 export const getPost = ({post_id})=> axios.get(`/api/posts/${post_id}`);
 export const getFiles = ({post_id})=> axios.get(`/post/${post_id}/files`);
+
+export const getMyPost = ({post_id}) => axios.get('/uauth/api/post');
+
