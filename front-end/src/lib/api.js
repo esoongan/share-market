@@ -15,5 +15,23 @@ export const uploadFiles = ({post_id, formData, config}) => axios.post(`/uploadM
 export const getPost = ({post_id})=> axios.get(`/api/posts/${post_id}`);
 export const getFiles = ({post_id})=> axios.get(`/post/${post_id}/files`);
 
-export const getMyPost = ({post_id}) => axios.get('/uauth/api/post');
 
+export const getMyPost = ({token}) => {
+  const config = { headers: {'X-AUTH_TOKEN': token } };
+  const data = {'X-AUTH-TOKEN' : token};
+  return axios.get('/uauth/api/post', data, config );
+}
+
+export const getContractSeller = ({state}) => {
+  const queryString = qs.stringify({
+    state,
+  });
+  return axios.get('/uauth/api/contract/seller?{queryString}');
+};
+
+export const getContractBuyer = ({state}) => {
+  const queryString = qs.stringify({
+    state,
+  });
+  return axios.get('/uauth/api/contract/buyer?{queryString}');
+};

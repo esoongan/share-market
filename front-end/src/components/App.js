@@ -39,7 +39,7 @@ const App = () => {
           
             <Route exact path='/mypage/borrower' component={BorrowerPage} /> 
             
-             <Route exact path='/mypage/borrowee' component={BorroweePage} />  
+              <Route exact path='/mypage/borrowee' component={BorroweePage} /> 
            {/*  <Route exact path='/chat' component={ChatPage} />   */}
            
 
