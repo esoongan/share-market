@@ -11,9 +11,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { logout } from 'store/modules/auth';
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexDirection: 'row',
-	},
+	
 	title: {
 		flexGrow: 1,
 	},
@@ -39,7 +37,7 @@ export default function Header() {
 	};
 
 	return (
-		<div className={classes.root}>
+		<div>
 			<AppBar position="static">
 				<Toolbar>
 					<Typography variant="h6" className={classes.title}>
