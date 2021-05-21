@@ -36,9 +36,10 @@ public class ContractService {
         Post post = postRepository.findById(contractRequestDto.getPostId())
                 .orElseThrow(() -> new PostNotFoundException(contractRequestDto.getPostId()));
         contractRequestDto.setPost(post);
+        // 아직은 jpa join관계를 가지지않는 구조지만 USER를 테이블에서 가지도록 쉽게 변경 가능함
         contractRequestDto.setSellerId(contractRequestDto.getPost().getUser().getId());
-        contractRequestDto.setState("default");
         contractRequestDto.setBuyerId(userService.getUserByToken(authentication.getPrincipal()).getId());
+        contractRequestDto.setState("default");
         // DB에 저장
         Contract contract = contractRepository.save(contractRequestDto.toEntity());
         log.info("Contract DB insert complete");

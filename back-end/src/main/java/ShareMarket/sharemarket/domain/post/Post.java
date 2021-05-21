@@ -26,6 +26,7 @@ public class Post extends BaseTimeEntity {
     //다른 테이블과의 조인을 지정
     // 여러개의 포스트가 하나의 user를 가지므로 ManyToOne
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY) // many-to-one일때는 성능문제로 지연로딩하는것이 좋다.
+    // name of foreign key column in post entity
     @JoinColumn(name="userId") // 매핑할 외래키 이름
     private User user;
 
