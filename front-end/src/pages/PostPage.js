@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PostContent, PostTitle } from 'components/post/PostBody';
 import ImageViewer from 'components/post/ImageViewer';
 import FloatingMenu from 'components/post/FloatingMenu';
-import { deletePost, getFiles, getPost, reserve } from 'store/modules/post';
+import {
+	deletePost,
+	getFiles,
+	getPost,
+	reserve,
+	getBlockedDates,
+} from 'store/modules/post';
 import Grid from '@material-ui/core/Grid';
 import { toggleEditMode } from 'store/modules/editor';
 import { toggleModal } from 'store/modules/base';
@@ -12,65 +18,75 @@ const NewPostPage = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const post_id = match.params.post_id;
 	const [editable, setEditable] = useState(false);
-	const { success, post, images, failure, myId, } = useSelector(
+	const { success, post, images, failure, myId, blocked } = useSelector(
 		({ pender, post, auth }) => ({
 			post: post.post,
 			images: post.images,
 			success: pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
 			failure: pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
 			myId: auth.user.username,		//현재 로그인한 유저의 username -> 내가 작성한 포스트일 때 수정 및 삭제 가능하도록
+			blocked: post.blocked,
 		}),
 	);
 
 	useEffect(() => {
-		dispatch(getPost({ post_id }));		//POST 게시물 api 호출
-		dispatch(getFiles({ post_id }));	//POST 파일 api 호출
-		if(myId === post.username){	//내가 쓴 게시물일 때
+		dispatch(getPost({ post_id })); //POST 게시물 api 호출
+		dispatch(getFiles({ post_id })); //POST 파일 api 호출
+		dispatch(getBlockedDates({ post_id })); // 이미 예약된 날짜들 불러오기
+
+		if (myId === post.username) {
+			//내가 쓴 게시물일 때
 			setEditable(true);
-		}
-		else{
+		} else {
 			setEditable(false);
 		}
 	}, [dispatch, post_id, myId, post.username]);
 
-	// useEffect(() => {
-	// 	if(deleteSuccess){
-	// 		history.replace('/');
-	// 	}
-	// }, [deleteSuccess, history]);
-
 	if (success) {
 		//내가 작성한 게시물 수정
-		const onClickEdit = () =>{
+		const onClickEdit = () => {
 			dispatch(toggleEditMode(true));
 			history.push('/post/editor');
-		}
+		};
 
 		//내가 작성한 게시물 삭제
-		const onClickDelete = (post_id) =>{	
+		const onClickDelete = post_id => {
 			let result = window.confirm('정말 삭제하시겠습니까?');
-			if(result){
-				dispatch(deletePost({post_id}));		//DELETE 게시물 api 호출
+			if (result) {
+				dispatch(deletePost({ post_id })); //DELETE 게시물 api 호출
 				history.replace('/');
 			}
-		}
-		
-		const onClickReserve = ({startDate, endDate}) => {
+		};
+
+		// 선택한 기간으로 예약하기
+		const onClickReserve = ({ startDate, endDate }) => {
 			console.log('myId', myId);
 
-			if(!myId){	//로그인 상태가 아니면
-				dispatch(toggleModal({modal:'loginModal', visible:true}));	//로그인 모달 띄우기
+			if (!myId) {
+				//로그인 상태가 아니면
+				dispatch(toggleModal({ modal: 'loginModal', visible: true })); //로그인 모달 띄우기
 				return;
-			}
-			else
-				dispatch(reserve({postId: post_id, startDate, endDate}));
-		}
+			} else dispatch(reserve({ post_id, startDate, endDate }));
+		};
+
+		const testBlocked = [
+			{
+				startDate: '2021-06-09',
+				endDate: '2021-06-11',
+			},
+			{
+				startDate: '2021-06-16',
+				endDate: '2021-06-20',
+			},
+			{
+				startDate: '2021-07-01',
+				endDate: '2021-07-07',
+			},
+		];
 
 		return (
 			<div>
-				<PostTitle 
-					title={post.title}
-				/>
+				<PostTitle title={post.title} />
 				<ImageViewer images={images} />
 				<Grid container spacing={4}>
 					<Grid item xs={12} md={8}>
@@ -81,12 +97,19 @@ const NewPostPage = ({ match, history }) => {
 							addr={post.addr}
 							editable={editable}
 							content={post.content}
-							onClickEdit = {onClickEdit}
-							onClickDelete = {onClickDelete}
+							onClickEdit={onClickEdit}
+							onClickDelete={onClickDelete}
 						/>
 					</Grid>
 					<Grid item xs={12} md={4}>
-						<FloatingMenu deposit={post.deposit} price={post.price} editable={editable} onClickReserve={onClickReserve} />
+						<FloatingMenu
+							deposit={post.deposit}
+							price={post.price}
+							editable={editable}
+							onClickReserve={onClickReserve}
+							// blocked={testBlocked}
+							blocked={blocked}
+						/>
 					</Grid>
 				</Grid>
 			</div>

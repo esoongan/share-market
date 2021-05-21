@@ -9,12 +9,14 @@ const GET_POST = 'post/GET_POST';
 const GET_FILES = 'post/GET_FILES';
 const DELETE_POST = 'post/DELETE_POST';
 const RESERVE = 'post/RESERVE';
+const GET_BLOCKED_DATES = 'post/GET_BLOCKED_DATES';
 
 //action creators
 export const getPost = createAction(GET_POST, api.getPost);
 export const getFiles = createAction(GET_FILES, api.getFiles);
 export const deletePost = createAction(DELETE_POST, api.deletePost);
 export const reserve = createAction(RESERVE, api.reserve);
+export const getBlockedDates = createAction(GET_BLOCKED_DATES, api.getBlockedDates);
 
 //initial state
 const initialState = {
@@ -28,6 +30,7 @@ const initialState = {
 		price: '',
 		deposit: '',
 	},
+	blocked: [],
 	images: null,
 };
 
@@ -66,6 +69,16 @@ export default handleActions(
 				return {
 					...state,
 					post:initialState.post,
+				};
+			},
+		}),
+		...pender({
+			// 이미 예약된 날짜 불러오기
+			type: GET_BLOCKED_DATES,
+			onSuccess: (state, action) => {
+				return {
+					...state,
+					blocked: action.payload.data.data,
 				};
 			},
 		}),
