@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 
 // 페이지별로 게시글목록을 조회
@@ -32,15 +31,19 @@ public class PageController {
 
     //컨트롤러메소드에 pageble타입의 파라미터가 존재하면 요청파라미터를 토대로 PageableHandlerMethodArgumentResolver가 pageRequest를 생성함
 
-    // 페이징 조회 통합 ( 디폴트 / 검색(키워드, 카테고리, 지역) 기간 추가 해야함)
+    // 페이징 조회 통합 ( 디폴트 / 검색(키워드, 카테고리, 지역, 기간))
     @GetMapping("/api/post/page")
-    public ResponseEntity<Page<PagingDto>> getPaging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest,
-                                    @RequestParam(required = false) String keyword,
-                                    @RequestParam(required = false) String category,
-                                    @RequestParam(required = false) String addr
-                                     ){
+    public ResponseEntity<Page<PagingResponseDto>> getPaging(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
+                                                             @RequestParam(required = false) String keyword,
+                                                             @RequestParam(required = false) String category,
+                                                             @RequestParam(required = false) String addr,
+                                                             @RequestParam(required = false) String start,
+                                                             @RequestParam(required = false) String end) {
+        // String -> LocalDate
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
 
-        Page<PagingDto> pagingDtos =  pagingService.searchPaging(keyword,category,addr,pageRequest);
+        Page<PagingResponseDto> pagingDtos = pagingService.searchPaging(keyword, category, addr, startDate, endDate, pageRequest);
         return new ResponseEntity(DefaultRes.response(
                 HttpStatusCode.OK,
                 HttpResponseMessage.READ_POST,
@@ -59,27 +62,25 @@ public class PageController {
 
     }
 
-    // 썸네일 추가 테스트~~~
+    //========================================================================================
+
+    // 대여기간 검색 테스트~~~ (클라에서 사용하는거아님)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/api/posts/page")
-    public ResponseEntity<Page<PagingResponseDto>> paging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest) {
-        Page<PagingResponseDto> pagingDtos =  pagingService.test(pageRequest);
+    @GetMapping("/test/api/post/page")
+    public ResponseEntity<Page<PagingResponseDto>> paging(@PageableDefault(sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageRequest,
+                                                          @RequestParam(required = false) String start,
+                                                          @RequestParam(required = false) String end) {
+        // String -> LocalDate
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        Page<PagingResponseDto> pagingDtos =  pagingService.test(pageRequest, startDate, endDate);
+
         return new ResponseEntity(DefaultRes.response(
                 HttpStatusCode.OK,
                 HttpResponseMessage.READ_POST,
                 pagingDtos), HttpStatus.OK);
     }
-
-    // 기간 테스트~~~~~~
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/api/posts/page/testDate")
-    public Page<PagingDto> pagingByKeyword(@RequestParam String startDate,
-                                           @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) throws ParseException {
-        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date date = format.parse(startDate);
-        return pagingService.testStartDate(date, pageRequest);
-    }
-
 
 
 }
