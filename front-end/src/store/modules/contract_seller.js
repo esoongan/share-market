@@ -13,7 +13,7 @@ const GET_FILES = 'contract_seller/GET_FILES';
 export const getContractSeller = createAction(GET_CONTRACT, api.getContractSeller);
 export const getFiles = createAction(GET_FILES, api.getFiles);
 
-
+ 
 //initial state
 const initialState = {
     id: null,

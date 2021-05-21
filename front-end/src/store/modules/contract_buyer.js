@@ -2,6 +2,7 @@ import {createAction, handleActions} from 'redux-actions';
 import * as api from 'lib/api';
 import axios from 'axios';
 
+
 //action type
 const GET_CONTRACT = 'contract_buyer/GET_CONTRACT';
 const GET_FILES = 'contract_buyer/GET_FILES';
