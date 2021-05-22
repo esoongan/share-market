@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios'
 import configure from './store/configure'
-// import { tempSetUser, checkUser } from './store/modules_x/base';
 import { Provider } from 'react-redux';
 import App from 'components/App';
+import { tempSetUser, checkUser } from 'store/modules/auth';
 
 
 axios.defaults.baseURL = "http://localhost:8080";
@@ -15,11 +15,10 @@ const store = configure()
 
 function loadUser() {
   try {
-    const JWT = localStorage.getItem('JWT');
-    if (!JWT) return; // 로그인 상태가 아니라면 아무것도 안함
-
-    // store.dispatch(tempSetUser(JWT));
-    // store.dispatch(checkUser({JWT}));
+    const token = localStorage.getItem('X-AUTH-TOKEN');
+    if (!token) return; // 로그인 상태가 아니라면 아무것도 안함
+    store.dispatch(tempSetUser(token));
+    store.dispatch(checkUser({token}));
   } catch (e) {
     console.log('localStorage is not working');
   }

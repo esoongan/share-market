@@ -8,28 +8,27 @@ export const locations = [
 ]
 
 export const cityMarkets = [
-    { value: "Seoul", label: "서울" },
-    { value: "Incheon", label: "인천" },
-    { value: "GyeongGi", label: "경기" },
-    { value: "DaeGu", label: "대구" },
-    { value: "Busan", label: "부산" },
-    { value: "DaeJun", label: "대전" },
-]
-
-export const categoryMarkets = [
-    { value: "Seoul", label: "서울", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "Incheon", label: "인천", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "GyeongGi", label: "경기", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "DaeGu", label: "대구", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "Busan", label: "부산", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
-    { value: "DaeJun", label: "대전", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+    { value: "Seoul", label: "서울",},
+    { value: "Incheon", label: "인천",},
+    { value: "GyeongGi", label: "경기"},
+    { value: "DaeGu", label: "대구",},
+    { value: "Busan", label: "부산",},
+    { value: "DaeJun", label: "대전",},
+    // { value: "Chungcheong", label: '충청'}, 
+    // { value: "Jeolla", label: "전라도"} ,
+    // { value: "KangWon", label: '강원도'},
+    // { value: "GyeongSang", label:'경상도'}, 
+    // { value: "Jeju", label: "제주",},
+    // { value: "Sejong", label: "세종",},
+    { value: "Ulsan", label: "울산",},
+    { value: "GwangJu", label: "광주",},
 ]
 
 export const categories = [
-    { value: "카테고리1", label: "카테고리1" },
-    { value: "카테고리2", label: "카테고리2" },
-    { value: "카테고리3", label: "카테고리3" },
-    { value: "카테고리4", label: "카테고리4" },
-    { value: "카테고리5", label: "카테고리5" },
-    { value: "카테고리6", label: "카테고리6" },
+    { value: "카테고리1", label: "카테고리1", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+    { value: "카테고리2", label: "카테고리2", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+    { value: "카테고리3", label: "카테고리3", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+    { value: "카테고리4", label: "카테고리4", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+    { value: "카테고리5", label: "카테고리5", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
+    { value: "카테고리6", label: "카테고리6", img:'https://dummyimage.com/600x400/4000ff/fff&text=' },
 ]

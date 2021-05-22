@@ -23,14 +23,12 @@ export default handleActions(
 				type: WRITE_POST,
 				onSuccess: (state, action) => {
 					const { id } = action.payload.data;
-					console.log(action);
 					return {
 						...state,
 						post_id: id,
 					};
 				},
 				onError: (state, action) => {
-					console.log('WRITE_POST onError', action);
 					return state;
 				},
 			},

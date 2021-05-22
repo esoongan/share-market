@@ -5,9 +5,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal } from 'store/modules/store';
+import { toggleModal } from 'store/modules/base';
 import HeaderMenu from './HeaderMenu';
 import { Link as RouterLink } from 'react-router-dom';
+import { logout } from 'store/modules/auth';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -21,10 +22,13 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const logged = useSelector(store => store.logged);
+	const { logged } = useSelector(({ auth }) => ({ logged: auth.logged }));
 	const onClickLogin = () => {
 		dispatch(toggleModal('loginModal')); //로그인 모달 열기
 	};
+	const onClickLogout = () =>{
+		dispatch(logout());
+	}
 	const [anchorEl, setAnchorEl] = useState(null);
 	const handleClick = event => {
 		setAnchorEl(event.currentTarget);
@@ -47,13 +51,18 @@ export default function Header() {
 							<Button color="inherit" onClick={onClickLogin}>
 								로그인
 							</Button>
-							<Button variant="outlined" component={RouterLink} to='/join' color="inherit">
+							<Button
+								variant="outlined"
+								component={RouterLink}
+								to="/join"
+								color="inherit"
+							>
 								회원가입
 							</Button>
 						</div>
 					) : (
 						<div>
-							<Button color="inherit" component={RouterLink} to='/post/editor'>
+							<Button color="inherit" component={RouterLink} to="/post/editor">
 								글 올리기
 							</Button>
 							<Button
@@ -65,7 +74,7 @@ export default function Header() {
 							>
 								메뉴
 							</Button>
-							<HeaderMenu anchorEl={anchorEl} onClose={handleClose} />
+							<HeaderMenu anchorEl={anchorEl} onClose={handleClose} onClickLogout={onClickLogout}/>
 						</div>
 					)}
 				</Toolbar>

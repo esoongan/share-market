@@ -38,7 +38,11 @@ const StyledMenuItem = withStyles(theme => ({
 	},
 }))(MenuItem);
 
-export default function HeaderMenu({ anchorEl, onClose }) {
+export default function HeaderMenu({
+	anchorEl,
+	onClose,
+	onClickLogout,
+}) {
 	return (
 		<div>
 			<StyledMenu
@@ -61,9 +65,8 @@ export default function HeaderMenu({ anchorEl, onClose }) {
 					<ListItemText primary="채팅" />
 				</StyledMenuItem>
 				<Divider />
-				<StyledMenuItem>
-					<ListItemIcon>
-					</ListItemIcon>
+				<StyledMenuItem onClick={onClickLogout}>
+					<ListItemIcon></ListItemIcon>
 					<ListItemText primary="로그아웃" />
 				</StyledMenuItem>
 			</StyledMenu>

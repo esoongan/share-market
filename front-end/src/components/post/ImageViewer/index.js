@@ -5,24 +5,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import Carousel from 'react-material-ui-carousel';
 import Grid from '@material-ui/core/Grid';
 
+//todo: 이미지 로드 안됨
 const useStyles = makeStyles(theme => ({
 	imageViewer: {
 		marginBottom: theme.spacing(4),
 	},
 	carouselImage: {
 		width: '100%',
-	}
+	},
 }));
 
-const imageList = [
-	{ data_url: image },
-	{ data_url: image },
-	{ data_url: image },
-	{ data_url: image },
-	{ data_url: image },
-];
-
-const ImageViewer = ({images}) => {
+const ImageViewer = ({ images }) => {
 	const classes = useStyles();
 
 	return (
@@ -34,7 +27,7 @@ const ImageViewer = ({images}) => {
 						<img
 							className={classes.carouselImage}
 							key={index}
-							src={image.filepath}
+							src={image.filepath+'/'+image.filename}
 							alt=""
 						/>
 					))}
@@ -45,7 +38,7 @@ const ImageViewer = ({images}) => {
 					<Grid item md={6}>
 						<img
 							className={classes.carouselImage}
-							src={images[0].filepath}
+							src={images[0].filepath+'/'+images[0].filename}
 							alt=""
 						/>
 					</Grid>
@@ -54,7 +47,7 @@ const ImageViewer = ({images}) => {
 							<Grid key={index} item md={6}>
 								<img
 									className={classes.carouselImage}
-									src={image.filepath}
+									src={image.filepath+'/'+image.filename}
 									alt=""
 								/>
 							</Grid>

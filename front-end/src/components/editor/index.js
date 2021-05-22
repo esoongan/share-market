@@ -98,7 +98,6 @@ const Editor = ({
 			{error !== null && <Alert  className={classes.error} severity="error">{error}</Alert>}
 			<Grid
 				container
-				xs={12}
 				direction="row"
 				justify="center"
 				spacing={2}
@@ -128,7 +127,6 @@ const Editor = ({
 			</Grid>
 			<Grid
 				container
-				xs={12}
 				direction="row"
 				justify="center"
 				spacing={2}
@@ -223,7 +221,7 @@ const Editor = ({
 				</Grid>
 			</Grid>
 
-			<Grid container xs={12} direction="row" justify="flex-end" spacing={2}>
+			<Grid container direction="row" justify="flex-end" spacing={2}>
 				<Grid item xs={3}>
 					<TextField
 						id="price"
