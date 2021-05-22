@@ -5,7 +5,7 @@ import axios from 'axios'
 import configure from './store/configure'
 import { Provider } from 'react-redux';
 import App from 'components/App';
-import { tempSetUser, checkUser } from 'store/modules/auth';
+import { tempSetLogged, checkUser } from 'store/modules/auth';
 
 
 axios.defaults.baseURL = "http://localhost:8080";
@@ -17,7 +17,7 @@ function loadUser() {
   try {
     const token = localStorage.getItem('X-AUTH-TOKEN');
     if (!token) return; // 로그인 상태가 아니라면 아무것도 안함
-    store.dispatch(tempSetUser(token));
+    store.dispatch(tempSetLogged(token));
     store.dispatch(checkUser({token}));
   } catch (e) {
     console.log('localStorage is not working');

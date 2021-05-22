@@ -4,10 +4,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import grey from '@material-ui/core/colors/grey';
 import Typography from '@material-ui/core/Typography';
-import { cityMarkets, categories } from 'constant/locale';
+import { cities, categories } from 'constant/locale';
 import Searchbar from 'components/common/Searchbar';
-import RoomIcon from '@material-ui/icons/Room';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -17,41 +17,77 @@ const useStyles = makeStyles(theme => ({
 	section: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(16),
-    paddingLeft: theme.spacing(8),
-    paddingRight: theme.spacing(8),
-
+		paddingLeft: theme.spacing(8),
+		paddingRight: theme.spacing(8),
 	},
 	searchSection: {
 		background: grey[200],
-    paddingTop: theme.spacing(8),
+		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(32),
 	},
-  cityIcon:{
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'red',
-    objectFit: 'cover',
-  },
-  cityLabel:{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingRight: theme.spacing(2)
-  },
-	categoryPaper: {
-		width: '100%',
-		paddingTop: '100%' /* 1:1 Aspect Ratio */,
-		position: 'relative' /* If you want text inside of it */,
-
-		'& span': {
-			position: 'absolute',
-			bottom: theme.spacing(2),
-			left: theme.spacing(2),
+	cityIcon: {
+		width: 60,
+		height: 60,
+		objectFit: 'fill',
+		borderRadius: theme.spacing(1),
+		marginRight: theme.spacing(2),
+	},
+	clickable: {
+		'&:hover': {
+			backgroundColor: grey[100],
+			cursor: 'pointer',
 		},
+		'&:active': {
+			backgroundColor: grey[200],
+		},
+	},
+	category: {
+		width: '100%',
+		height: 200,
+		position: 'relative' /* If you want text inside of it */,
+		borderRadius: theme.spacing(1),
+	},
+	categoryCover:{
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		width: '100%',
+		height: '98%',
+		background: 'rgba(0,0,0,0.4)',
+		zIndex: 100,
+		opacity: 0,
+		'&:hover':{
+			opacity: 1,
+			zIndex: 10,
+		}
+	}
+	,
+	categoryLabel:{
+		display:'flex',
+		justifyContent: 'center',
+		alignItems:'center',
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		width: '100%',
+		height: '100%',
+		color: 'white',
+		textAlign:'center',
+		opacity: 0,
+		zIndex: 50,
+		'&:hover':{
+			opacity: 1,
+		}
+	},
+	categoryImg: {
+		width: '100%',
+		height: '100%',
+		objectFit: 'cover',
+		borderRadius: theme.spacing(1),
 	},
 }));
 
-const HomePage = () => {
+const HomePage = ({history}) => {
 	const classes = useStyles();
 
 	return (
@@ -67,26 +103,33 @@ const HomePage = () => {
 				<Typography variant="h5" gutterBottom>
 					지역별 마켓 둘러보기
 				</Typography>
-				<Grid container spacing={2}>
-					{cityMarkets.map(item => (
-						<Grid key={item.value} item xs={6} sm={3} md={3}>
-							<Paper className={classes.cityCard} elevation = {1}>
-								<Grid container spacing={1} direction='row' justify='flex-start' alignItems='flex-end'>
-									<Grid item xs={12} sm={12} md={5}>
-										<img className={classes.cityIcon} src="http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg" alt={item.label} />
+				<Grid container spacing={1}>
+					{cities.map(item => (
+						<Grid item key={item.value} xs={6} sm={3} md={3}>
+							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/1?addr=${item.label}`)}>
+								<Grid
+									container
+									spacing={0}
+									direction="row"
+									justify="flex-start"
+									alignItems="flex-end"
+								>
+									<Grid item>
+										<img
+											className={classes.cityIcon}
+											src={item.img}
+											alt={item.label}
+										/>
 									</Grid>
 									<Grid item xs={12} sm={12} md={7}>
-										<div className={classes.cityLabel}>
-                      <RoomIcon />
-                      <Typography variant="h6">{item.label}</Typography>
+										<Typography variant="h6">{item.label}</Typography>
+										<div style={{ display: 'flex' }}>
+											<Typography variant="caption">둘러보기</Typography>
+											<ArrowForwardIcon color="action" />
 										</div>
-										<div className={classes.cityLabel}>
-                    <Typography variant="caption">둘러보기</Typography>
-                    <ArrowForwardIcon color='action'/>
-                    </div>
 									</Grid>
 								</Grid>
-							</Paper>
+							</div>
 						</Grid>
 					))}
 				</Grid>
@@ -97,12 +140,12 @@ const HomePage = () => {
 				</Typography>
 				<Grid container spacing={2}>
 					{categories.map(item => (
-						<Grid key={item.value} item xs={12} sm={4}>
-							<Paper
-								className={classes.categoryPaper}
-								style={{ background: 'orange' }}
-							>
-								<span>{item.label}</span>
+						<Grid key={item.value} item xs={12} sm={6} md={4} >
+							<Paper className={clsx(classes.category, classes.clickable)} elevation={3} onClick={()=> history.push(`list/1?category=${item.value}`)}>
+								<img className={classes.categoryImg} src={item.img} alt={item.label} />
+								<div className={classes.categoryCover}>
+									<Typography variant='h4' component='span' className={classes.categoryLabel} >{item.label}</Typography>
+								</div>
 							</Paper>
 						</Grid>
 					))}
