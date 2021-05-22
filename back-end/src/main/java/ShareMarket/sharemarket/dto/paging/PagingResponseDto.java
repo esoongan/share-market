@@ -7,8 +7,9 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
+// Getter/Setter없이 Property를 읽도록 하는 방법
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@AllArgsConstructor
+@AllArgsConstructor // -> 빌더패턴으로 고치기
 public class PagingResponseDto {
 
     private Long id; // 게시글의 id

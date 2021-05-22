@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.service;
 
-import ShareMarket.sharemarket.domain.file.File;
 import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
@@ -10,7 +9,6 @@ import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,9 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -120,12 +116,12 @@ public class PagingService {
         log.info("not equal post id스펙 성공?!");
 
         // spec실행 -> 대여가능한 게시글 찾음
-        Page<Post> postList = postsRepository.findAll(spec, pageable);
-        log.info("postList"+String.valueOf(postList.getTotalPages()));
+        Page<Post> postPage = postsRepository.findAll(spec, pageable);
+        log.info("postList"+String.valueOf(postPage.getTotalPages()));
 
 
         // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-        Page<PagingResponseDto> pagingDtos = postList.map(
+        Page<PagingResponseDto> pagingDtos = postPage.map(
                 post -> new PagingResponseDto(
                         post.getId(),
                         new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
@@ -140,15 +136,16 @@ public class PagingService {
 
 
     // 작성자랑 같은지 찾는거
-    public Page<PagingDto> pagingByWriter(Pageable pageable, Authentication authentication){
+    public Page<PagingResponseDto> pagingByWriter(Pageable pageable, Authentication authentication){
 
         Specification<Post> spec = PostSpecification.equalWriter(userService.getUserByToken(authentication.getPrincipal()));
 
         Page<Post> postPage = postsRepository.findAll(spec, pageable);
 
         return postPage.map(
-                post -> new PagingDto(
+                post -> new PagingResponseDto(
                         post.getId(),
+                        new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
                         post.getTitle(),
                         post.getUser().getUsername(),
                         post.getCategory(),

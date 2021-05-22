@@ -52,9 +52,9 @@ public class PageController {
 
     // 토큰 소유자가 작성한 게시글페이징 조회
     @GetMapping("/uauth/api/post")
-    public ResponseEntity<Page<PagingDto>> pagingByWriter(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
+    public ResponseEntity<Page<PagingResponseDto>> pagingByWriter(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
                                                           Authentication authentication) {
-        Page<PagingDto> pagingDtos = pagingService.pagingByWriter(pageRequest, authentication);
+        Page<PagingResponseDto> pagingDtos = pagingService.pagingByWriter(pageRequest, authentication);
         return new ResponseEntity(DefaultRes.response(
                 HttpStatusCode.OK,
                 "토큰소유자가 작성한 "+ HttpResponseMessage.READ_POST,

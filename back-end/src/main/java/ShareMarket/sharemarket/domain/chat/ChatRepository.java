@@ -1,4 +1,6 @@
 package ShareMarket.sharemarket.domain.chat;
 
-public interface ChatRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ChatRepository extends JpaRepository<Chat, Long> {
 }

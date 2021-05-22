@@ -4,7 +4,6 @@ import ShareMarket.sharemarket.domain.user.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
 public class UserResponseDto {
 
