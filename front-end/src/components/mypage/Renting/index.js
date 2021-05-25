@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link'; 
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -38,17 +39,7 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: '56.25%', // 16:9
       
     },
-  /*   navTab:{
-      paddingTop: theme.spacing(8),
-      paddingBottom: theme.spacing(8),
-    }, */
-  
-  
-  
-   /*  cardContent: {
-      flexGrow: 1,
-    }, */
-
+ 
     section: {
       paddingTop: theme.spacing(50),
       paddingBottom: theme.spacing(16),
@@ -59,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
   
   const cards = [1, 2, 3, 4];
 
-  const Renting = () => {
+  const Renting = ({post}) => {
+    const {startDate, endDate, post_id, _id} = post;
     const classes = useStyles();
       return (
      <section className={classes.borrowing}>
@@ -82,13 +74,15 @@ const useStyles = makeStyles((theme) => ({
                  
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                          포스트 제목을 이곳에
+                         {/*  포스트 제목을 이곳에 */}
+                         {title}
                      </Typography>      
                 </CardContent>
     
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h3">
-                          이곳에 날짜를 추가한다. 
+                         {/*  이곳에 날짜를 추가한다.  */}
+                         {startDate}{endDate}
                      </Typography>      
                 </CardContent>
                      

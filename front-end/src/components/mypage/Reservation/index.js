@@ -12,21 +12,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';/* 
-import Navigation from 'components/mypage/Navigation';
- */
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Link from '@material-ui/core/Link';
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -52,16 +41,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '56.25%', // 16:9
     
   },
-/*   navTab:{
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  }, */
 
-
-
- /*  cardContent: {
-    flexGrow: 1,
-  }, */
   section: {
     paddingTop: theme.spacing(50),
     paddingBottom: theme.spacing(16),

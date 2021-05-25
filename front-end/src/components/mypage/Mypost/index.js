@@ -1,18 +1,11 @@
 import React from  'react';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   }));
   const cards = [1, 2, 3, 4];
 
-const MyPost = () =>{
+const MyPost = ({thumbnail}) =>{
     const classes = useStyles();
     return (
         <Container className={classes.cardGrid} maxWidth="md">
@@ -74,7 +67,16 @@ const MyPost = () =>{
         <Card className={classes.card}>
             <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                   /*  image="https://source.unsplash.com/random" */
+                   {...thumbnail.slice(1).map((image, index) => (  //여기 왜 ...이 들어가야 하는 지 모르겠음
+                    <Grid key={index} item md={6}>
+                      <img
+                        className={classes.thumbnailImage}
+                        src={image.filepath+'/'+image.filename}
+                        alt=""
+                      />
+                    </Grid>
+                  ))}
                     title="Image title"
              />
                            
