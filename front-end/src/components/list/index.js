@@ -1,7 +1,7 @@
 import { Divider, Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import Pagination from '@material-ui/lab/Pagination';
-import ItemCard from 'components/list/ItemCard';
+import ItemCard from 'components/ItemCard';
 import NoResult from './noResult.png';
 
 const useStyles = makeStyles(theme => ({

@@ -1,4 +1,4 @@
-export const chatList = [
+export const testRooms = [
   {
     room_id: 1,
     user_id: 'hy7873',
@@ -30,3 +30,7 @@ export const chatList = [
     lastMsg: '안녕하세요 문의드리고 싶어서 연락드렸습니다.',
   },
 ];
+
+export const testMessages = [
+  
+]
