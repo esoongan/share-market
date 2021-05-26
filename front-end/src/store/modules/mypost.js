@@ -6,13 +6,14 @@ import produce from 'immer';
 
 
 //action types
-const GET_CONTENT = 'mypost/GET_CONTENT';
+const GET_POST = 'mypost/GET_POST';
 const GET_FILES = 'mypost/GET_FILES';
+const GET_MYPOST = 'mypost/GET_MYPOST'
 
 //action creators
-export const getContent = createAction(GET_CONTENT, api.getContent);
+export const getPost = createAction(GET_POST, api.getPost);
 export const getFiles = createAction(GET_FILES, api.getFiles);
-export const getMyPost = createAction(GET_CONTENT, api.getContent);
+export const getMyPost = createAction(GET_MYPOST, api.getMypost);
 
 //initial state
 const initialState = {
@@ -37,7 +38,7 @@ const initialState = {
 //reducer
 export default handleActions(
 	{
-		...pender({
+		 ...pender({
             
 			type: GET_FILES,
 			onSuccess: (state, action) => {
@@ -47,10 +48,22 @@ export default handleActions(
 					thumbnail,
 				};
 			},
-		}),
-		...pender({
+		}), 
+		 ...pender({
 			
-			type: GET_CONTENT,
+			type: GET_POST,
+			onSuccess: (state, action) => {
+				const { data: post } = action.payload;
+				return {
+					...state,
+					post,
+				};
+			},
+		}), 
+
+        ...pender({
+			
+			type: GET_MYPOST,
 			onSuccess: (state, action) => {
 				const { data: content } = action.payload;
 				return {
@@ -59,6 +72,33 @@ export default handleActions(
 				};
 			},
 		}),
+
+
+		...pender({
+			// token으로 나임을 확인
+				  type: CHECK_USER,
+				  onSuccess: (state, action) => {
+					const { data: content } = action.payload; 
+				    const token = localStorage.getItem('X-AUTH-TOKEN');  
+					  axios.defaults.headers.common['X-AUTH-TOKEN'] = `${token}`;
+					  return {
+						  ...state,
+						  content,
+					  };
+				  },
+				  onFailure: (state, action) => {
+			  localStorage.removeItem('X-AUTH-TOKEN');  //저장된 토큰 지움  
+					  return {
+						  ...state,
+						  content: null,
+						  
+					  };
+				  },
+			  }),
+
+
+
+
 	},
 	initialState,
 );

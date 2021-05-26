@@ -29,9 +29,5 @@ export const getContractSeller = ({state}) => {
   return axios.get('/uauth/api/contract/seller?{queryString}');
 };
 
-export const getContractBuyer = ({state}) => {
-  const queryString = qs.stringify({
-    state,
-  });
-  return axios.get('/uauth/api/contract/buyer?{queryString}');
-};
+export const getContractBuyer = ({state}) =>axios.get('/uauth/api/contract/buyer/${state}');
+ 

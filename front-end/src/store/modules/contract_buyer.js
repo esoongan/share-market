@@ -49,7 +49,7 @@ export default handleActions(
 			type: GET_CONTRACT,
 			onSuccess: (state, action) => {
 				let post = action.payload.data;
-				// 서버에서 받는 값은 category.value -> category.label로 바꿔서 저장하기
+				
 				post.category = getLabel(categories, post.category);
 				return {
 					...state,
