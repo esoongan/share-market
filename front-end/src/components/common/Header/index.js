@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export default function Header() {
+export default function Header({children}) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const { logged } = useSelector(({ auth }) => ({ logged: auth.logged }));
@@ -40,6 +40,8 @@ export default function Header() {
 		<div>
 			<AppBar position="static">
 				<Toolbar>
+					{children}
+
 					<Typography variant="h6" className={classes.title}>
 						로고
 					</Typography>

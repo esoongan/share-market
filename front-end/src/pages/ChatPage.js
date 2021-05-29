@@ -1,43 +1,59 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react';
+import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Avatar, Badge, Paper } from '@material-ui/core';
 import { testRooms } from 'constant/test';
-import { Avatar, Badge, Button, Hidden, Paper } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import { Link as RouterLink } from 'react-router-dom';
-import HeaderMenu from 'components/common/Header/HeaderMenu';
-import ItemCard from 'components/ItemCard';
+import Header from 'components/common/Header';
+
+const drawerWidth = 300;
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 	},
-	roomSection: {
-		// todo: 왼쪽에 고정시키기
-		marginRight: theme.spacing(1),
-		flexGrow:1,
+	drawer: {
+		[theme.breakpoints.up('md')]: {
+			width: drawerWidth,
+			flexShrink: 0,
+		},
 	},
-	sectionHeader: {
+	appBar: {
+		[theme.breakpoints.up('md')]: {
+			width: `calc(100% - ${drawerWidth}px)`,
+			marginLeft: drawerWidth,
+		},
 		display: 'flex',
-		alignItems: 'center',
-		padding: theme.spacing(0, 1),
-		// necessary for content to be below app bar
+	},
+	menuButton: {
+		marginRight: theme.spacing(2),
+		[theme.breakpoints.up('md')]: {
+			display: 'none',
+		},
+	},
+	// necessary for content to be below app bar
+	toolbar: {
 		...theme.mixins.toolbar,
-		justifyContent: 'space-between',
+	},
+	drawerPaper: {
+		width: drawerWidth,
+	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
 	},
 
 	chatRoom: {
 		display: 'flex',
+    listStyleType:'none',
+    overflowY:'scroll',
 		'&:hover': {
 			backgroundColor: grey[100],
 			cursor: 'pointer',
@@ -61,21 +77,6 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: theme.spacing(0.5),
 	},
 
-	chatSection: {
-		// background: 'black',
-		flexGrow:2,
-	},
-
-	chatContainer: {
-		border: '0.5px solid black',
-		borderRadius: theme.spacing(1),
-		height: '70vh',
-		margin: theme.spacing(3),
-		padding: theme.spacing(2),
-		// width: '100%',
-		overflow:'scroll',
-	},
-
 	chat: {
 		borderRadius: theme.spacing(2),
 		padding: theme.spacing(1, 3),
@@ -83,14 +84,17 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: '60%',
 		marginBottom: theme.spacing(2),
 	},
-
-	postInfoSection: {
-		// background: 'red',
-		flexGrow: 4,
-	},
 }));
-export default function ChatPage() {
+
+function ChatPage(props) {
+	const { window } = props;
 	const classes = useStyles();
+	const theme = useTheme();
+	const [mobileOpen, setMobileOpen] = React.useState(false);
+
+	const handleDrawerToggle = () => {
+		setMobileOpen(!mobileOpen);
+	};
 
 	const ChatRoom = ({ chatRoom: room }) => {
 		let lastMsg = room.lastMsg;
@@ -122,7 +126,6 @@ export default function ChatPage() {
 	};
 	const Rooms = (
 		<div>
-			<div className={classes.toolbar} />
 			{testRooms.map(room => (
 				<div key={room.room_id}>
 					<ChatRoom chatRoom={room} />
@@ -134,10 +137,14 @@ export default function ChatPage() {
 		</div>
 	);
 	const Chat = ({ message, time, send }) => (
-		<div style={send? { display: 'flex', justifyContent:'flex-end' } : {}}>
+		<div>
 			<Paper
 				className={classes.chat}
-				style={send ? { background: 'blue' } : { background: 'white' }}
+				style={
+					send
+						? { marginLeft: 'auto', background: 'blue' }
+						: { background: 'white' }
+				}
 				elevation={2}
 			>
 				<Typography variant="body1">{message}</Typography>
@@ -146,23 +153,69 @@ export default function ChatPage() {
 		</div>
 	);
 
+	const drawer = (
+		<div>
+			<div className={classes.toolbar} />
+			<Divider />
+			{Rooms}
+		</div>
+	);
+
+	const container =
+		window !== undefined ? () => window().document.body : undefined;
+
 	return (
 		<div className={classes.root}>
-			<Hidden smDown>
-				<section className={classes.roomSection}>
-					<header className={classes.sectionHeader}>
-						<IconButton>
-							<ChevronLeftIcon onClick={null} />
-						</IconButton>
-					</header>
-					<Divider />
-					{Rooms}
-				</section>
-			</Hidden>
+			<AppBar position="fixed" className={classes.appBar}>
+					<Header>
 
-			<section className={classes.chatSection}>
-				<header className={classes.sectionHeader}></header>
-				<Divider />
+					<IconButton
+						color="inherit"
+						aria-label="open drawer"
+						edge="start"
+						onClick={handleDrawerToggle}
+						className={classes.menuButton}
+					>
+						<MenuIcon />
+					</IconButton>
+					</Header>
+
+			</AppBar>
+			<nav className={classes.drawer} aria-label="mailbox folders">
+				{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+				<Hidden mdUp implementation="css">
+					<Drawer
+						container={container}
+						variant="temporary"
+						anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+						open={mobileOpen}
+						onClose={handleDrawerToggle}
+						classes={{
+							paper: classes.drawerPaper,
+						}}
+						ModalProps={{
+							keepMounted: true, // Better open performance on mobile.
+						}}
+					>
+						{drawer}
+					</Drawer>
+				</Hidden>
+				<Hidden smDown implementation="css">
+					<Drawer
+						classes={{
+							paper: classes.drawerPaper,
+						}}
+						variant="permanent"
+						open
+					>
+						{drawer}
+					</Drawer>
+				</Hidden>
+			</nav>
+			<main className={classes.content}>
+				<div className={classes.toolbar} >
+						
+				</div>
 				<div className={classes.chatContainer}>
 					<Chat message="안녕하세요" time="2021.5.24 12:00:23" send />
 					<Chat
@@ -170,32 +223,17 @@ export default function ChatPage() {
 						time="2021.5.24 12:00:23"
 					/>
 				</div>
-			</section>
-
-			{/* <Hidden mdDown> */}
-				<section className={classes.postInfoSection}>
-					<header className={classes.sectionHeader}>
-						<IconButton>
-							<ChevronRightIcon onClick={null} />
-						</IconButton>
-					</header>
-					<Divider />
-					<div>
-						<ItemCard
-							id
-							title='타이틀임'
-							category='carrier'
-							addr='주소임'
-							createdDate='2020-12-30'
-							userId='hy7873'
-							onClickItem={null}
-							img='https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA0MjBfMTcx%2FMDAxNjE4OTI3NTQ1NzUy.d0-ipQ6rWIvYH7lqEPA8o5j8rB7r7yxZ78-QAfBeSfsg.tTSUhUXLva-kdlGMvHkFL9iLt84CO8GAsd1DA7wSFpUg.JPEG.pentoinsoo%2F01-KT%25B0%25B6%25B7%25B0%25BD%25C3%25B3%25EB%25C6%25AE5%25B1%25E2%25B1%25E2%25BA%25AF%25B0%25E6.jpg&type=a340'
-						/>
-						{/* <Typography variant='h4'>포스트 이름</Typography> */}
-						<Divider />
-					</div>
-				</section>
-			{/* </Hidden> */}
+			</main>
 		</div>
 	);
 }
+
+ChatPage.propTypes = {
+	/**
+	 * Injected by the documentation to work in an iframe.
+	 * You won't need it on your project.
+	 */
+	window: PropTypes.func,
+};
+
+export default ChatPage;
