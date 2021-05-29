@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	media: {
 		height: 200,
+    width: 300,
 	},
   itemInfo:{
     display:'flex',
