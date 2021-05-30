@@ -1,92 +1,76 @@
-import React from  'react';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import ItemCard from 'components/ItemCard';
 
-
-
-const useStyles = makeStyles((theme) => ({
-    icon: {
-      marginRight: theme.spacing(2),
-    },
-    heroContent: {
-      backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing(8, 0, 6),
-    },
-    heroButtons: {
-      marginTop: theme.spacing(4),
-    },
-    cardGrid: {
-      paddingTop: theme.spacing(8),
-      paddingBottom: theme.spacing(8),
-    },
-    card: {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    cardMedia: {
-      paddingTop: '56.25%', // 16:9
-      
-    },
-  /*   navTab:{
+const useStyles = makeStyles(theme => ({
+	icon: {
+		marginRight: theme.spacing(2),
+	},
+	heroContent: {
+		backgroundColor: theme.palette.background.paper,
+		padding: theme.spacing(8, 0, 6),
+	},
+	heroButtons: {
+		marginTop: theme.spacing(4),
+	},
+	cardGrid: {
+		paddingTop: theme.spacing(8),
+		paddingBottom: theme.spacing(8),
+	},
+	card: {
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+	},
+	cardMedia: {
+		paddingTop: '56.25%', // 16:9
+	},
+	/*   navTab:{
       paddingTop: theme.spacing(8),
       paddingBottom: theme.spacing(8),
     }, */
-  
-  
-  
-   /*  cardContent: {
+
+	/*  cardContent: {
       flexGrow: 1,
     }, */
-    section: {
-      paddingTop: theme.spacing(50),
-      paddingBottom: theme.spacing(16),
-      paddingLeft: theme.spacing(8),
-      paddingRight: theme.spacing(8),
-  },
-  }));
-  const cards = [1, 2, 3, 4];
+	section: {
+		paddingTop: theme.spacing(50),
+		paddingBottom: theme.spacing(16),
+		paddingLeft: theme.spacing(8),
+		paddingRight: theme.spacing(8),
+	},
+}));
 
-const MyPost = ({thumbnail}) =>{
-    const classes = useStyles();
-    return (
-        <Container className={classes.cardGrid} maxWidth="md">
+const MyPost = ({ items, history }) => {
+	const classes = useStyles();
 
-    <Typography gutterBottom variant="h5" component="h1">
-                      MYPOST
-    </Typography>
-        
-         
-    <Grid container spacing={4}>
-            {cards.map((card) => (
-      <Grid item key={card} xs={6} sm={3} md={2}>
-        <Card className={classes.card}>
-            <CardMedia
-                    className={classes.cardMedia}
-                   /*  image="https://source.unsplash.com/random" */
-                   {...thumbnail.slice(1).map((image, index) => (  //여기 왜 ...이 들어가야 하는 지 모르겠음
-                    <Grid key={index} item md={6}>
-                      <img
-                        className={classes.thumbnailImage}
-                        src={image.filepath+'/'+image.filename}
-                        alt=""
-                      />
-                    </Grid>
-                  ))}
-                    title="Image title"
-             />
-                           
-        </Card>
-      </Grid>
-            ))}
-    </Grid>
-  </Container>
-        
-    );
+	return (
+		<section className={classes.cardGrid} >
+			<Typography gutterBottom variant="h5" component="h1">
+				MY POST
+			</Typography>
+
+			<Grid container spacing={4}>
+				{items.length === 0 ? (
+					<div className={classes.noContents}>noContents</div>
+				) : (
+					<Grid container spacing={2}>
+						{items.map(item => (
+							<Grid key={item.id} item md={3} sm={4} xs={6}>
+								<ItemCard
+									{...item}
+									onClickItem={()=> history.push(`/post/${item.id}`)}
+								/>
+							</Grid>
+						))}
+					</Grid>
+				)}
+			</Grid>
+		</section>
+	);
 };
 
 export default MyPost;

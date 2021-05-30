@@ -1,6 +1,6 @@
 import React from 'react';
 import Renting from '../components/mypage/Renting';
-import Mypost from '../components/mypage/Mypost';
+import MyPost from '../components/mypage/MyPost';
 import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 
@@ -11,7 +11,7 @@ const BorrowerPage = () => {
     <Navigation/>
     <Renting/>
     <Reservation/>
-    <Mypost/>
+    <MyPost/>
     </>
   );
 };

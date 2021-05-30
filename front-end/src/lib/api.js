@@ -1,5 +1,4 @@
 import axios from 'axios'
-import qs from 'qs';
 
 export const join = ({username, password, email, addr}) => axios.post('/api/user/join', {username, password, email, addr});
 export const login = ({username, password}) => axios.post('/api/user/login', {username, password});
@@ -24,3 +23,5 @@ export const getFiles = ({post_id})=> axios.get(`/api/file/${post_id}`);
 export const search = ({params, page, size}) => axios.get(`/api/post/page${params}page=${page}&size=${size}`);
 
 export const createChatroom = ({post_id}) => axios.post(`/uauth/api/chatroom/`, {postId: post_id});
+
+export const getMyPost = () => axios.get(`/uauth/api/post`);
