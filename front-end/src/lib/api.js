@@ -15,7 +15,7 @@ export const getPost = ({post_id})=> axios.get(`/api/post/${post_id}`);
 export const reserve = ({post_id, startDate, endDate}) => axios.post(`/uauth/api/contract`, {postId: post_id, startDate, endDate});
 export const getBlockedDates = ({post_id}) => axios.get(`/api/post/${post_id}/contract`);
 
-export const uploadFiles = ({post_id, formData, config}) => axios.post(`/api/file/upload/${post_id}`, formData, config);
+export const uploadFiles = ({post_id, formData, config}) => axios.post(`/api/file/${post_id}`, formData, config);
 export const editFiles = ({post_id, formData, config}) => axios.put(`/api/file/upload/${post_id}`, formData, config);
 
 export const getFiles = ({post_id})=> axios.get(`/api/file/${post_id}`);
