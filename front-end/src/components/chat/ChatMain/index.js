@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Button, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -42,32 +43,33 @@ const useStyles = makeStyles(theme => ({
 		float: 'right',
 		margin: theme.spacing(1),
 	},
+	me: {
+		marginLeft: 'auto', 
+		background: theme.palette.primary.main,
+		'& p': {
+			color: theme.palette.primary.contrastText,
+		},
+	},
 }));
 
 const ChatMain = ({ chatList }) => {
 	const classes = useStyles();
 
 	const Chat = ({ message, time, me }) => (
-		<div>
 			<Paper
-				className={classes.chat}
-				style={
-					me
-						? { marginLeft: 'auto', background: 'blue' }
-						: { background: 'white' }
-				}
+				className={clsx(classes.chat, me && classes.me)}
 				elevation={2}
 			>
-				<Typography variant="body1">{message}</Typography>
-				<Typography variant="caption">{time}</Typography>
+				<Typography variant="body1" component='p'>{message}</Typography>
+				<br/>
+				<Typography variant="caption" component='p'>{time}</Typography>
 			</Paper>
-		</div>
 	);
 
 	return (
 		<div className={classes.root}>
 			<section className={classes.chatSection}>
-				<Chat message="안녕하세요" time="2021.5.24 12:00:23" me />
+				<Chat message="안녕하세요fasdfadsfsdfs" time="2021.5.24 12:00:23" me />
 				<Chat
 					message="네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지"
 					time="2021.5.24 12:00:23"
