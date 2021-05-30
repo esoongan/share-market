@@ -14,6 +14,10 @@ const useStyles = makeStyles(theme => ({
 	
 	title: {
 		flexGrow: 1,
+		'&:visited':{
+			color: 'white',
+		},
+		textDecoration: 'none',
 	},
 }));
 
@@ -42,10 +46,9 @@ export default function Header({children}) {
 				<Toolbar>
 					{children}
 
-					<Typography variant="h6" className={classes.title}>
+					<Typography component={RouterLink} to='/' variant="h6" className={classes.title}>
 						로고
 					</Typography>
-					{/* !logged로 바꿔야 됨! */}
 					{!logged ? (
 						<div>
 							<Button color="inherit" onClick={onClickLogin}>
