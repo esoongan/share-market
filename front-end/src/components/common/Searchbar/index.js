@@ -49,8 +49,8 @@ const selectStyles = {
 	}),
 	indicatorSeparator: styles => ({ ...styles, backgroundColor: 0 }),
 };
-const categoryOption = [{ label: '전체', value: '' }, ...categories];
-const cityOption = [{ label: '전체', value: '' }, ...cities];
+const categoryOption = [{ label: '전체', value: false }, ...categories];
+const cityOption = [{ label: '전체', value: false }, ...cities];
 
 function Searchbar({ history }) {
 	const classes = useStyles();
@@ -65,11 +65,19 @@ function Searchbar({ history }) {
 	const onFocusInput = focusDate => {
 		setFocusInput(focusDate);
 	};
-	const onSelectCategory = ({ value }) => {
-		setCategory(value);
+	const onSelectCategory = ({ value, label }) => {
+		if(!value){
+			setCategory(null);
+			return;
+		}
+		setCategory(label);
 	};
-	const onSelectCity = ({ value }) => {
-		setCity(value);
+	const onSelectCity = ({ value, label }) => {
+		if(!value){
+			setCity(null);
+			return;
+		}
+		setCity(label);
 	};
 	const onInputChange = e => {
 		setKeyword(e.target.value);
@@ -77,10 +85,10 @@ function Searchbar({ history }) {
 	const onSearch = () => {
 		let url = '/list/1?';
 		let query = '';
-		if (city !== null && city !== '') {
+		if (city !== null) {
 			query += '&addr=' + city;
 		}
-		if (category !== null && category !== '') {
+		if (category !== null) {
 			query += '&category=' + category;
 		}
 		if (keyword !== '') {

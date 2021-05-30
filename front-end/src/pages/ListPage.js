@@ -71,7 +71,7 @@ const ListPage = ({ location, match, history }) => {
 			) : (
 				<List
 					city={addr ? addr : '모든 도시'}
-					category={category ? getLabel(categories, category) : '모든 카테고리'}
+					category={category ? category : '모든 카테고리'}
 					keyword={keyword ? keyword : '전체'}
 					period={start&&end ? `${start} ~ ${end}` : '모든 기간'}
 					items={content}
