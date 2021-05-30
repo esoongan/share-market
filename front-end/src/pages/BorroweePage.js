@@ -9,7 +9,6 @@ import { getMyPost } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-	myPostSection: {},
 }));
 const BorroweePage = ({ history }) => {
 	const classes = useStyles();
@@ -29,9 +28,7 @@ const BorroweePage = ({ history }) => {
       <Contracts/>
 			{/* <Renting /> */}
 			{/* <Reservation /> */}
-			<section className={classes.myPostSection}>
-				<MyPost items={content} history={history} />
-			</section>
+			<MyPost items={content} history={history} />
 		</>
 	);
 };

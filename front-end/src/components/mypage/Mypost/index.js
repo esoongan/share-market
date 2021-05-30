@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import ItemCard from 'components/ItemCard';
 
 const useStyles = makeStyles(theme => ({
+	root:{
+		marginBottom: theme.spacing(10),
+	},
 	itemsContainer: {
 		display: 'flex',
 		flexWrap: 'nowrap',

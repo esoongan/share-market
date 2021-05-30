@@ -77,3 +77,45 @@ export const testContracts = [
 		state: 'accept',
 	},
 ];
+export const testContracts2 = [
+	{
+		id: 4,
+		postId: 2,
+		sellerId: 1,
+		buyerId: 2,
+		startDate: '2021-12-09',
+		endDate: '2021-12-11',
+		state: 'accept',
+	},
+	{
+		id: 5,
+		postId: 2,
+		sellerId: 1,
+		buyerId: 2,
+		startDate: '2021-12-09',
+		endDate: '2021-12-11',
+		state: 'default',
+	},
+	{
+		id: 6,
+		postId: 2,
+		sellerId: 1,
+		buyerId: 2,
+		startDate: '2021-12-09',
+		endDate: '2021-12-11',
+		state: 'accept',
+	},
+];
+
+export const testPost = 
+{
+    "id": 1,
+    "user_id": "sjinlee",
+    "title": "제일 위에 보여야함",
+    "content": "산지얼마안된",
+    "category": "carrier",
+    "addr": "서울",
+    "price": "30000",
+    "deposit": "5000",
+    "createdDate": "2021-05-17T02:30:33.526168",
+}
