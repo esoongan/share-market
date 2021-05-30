@@ -46,7 +46,7 @@ const App = () => {
 						<Route exact path="/list/:pageNumber?" component={ListPage} />
 						<Route exact path="/mypage/borrower" component={BorrowerPage} />
 						<Route exact path="/mypage/borrowee" component={BorroweePage} />
-						<Route exact path="/chat" component={ChatPage} />
+						<Route exact path="/mypage/chat" component={ChatPage} />
 						<Route component={NotFoundPage} />
 					</Switch>
 					{/* <Base /> */}
