@@ -9,31 +9,36 @@ import {
 	getPost,
 	reserve,
 	getBlockedDates,
+	initialize,
 } from 'store/modules/post';
 import Grid from '@material-ui/core/Grid';
 import { toggleEditMode } from 'store/modules/editor';
 import { toggleModal } from 'store/modules/base';
 
-const NewPostPage = ({ match, history }) => {
+const PostPage = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const post_id = match.params.post_id;
 	const [editable, setEditable] = useState(false);
-	const { success, post, images, failure, myId, blocked } = useSelector(
-		({ pender, post, auth }) => ({
+	const { success, post, images, failure, myId, blocked, reserved } =
+		useSelector(({ pender, post, auth }) => ({
 			post: post.post,
 			images: post.images,
-			success: pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
-			failure: pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
-			myId: auth.user.username,		//현재 로그인한 유저의 username -> 내가 작성한 포스트일 때 수정 및 삭제 가능하도록
+			success:
+				pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
+			failure:
+				pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
+			myId: auth.user.username, //현재 로그인한 유저의 username -> 내가 작성한 포스트일 때 수정 및 삭제 가능하도록
 			blocked: post.blocked,
-		}),
-	);
+			reserved: post.reserved,
+		}));
+	useEffect(() => {
+		return dispatch(initialize());
+	}, [myId, dispatch]);
 
 	useEffect(() => {
 		dispatch(getPost({ post_id })); //POST 게시물 api 호출
 		dispatch(getFiles({ post_id })); //POST 파일 api 호출
 		dispatch(getBlockedDates({ post_id })); // 이미 예약된 날짜들 불러오기
-
 		if (myId === post.username) {
 			//내가 쓴 게시물일 때
 			setEditable(true);
@@ -41,6 +46,14 @@ const NewPostPage = ({ match, history }) => {
 			setEditable(false);
 		}
 	}, [dispatch, post_id, myId, post.username]);
+
+	useEffect(() => {
+		if (reserved) {
+			alert('예약 요청을 보냈습니다.');
+		} else if (reserved === false) {
+			alert('예약 요청에 실패하였습니다. 다시 시도해주세요.');
+		}
+	}, [reserved]);
 
 	if (success) {
 		//내가 작성한 게시물 수정
@@ -109,6 +122,7 @@ const NewPostPage = ({ match, history }) => {
 							onClickReserve={onClickReserve}
 							// blocked={testBlocked}
 							blocked={blocked}
+							reserved={reserved}
 						/>
 					</Grid>
 				</Grid>
@@ -120,4 +134,4 @@ const NewPostPage = ({ match, history }) => {
 		return <div>Loading...</div>;
 	}
 };
-export default NewPostPage;
+export default PostPage;
