@@ -7,6 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import Divider from '@material-ui/core/Divider';
+import { Link as RouterLink } from 'react-router-dom';
+
 //todo: 각 메뉴별 페이지로 이동하기
 const StyledMenu = withStyles({
 	paper: {
@@ -58,7 +60,7 @@ export default function HeaderMenu({
 					</ListItemIcon>
 					<ListItemText primary="마이페이지" />
 				</StyledMenuItem>
-				<StyledMenuItem>
+				<StyledMenuItem component={RouterLink} to='/mypage/chat'>
 					<ListItemIcon>
 						<DraftsIcon fontSize="small" />
 					</ListItemIcon>

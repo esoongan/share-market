@@ -1,33 +1,26 @@
 import axios from 'axios'
 import qs from 'qs';
 
-
-
-export const join = ({username, password, email, addr}) => axios.post('/join', {username, password, email, addr});
-export const login = ({username, password}) => axios.post('/login', {username, password});
+export const join = ({username, password, email, addr}) => axios.post('/api/user/join', {username, password, email, addr});
+export const login = ({username, password}) => axios.post('/api/user/login', {username, password});
 export const checkUser = ({token}) => {
   const config = { headers: {'X-AUTH_TOKEN': token } };
   const data = {'X-AUTH-TOKEN' : token};
-  return axios.get('/user/api/check', data, config );
+  return axios.get('/uauth/api/user/login', data, config );
 }
-export const writePost = ({title, content, category, price, deposit}) => axios.post('/user/api/posts', {title, content, category, price, deposit});
-export const uploadFiles = ({post_id, formData, config}) => axios.post(`/uploadMultipleFiles/${post_id}`, formData, config);
-export const getPost = ({post_id})=> axios.get(`/api/posts/${post_id}`);
-export const getFiles = ({post_id})=> axios.get(`/post/${post_id}/files`);
+export const writePost = ({title, content, category, price, deposit}) => axios.post('/uauth/api/post', {title, content, category, price, deposit});
+export const editPost = ({post_id, title, content, category, price, deposit}) => axios.put(`/uauth/api/post/${post_id}`, {title, content, category, price, deposit});
 
+export const deletePost = ({post_id})=> axios.delete(`/uauth/api/post/${post_id}`);
+export const getPost = ({post_id})=> axios.get(`/api/post/${post_id}`);
+export const reserve = ({post_id, startDate, endDate}) => axios.post(`/uauth/api/contract`, {postId: post_id, startDate, endDate});
+export const getBlockedDates = ({post_id}) => axios.get(`/api/post/${post_id}/contract`);
 
-export const getMyPost = ({token}) => {
-  const config = { headers: {'X-AUTH_TOKEN': token } };
-  const data = {'X-AUTH-TOKEN' : token};
-  return axios.get('/uauth/api/post', data, config );
-}
+export const uploadFiles = ({post_id, formData, config}) => axios.post(`/api/file/${post_id}`, formData, config);
+export const editFiles = ({post_id, formData, config}) => axios.put(`/api/file/upload/${post_id}`, formData, config);
 
-export const getContractSeller = ({state}) => {
-  const queryString = qs.stringify({
-    state,
-  });
-  return axios.get('/uauth/api/contract/seller?{queryString}');
-};
+export const getFiles = ({post_id})=> axios.get(`/api/file/${post_id}`);
 
-export const getContractBuyer = ({state}) =>axios.get('/uauth/api/contract/buyer/${state}');
- 
+export const search = ({params, page, size}) => axios.get(`/api/post/page${params}page=${page}&size=${size}`);
+
+export const createChatroom = ({post_id}) => axios.post(`/uauth/api/chatroom/`, {postId: post_id});

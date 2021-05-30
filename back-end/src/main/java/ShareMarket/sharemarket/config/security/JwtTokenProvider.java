@@ -1,8 +1,6 @@
 package ShareMarket.sharemarket.config.security;
 
 
-import ShareMarket.sharemarket.domain.users.MemberType;
-import ShareMarket.sharemarket.domain.users.User;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component

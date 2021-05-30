@@ -50,8 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() //요청에 대한 사용권한 체크 (페이지권할설정)
                     //.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight요청은 인증처리를 하지 않겠다는것
                     .antMatchers(HttpMethod.OPTIONS).permitAll() // preflight로 오는 option메소드들은 모두 허용하겠다. (위줄이랑 같은 효과인듯)
-                    .antMatchers("/admin/**").hasRole("ADMIN") //admin으로 시작하는 경로는 ADMIN롤을 가진 사용자만 접근가능
-                    .antMatchers("/user/**").hasRole("USER") //user로 시작하는 경로는 USER롤을 가진 사용자만 접근가능
+                    .antMatchers("/aauth/**").hasRole("ADMIN") //admin으로 시작하는 경로는 ADMIN롤을 가진 사용자만 접근가능
+                    .antMatchers("/uauth/**").hasRole("USER") //user로 시작하는 경로는 USER롤을 가진 사용자만 접근가능
                     .antMatchers("/**").permitAll()// 그외 나머지 요청은 누구나 접근 가능
                     .antMatchers("/h2-console/**").permitAll()
                     .anyRequest().authenticated().and()

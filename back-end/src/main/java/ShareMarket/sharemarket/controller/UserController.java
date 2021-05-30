@@ -1,10 +1,15 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.users.User;
-import ShareMarket.sharemarket.dto.UserRequestDto;
+import ShareMarket.sharemarket.domain.user.User;
+import ShareMarket.sharemarket.dto.user.UserRequestDto;
+import ShareMarket.sharemarket.model.DefaultRes;
+import ShareMarket.sharemarket.model.HttpResponseMessage;
+import ShareMarket.sharemarket.model.HttpStatusCode;
 import ShareMarket.sharemarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.dialect.unique.DefaultUniqueDelegate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +27,7 @@ public class UserController {
     private final UserService userService;
 
     //회원가입
-    @PostMapping("/join")
+    @PostMapping("/api/user/join")
     public ResponseEntity<User> join(@RequestBody UserRequestDto userRequestDto) throws URISyntaxException {
 
         log.info("resource -> {}", userRequestDto);
@@ -30,18 +35,21 @@ public class UserController {
         log.info("user -> {}", user);
         log.info("회원가입 성공");
         URI url = new URI(String.format("/users/%s", user.getId()));
-        return ResponseEntity.created(url).body(user);
+        return new ResponseEntity(DefaultRes.response(
+                HttpStatusCode.CREATED,
+                HttpResponseMessage.CREATED_USER,
+                user), HttpStatus.CREATED);
     }
 
     //로그인
-    @PostMapping("/login")
+    @PostMapping("/api/user/login")
     public ResponseEntity<?> login(@RequestBody UserRequestDto userRequestDto) throws Exception {
         String token =  userService.login(userRequestDto);
         return ResponseEntity.ok(token);
     }
 
     //현재 요청 토큰에 담긴 사용자 정보조회
-    @GetMapping("/user/api/check")
+    @GetMapping("/uauth/api/user/login")
     @ResponseBody
     public UserDetails currentUserName(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -49,7 +57,7 @@ public class UserController {
     }
 
     //유저_id(기본키값)에 따른 유저정보 조회
-    @GetMapping("/users/{id}")
+    @GetMapping("/api/user/{id}")
     public User details(@PathVariable Long id) {
         return userService.detail(id);
     }

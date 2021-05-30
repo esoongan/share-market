@@ -4,9 +4,7 @@ import produce from 'immer';
 //action types
 const TOGGLE_MODAL = 'base/TOGGLE_MODAL';
 const TOGGLE_SNACKBAR = 'base/TOGGLE_SNACKBAR';
-const HIDE_MODAL = 'base/HIDE_MODAL';
 //action creators
-export const hideModal = createAction(HIDE_MODAL);
 export const toggleModal = createAction(TOGGLE_MODAL);
 export const toggleSnackbar = createAction(TOGGLE_SNACKBAR);
 
@@ -14,6 +12,7 @@ export const toggleSnackbar = createAction(TOGGLE_SNACKBAR);
 const initialState = {
 	modals: {
 		loginModal: false,
+		chatModal: false,
 	},
 	snackbars: {},
 };
@@ -21,14 +20,11 @@ const initialState = {
 //reducer
 export default handleActions(
 	{
-		[HIDE_MODAL]: (state, { payload: modal }) =>
-			produce(state, draft => {
-				draft.modals[modal] = false;
-			}),
-		[TOGGLE_MODAL]: (state, { payload: modal }) =>
-			produce(state, draft => {
-				draft.modals[modal] = !draft.modals[modal];
-			}),
+		[TOGGLE_MODAL]: (state, { payload }) =>{
+			const {modal, visible} = payload;
+			return produce(state, draft => {
+				draft.modals[modal] = visible;
+			})},
 		[TOGGLE_SNACKBAR]: (state, { payload: snackbar }) =>
 			produce(state, draft => {
 				draft.snackbars[snackbar] = !draft.snackbars[snackbar];

@@ -32,8 +32,7 @@ const App = () => {
             <Route exact path='/' component={HomePage} />
             <Route exact path='/join' component={JoinPage} />
             <Route exact path='/post/editor/:post_id?' component={EditorPage} />
-            {/* <Route exact path='/post/:post_id' component={PostPage} /> */}
-            <Route exact path='/post/:post_id' component={NewPostPage} />
+            <Route exact path='/post/:post_id' component={PostPage} />
 
             <Route exact path='/list/:pageNumber?' component={ListPage} />
           
