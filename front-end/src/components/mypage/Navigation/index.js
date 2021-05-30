@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
-import { BorroweePage, BorrowerPage } from 'pages';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -36,8 +35,6 @@ export default function Navigation() {
 				</Link>
 			</ButtonGroup>
 			<hr />
-			<Route path="/mypage/borrower" component={BorrowerPage} />
-			<Route path="/mypage/borrowee" component={BorroweePage} />
 		</section>
 	);
 }
