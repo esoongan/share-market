@@ -51,7 +51,7 @@ const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem,
           <div className={classes.addr}><RoomIcon/><Typography component='span'>{addr}</Typography></div>
         </div>
         <div className={classes.itemInfo}>
-          <Typography color='textSecondary'>작성자: {userId}</Typography> 
+          <Typography color='textSecondary'>{userId}</Typography> 
           <Typography color='textSecondary'>{createdDate.substring(0,10)} </Typography>
         </div>
         <div>

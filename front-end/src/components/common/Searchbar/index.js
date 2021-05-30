@@ -87,11 +87,11 @@ function Searchbar({ history }) {
 			query += '&keyword=' + keyword;
 		}
 		if (dateRange.startDate) {
-			let start = dateRange.startDate.toJSON().substring(0, 9); //2020-12-25
+			let start = dateRange.startDate.format('YYYY-MM-DD'); //2020-12-25
 			query += `&start=${start}`;
 		}
 		if (dateRange.endDate) {
-			let end = dateRange.endDate.toJSON().substring(0, 9);
+			let end = dateRange.endDate.format('YYYY-MM-DD');
 			query += `&end=${end}`;
 		}
 		history.push(url + query);

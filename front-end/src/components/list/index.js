@@ -46,7 +46,6 @@ const List = ({
 	return (
 		<>
 			<section className={classes.subjectSection}>
-				{/* TODO: period */}
 				<Typography component="h2" variant="h4">
 					{period}, {city}의 {category}
 				</Typography>
