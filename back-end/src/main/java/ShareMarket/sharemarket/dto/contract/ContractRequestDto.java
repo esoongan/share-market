@@ -18,8 +18,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ContractRequestDto {
 
-    private Long postId; // 게시글번호
-    private Post post;
+    private Long postId; // 게시글번호 (클라리언트로부터 받기위해 존재)
+    private Post post; // Entity 에 저장할때 필요
     private Long sellerId; // 빌려주는사람
     private Long buyerId; // 빌리는사람
     private LocalDate startDate; // 시작날짜

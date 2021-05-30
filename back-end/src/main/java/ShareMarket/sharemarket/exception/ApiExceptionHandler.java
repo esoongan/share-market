@@ -1,5 +1,8 @@
 package ShareMarket.sharemarket.exception;
 
+import ShareMarket.sharemarket.model.DefaultRes;
+import ShareMarket.sharemarket.model.HttpResponseMessage;
+import ShareMarket.sharemarket.model.HttpStatusCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,5 +18,13 @@ public class ApiExceptionHandler {
                 "No Post is found with ID :" + ex.getId()
         );
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<DefaultRes> handleException(FileNotFoundException ex) {
+        return new ResponseEntity<>(
+                DefaultRes.response(HttpStatusCode.NOT_FOUND,
+                        HttpResponseMessage.FILE_NOT_FOUND+" : "+ex.getId()), HttpStatus.NOT_FOUND);
+
     }
 }

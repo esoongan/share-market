@@ -9,27 +9,48 @@ import java.util.Date;
 
 public class ContractSpecification {
 
-    // 인자로 주어진 시작시간보다 크거나 같은것을 찾는 spec
-    public static Specification<Post> beforeStartDate(Date startDate) {
-        return new Specification<Post>() {
+    //1번조건 : 시작시간이 start, end사이이거나
+    public static Specification<Contract> betweenStartDate(LocalDate startDate, LocalDate endDate) {
+        return new Specification<Contract>() {
             @Override
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Contract, Post> postContractJoin = root.join("post", JoinType.INNER);
+            public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
-                return cb.greaterThanOrEqualTo(root.get("startDate").as(Date.class), startDate);
+                return cb.between(root.get("startDate"), startDate, endDate);
             }
         };
     }
 
-    // 인자로 주어진 종료시간보다 작거나 같은것을 찾는 spec
-    public static Specification<Post> afterEndDate(LocalDate endDate) {
-        return new Specification<Post>() {
+    //2-1번조건  : 시작시간이 start이하이면서
+    public static Specification<Contract> lessThanStartDate(LocalDate startDate) {
+        return new Specification<Contract>() {
             @Override
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Post, Contract> postContractJoin = root.join("post", JoinType.INNER);
+            public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
-                return cb.lessThanOrEqualTo(root.get("endDate"), endDate);
+                return cb.lessThanOrEqualTo(root.get("startDate"), startDate);
             }
         };
     }
+
+    //2-2번조건  : 종료시간이 start이상인것
+    public static Specification<Contract> greaterThanEndDate(LocalDate startDate) {
+        return new Specification<Contract>() {
+            @Override
+            public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+
+                return cb.greaterThanOrEqualTo(root.get("endDate"), startDate);
+            }
+        };
+    }
+
+    //3번조건 : state가 accept인것
+    public static Specification<Contract> equalSate(String state) {
+        return new Specification<Contract>() {
+            @Override
+            public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+
+                return cb.equal(root.get("state"), state);
+            }
+        };
+    }
+
 }

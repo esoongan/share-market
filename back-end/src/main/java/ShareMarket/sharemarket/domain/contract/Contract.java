@@ -18,14 +18,10 @@ public class Contract extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // pk
-
-    // RequestBody에 담아서 요청
-//    private Long postId; // 게시글번호
+    private Long id; // pk (ContractId)
 
     //다른 테이블과의 조인을 지정
     // Post 1개당 여러개의 Contract : Contract입장에서 ManyToOne
-
     @ManyToOne(targetEntity = Post.class, fetch = FetchType.LAZY) // many-to-one일때는 성능문제로 지연로딩하는것이 좋다.
     @JoinColumn(name="postId") // 매핑할 외래키 이름
     private Post post;

@@ -1,27 +1,34 @@
 package ShareMarket.sharemarket.service;
 
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.post.PostSpecification;
+import ShareMarket.sharemarket.dto.file.FileResponseDto;
 import ShareMarket.sharemarket.dto.paging.PagingDto;
+import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class PagingService {
 
     private final PostRepository postsRepository;
-    private final PostService postService;
+    private final FileRepository fileRepository;
+    private final ContractService contractService;
     private final UserService userService;
 
-    public Page<PagingDto> searchPaging(String keyword, String category, String addr, Pageable pageable) {
+    public Page<PagingResponseDto> searchPaging(String keyword, String category, String addr, LocalDate startDate, LocalDate endDate, Pageable pageable) {
         Specification<Post> spec = null;
         // 키워드 - 제목이나 내용
         if (keyword != null) {
@@ -40,21 +47,35 @@ public class PagingService {
         if (addr != null) {
             // 키워드, 카테고리에서 안걸리고 addr에서 처음 걸린경우
             if (spec == null) {
-                // isAddr로 수정~~~~~~~~
                 spec = PostSpecification.equalAddr(addr);
             }else{ // 키워드나 카테고리 어디서든 걸린경우
                 spec = spec.and(PostSpecification.equalAddr(addr));
+            }
+        }
+        // 대여기간 (시작시간과 종료기간은 무조건 같이오게됨-> 시작날짜만 체크해도 됨)
+        if (startDate != null) {
+            // 클라로부터 온 기간안에 accept인 거래가 있는 게시글목록들 ( 즉 빼야하는애들 )
+            List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate);
+            log.info("제외시킬 게시글개수 : "+ String.valueOf(postIdtoExclude.size()));
+            // 키워드, 카테고리, 지역에서 안걸리고 대여조건에서 처음 걸린경우
+            if (spec == null) {
+                spec = PostSpecification.notEqualPostId(postIdtoExclude);
+            }
+            else {
+                spec = spec.and(PostSpecification.notEqualPostId(postIdtoExclude));
             }
         }
         // 검색조건없이 default페이징 요청인 경우
         if (spec == null) {
             return paging(pageable);
         }
+
         Page<Post> postPage = postsRepository.findAll(spec, pageable);
 
         return postPage.map(
-                post -> new PagingDto(
+                post -> new PagingResponseDto(
                         post.getId(),
+                        new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
                         post.getTitle(),
                         post.getUser().getUsername(),
                         post.getCategory(),
@@ -64,14 +85,15 @@ public class PagingService {
     }
 
     // default : 페이징으로 게시글 반환
-    public Page<PagingDto> paging(Pageable pageable){
+    public Page<PagingResponseDto> paging(Pageable pageable){
 
         Page<Post> postList = postsRepository.findAll(pageable);
 
         // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-        Page<PagingDto> pagingDtos = postList.map(
-                post -> new PagingDto(
+        Page<PagingResponseDto> pagingDtos = postList.map(
+                post -> new PagingResponseDto(
                         post.getId(),
+                        new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
                         post.getTitle(),
                         post.getUser().getUsername(),
                         post.getCategory(),
@@ -81,34 +103,49 @@ public class PagingService {
         return pagingDtos;
     }
 
-    //기간 테스트
-    public Page<PagingDto> testStartDate(Date startDate, Pageable pageable) {
-        Specification<Post> spec = PostSpecification.beforeStartDate(startDate);
-        Page<Post> postList = postsRepository.findAll(spec, pageable);
+    // 기간테스트
+    public Page<PagingResponseDto> test(Pageable pageable, LocalDate startDate, LocalDate endDate) {
+        log.info("SERIVICE TEST INVOKE");
 
-        // postList에 담겨있는 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
-        Page<PagingDto> pagingDtos = postList.map(
-                post -> new PagingDto(
+        // 해당 기간에 accept인 거래가 잇는 contract찾기 --> 빼야할 게시글 아이디들이 담겨있는상태
+        List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate);
+        log.info(String.valueOf(postIdtoExclude.size()));
+
+        // PostSpecification에 만들어놓은 조건으로 spec생성 --> 게시글 아이디가 담긴 리스트(제외시킬 게시글목록들)를 받아 해당리스트에 없는 게시글만 찾는 spec(not in)
+        Specification<Post> spec = PostSpecification.notEqualPostId(postIdtoExclude);
+        log.info("not equal post id스펙 성공?!");
+
+        // spec실행 -> 대여가능한 게시글 찾음
+        Page<Post> postPage = postsRepository.findAll(spec, pageable);
+        log.info("postList"+String.valueOf(postPage.getTotalPages()));
+
+
+        // postList에 담겨있는 각각의 post들을 하나씩 dto로 바꿔서 pagingList에 담아서 이걸 리턴
+        Page<PagingResponseDto> pagingDtos = postPage.map(
+                post -> new PagingResponseDto(
                         post.getId(),
+                        new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
                         post.getTitle(),
                         post.getUser().getUsername(),
                         post.getCategory(),
-                        postService.getUserDtoByPostPk(post.getId()).getAddr(),
+                        post.getUser().getAddr(),
                         post.getCreatedDate()
                 ));
         return pagingDtos;
     }
 
+
     // 작성자랑 같은지 찾는거
-    public Page<PagingDto> pagingByWriter(Pageable pageable, Authentication authentication){
+    public Page<PagingResponseDto> pagingByWriter(Pageable pageable, Authentication authentication){
 
         Specification<Post> spec = PostSpecification.equalWriter(userService.getUserByToken(authentication.getPrincipal()));
 
         Page<Post> postPage = postsRepository.findAll(spec, pageable);
 
         return postPage.map(
-                post -> new PagingDto(
+                post -> new PagingResponseDto(
                         post.getId(),
+                        new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)),
                         post.getTitle(),
                         post.getUser().getUsername(),
                         post.getCategory(),

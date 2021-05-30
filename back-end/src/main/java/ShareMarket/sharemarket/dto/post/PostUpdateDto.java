@@ -4,6 +4,8 @@ import ShareMarket.sharemarket.domain.user.User;
 
 public class PostUpdateDto {
 
+    // 바뀌는 정보만 필드로 갖기때문에 response랑 다름
+    // post update에서 인자로 전달 -> 전달받은 필드들만 업데이트
     private String title;
     private String content;
     private String category;

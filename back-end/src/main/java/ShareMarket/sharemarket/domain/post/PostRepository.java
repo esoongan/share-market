@@ -9,12 +9,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.Set;
+
 // 리포지토리 - 데이터베이스에 접근하는 영역 ( 구 개발방식에서 dao의 역할)
 // 제네릭타입에는 Entity클래스와 PK의 타입을 명시하면됨
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
-
-    Page<PostMapping> findAllBy(Pageable pageable);
 
     // 레포지토리 함수에 실제 실행될 쿼리를 매핑할 수 있음
     // 페이징 관련 쿼리는 페이징할 총 개시물갯수와 실제값 2개를 전부 가져와야 하므로 2가지에 해당하는 쿼리를 적어줌
@@ -51,9 +52,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     //6. 카테고리+지역
     //7. 키워드+카테고리+지역
 
-    // 구현한 Specificaion객체를 파라미터에 넣어주기만 하면 해당조건에 부합되는 객체를 조회할수 있따.
+    // 구현한 Specificaion객체를 파라미터에 넣어주[기만 하면 해당조건에 부합되는 객체를 조회할수 있따.
     @Override
     Page<Post> findAll(Specification<Post> spec, Pageable pageable);
+
+//    Page<Post> findAllByIdNotIn(Set<Long> postId);
 
 }
 

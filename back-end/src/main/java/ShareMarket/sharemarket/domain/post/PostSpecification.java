@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 // Specification 인터페이스를 사용하는 helper class
 // 검색 조건을 모아놓은 클래스 만들기 (Jpa의 Criteria API를 사용하게 됨) : 체
@@ -22,7 +24,6 @@ public class PostSpecification {
             }
         };
     }
-
 
     //제목에 키워드
     public static Specification<Post> likeTitle(final String searchKey) {
@@ -57,26 +58,20 @@ public class PostSpecification {
         };
     }
 
-    // 인자로 주어진 시작시간보다 크거나 같은것을 찾는 spec
-    public static Specification<Post> beforeStartDate(Date startDate) {
-        return new Specification<Post>() {
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Contract, Post> postContractJoin = root.join("post", JoinType.INNER);
-
-                return cb.greaterThanOrEqualTo(postContractJoin.get("startDate").as(Date.class), startDate);
-            }
-        };
-    }
-
-    // 인자로 주어진 종료시간보다 작거나 같은것을 찾는 spec
-    public static Specification<Post> afterEndDate(LocalDate endDate) {
+    // 게시글 번호가 담긴 리스트를 받아서 해당 리스트에 있는 게시글을 제외한것들을 찾는 spec
+    public static Specification<Post> notEqualPostId(List<Long> postId) {
         return new Specification<Post>() {
             @Override
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Post, Contract> postContractJoin = root.join("post", JoinType.INNER);
-
-                return cb.lessThanOrEqualTo(postContractJoin.get("endDate"), endDate);
+            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                // not in을 구현하는 방법, value에 collection을 줘도 되는구나
+                return criteriaBuilder.in(root.get("id")).value(postId).not();
             }
         };
     }
 }
+
+    //====================================================================================
+
+
+
+

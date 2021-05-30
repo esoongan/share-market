@@ -14,6 +14,12 @@ public class HttpResponseMessage {
     public static final String READ_CONTRACT = "거래 조회 성공";
     public static final String ACCEPT_CONTRACT = "거래 수락 성공";
     public static final String DELETE_CONTRACT = "거래 삭제 성공";
+    public static final String CREATE_ROOM = "채팅방 생성 성공";
+    public static final String READ_ROOM = "채팅방 조회 성공";
+    public static final String CREAT_CHAT = "채팅 저장 성공";
+    public static final String READ_CHAT = "채팅내역 조회 성공";
+    public static final String DELETE_SUCCESS = "삭제 성공";
+    public static final String FILE_NOT_FOUND = "존재하지 않는 파일";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
 }
