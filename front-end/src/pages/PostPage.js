@@ -122,7 +122,7 @@ const PostPage = ({ match, history }) => {
 						/>
 					</Grid>
 				</Grid>
-				<ChatModal to={post.username} defaultMsg={defaultMsg} />
+				<ChatModal post_id={post_id} to={post.username} defaultMsg={defaultMsg} />
 			</div>
 		);
 	} else if (failure) {

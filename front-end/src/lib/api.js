@@ -21,3 +21,5 @@ export const editFiles = ({post_id, formData, config}) => axios.put(`/api/file/u
 export const getFiles = ({post_id})=> axios.get(`/api/file/${post_id}`);
 
 export const search = ({params, page, size}) => axios.get(`/api/post/page${params}page=${page}&size=${size}`);
+
+export const createChatroom = ({post_id}) => axios.post(`/uauth/api/chatroom/`, {postId: post_id});

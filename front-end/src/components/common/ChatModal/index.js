@@ -4,8 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal } from 'store/modules/base';
-import Alert from '@material-ui/lab/Alert';
 import SendIcon from '@material-ui/icons/Send';
+import { createChatroom } from 'store/modules/chat';
 
 const modalStyle = {
 	top: `30%`,
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export default function ChatModal({to, defaultMsg}) {
+export default function ChatModal({post_id, to, defaultMsg}) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [input, setInput] = useState(defaultMsg);
@@ -59,9 +59,13 @@ export default function ChatModal({to, defaultMsg}) {
 	};
 	const onSubmit = () => {
 		if (input === '') {
+			alert('메시지를 입력해주세요.');
 			return;
 		}
-		// dispatch(login(inputs));
+		// 새 채팅방 생성
+		dispatch(createChatroom({post_id}));
+		alert('메시지를 전송하였습니다. 마이페이지 > 채팅에서 대화를 이어나갈 수 있습니다.')
+		handleClose();
 	};
 
 	const handleClose = () => {
@@ -96,6 +100,7 @@ export default function ChatModal({to, defaultMsg}) {
 						color="primary"
 						className={classes.submit}
 						endIcon={<SendIcon />}
+						onClick={onSubmit}
 					>
 						보내기
 					</Button>
