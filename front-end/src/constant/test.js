@@ -34,3 +34,19 @@ export const testRooms = [
 export const testMessages = [
   
 ]
+
+
+const testBlocked = [
+  {
+    startDate: '2021-06-09',
+    endDate: '2021-06-11',
+  },
+  {
+    startDate: '2021-06-16',
+    endDate: '2021-06-20',
+  },
+  {
+    startDate: '2021-07-01',
+    endDate: '2021-07-07',
+  },
+];

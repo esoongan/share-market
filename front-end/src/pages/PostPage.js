@@ -14,6 +14,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import { toggleEditMode } from 'store/modules/editor';
 import { toggleModal } from 'store/modules/base';
+import ChatModal from 'components/common/ChatModal';
 
 const PostPage = ({ match, history }) => {
 	const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const PostPage = ({ match, history }) => {
 	}, [reserved]);
 
 	if (success) {
+		const defaultMsg = `'${post.title}' 게시물에 대해 문의드립니다~!${'\n'}`;
 		//내가 작성한 게시물 수정
 		const onClickEdit = () => {
 			dispatch(toggleEditMode(true));
@@ -73,8 +75,6 @@ const PostPage = ({ match, history }) => {
 
 		// 선택한 기간으로 예약하기
 		const onClickReserve = ({ startDate, endDate }) => {
-			console.log('myId', myId);
-
 			if (!myId) {
 				//로그인 상태가 아니면
 				dispatch(toggleModal({ modal: 'loginModal', visible: true })); //로그인 모달 띄우기
@@ -82,20 +82,15 @@ const PostPage = ({ match, history }) => {
 			} else dispatch(reserve({ post_id, startDate, endDate }));
 		};
 
-		const testBlocked = [
-			{
-				startDate: '2021-06-09',
-				endDate: '2021-06-11',
-			},
-			{
-				startDate: '2021-06-16',
-				endDate: '2021-06-20',
-			},
-			{
-				startDate: '2021-07-01',
-				endDate: '2021-07-07',
-			},
-		];
+		//문의 하기 -> ChatModal 띄우기
+		const onClickChat = () => {
+			if (!myId) {
+				//로그인 상태가 아니면
+				dispatch(toggleModal({ modal: 'loginModal', visible: true })); //로그인 모달 띄우기
+				return;
+			}
+			else dispatch(toggleModal({modal: 'chatModal', visible: true}));
+		};
 
 		return (
 			<div>
@@ -120,12 +115,14 @@ const PostPage = ({ match, history }) => {
 							price={post.price}
 							editable={editable}
 							onClickReserve={onClickReserve}
+							onClickChat={onClickChat}
 							// blocked={testBlocked}
 							blocked={blocked}
 							reserved={reserved}
 						/>
 					</Grid>
 				</Grid>
+				<ChatModal to={post.username} defaultMsg={defaultMsg} />
 			</div>
 		);
 	} else if (failure) {

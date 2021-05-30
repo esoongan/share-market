@@ -35,6 +35,7 @@ export default function FloatingMenu({
 	deposit,
 	editable,
 	onClickReserve,
+	onClickChat,
 	blocked,
 	reserved,
 }) {
@@ -156,6 +157,7 @@ export default function FloatingMenu({
 				variant="contained"
 				color="secondary"
 				disabled={editable}
+				onClick={onClickChat}
 			>
 				문의하기
 			</Button>
