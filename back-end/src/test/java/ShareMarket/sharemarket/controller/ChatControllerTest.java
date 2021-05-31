@@ -22,40 +22,27 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ChatControllerTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private WebSecurityConfig webSecurityConfig;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private MockMvc mvc;
@@ -66,6 +53,12 @@ public class ChatControllerTest {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private AbstractControllerTest abstractControllerTest = new AbstractControllerTest();
 
 
     @Before
@@ -76,11 +69,11 @@ public class ChatControllerTest {
     }
 
     @Test
-    public void ChatRoom_새로생성됨() throws Exception {
+    public void 채팅방_중복생성하려할때_예외발생() throws Exception {
         //given
         User user1 = User.builder()
                 .username("seungjin")
-                .password("1234")
+                .password(passwordEncoder.encode("1234"))
                 .addr("관악구")
                 .email("seungjin97@naver.com")
                 .roles(Collections.singletonList(MemberType.USER))
@@ -89,14 +82,15 @@ public class ChatControllerTest {
         userRepository.save(user1);
 
         User user2 = User.builder()
-                .username("hayeong")
-                .password("1234")
+                .username("hayoung")
+                .password(passwordEncoder.encode("1234"))
                 .email("hy@gmail.com")
                 .addr("광진구")
                 .roles(Collections.singletonList(MemberType.USER))
                 .build();
 
         userRepository.save(user2);
+        System.out.println("비밀번호:"+user2.getPassword());
 
         Post post1 = Post.builder()
                 .title("첫번째 게시글")
@@ -109,31 +103,31 @@ public class ChatControllerTest {
 
         postRepository.save(post1);
 
-
         // 채팅방 이미 만들어져 있는 상태
-        ChatRoomDto roomDto = new ChatRoomDto(post1, user1, user2);
+        ChatRoomDto roomDto = new ChatRoomDto(post1, user2, user1);
         ChatRoom room = roomRepository.save(roomDto.toEntity());
+        System.out.println("생성된 채팅방 아이디:"+room.getId());
+
+        UserRequestDto requestDto = new UserRequestDto("hayoung", "1234");
+        String token = userService.login(requestDto);
 
         assertThat(room.getId()).isEqualTo(1);
 
+        //when
+        Map<String, Long> map = new HashMap<>();
+        map.put("postId", (long) 1);
+        mvc.perform(MockMvcRequestBuilders
+                .post("/uauth/api/chatroom")
+                .header("X-AUTH-TOKEN", token)
+                .content(AbstractControllerTest.asJsonString(map))
+                .contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value(HttpStatusCode.BAD_REQUEST))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpResponseMessage").value(HttpResponseMessage.ROOM_ALREADY_EXIST+" : "+room.getId()));
+
     }
-//    @Test
-//    @WithUserDetails("hayeong")
-//    public void 예외가_발생한다() throws Exception {
-//        //when
-//        Map<String, Long> map = new HashMap<>();
-//        mvc.perform(MockMvcRequestBuilders
-//                .post("/uauth/api/chatroom")
-//                .content(String.valueOf(map.put("postId", (long) 1)))
-//                .contentType("application/json"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.stautsCode").value(HttpStatusCode.BAD_REQUEST))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.httpResponseMessage").value(HttpResponseMessage.ROOM_ALREADY_EXIST));
+//
+//    @After
+//    public void tearDown() throws Exception {
 //
 //    }
-
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
 }

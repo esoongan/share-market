@@ -17,6 +17,8 @@ public class UserRequestDto {
     private String email;
     private String addr;
 
+
+
     public UserRequestDto(User entity) {
         this.username = entity.getUsername();
         this.password = entity.getPassword();
@@ -24,4 +26,8 @@ public class UserRequestDto {
         this.addr = entity.getAddr();
     }
 
+    public UserRequestDto(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

@@ -75,7 +75,6 @@ public class PostRepositoryTest {
         //then
         System.out.println(postPage);
 
-
     }
 
 }
