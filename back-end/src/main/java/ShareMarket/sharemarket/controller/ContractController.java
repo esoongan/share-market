@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-
+@CrossOrigin // 이게없어도 사실 되야되는데
 @RequiredArgsConstructor
 @RestController
 public class ContractController {
