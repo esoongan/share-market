@@ -5,7 +5,7 @@ import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts'
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyPost, getSellerContract } from 'store/modules/mypage';
+import { acceptContract, getMyPost, getSellerContract, refuseContract } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -34,12 +34,20 @@ const BorroweePage = ({ history }) => {
 		}
 	}, [sellerContract]);
 
+	const onClickAccept = (id) => {
+		if(window.confirm('수락하시겠습니까? 수락 시 거래가 성사됩니다.'))
+			dispatch(acceptContract({id}));
+	}
 
+	const onClickRefuse = (id) => {
+		if(window.confirm('거절하시겠습니까? 거절 시 요청이 삭제됩니다.'))
+			dispatch(refuseContract({id}));
+	}
 
 	return (
 		<>
 			<Navigation />
-      <Contracts rows={sellerContract} postList={postList}/>
+      <Contracts rows={sellerContract} postList={postList} onClickAccept={onClickAccept} onClickRefuse={onClickRefuse}/>
 			{/* <Renting /> */}
 			{/* <Reservation /> */}
 			<MyPost items={myPosts} history={history} />

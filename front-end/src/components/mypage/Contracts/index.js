@@ -67,12 +67,15 @@ const getPrice = ({ start, end, price }) => {
 	return price * (endDate.diff(startDate, 'days') + 1);
 };
 
+// 포스트 별 들어온 거래 요청을 테이블로 보여주는 컴포넌트
 function ContractTable({
 	row,
 	selectedContract,
 	onClickPrev,
 	onClickNext,
 	onChangeRadio,
+	onClickAccept,
+	onClickRefuse,
 }) {
 	const classes = useStyles();
 //TODO: 포스트 정보 가져오기 (렌탈료), 보낸 사람 pk 말고 username으로 넣기
@@ -132,13 +135,14 @@ function ContractTable({
 				</TableBody>
 			</Table>
 			<div className={selectedContract !== -1 ? classes.buttons : classes.hide}>
-				<Button variant="contained" color="primary" className={classes.button}>
+				<Button variant="contained" color="primary" className={classes.button} onClick={onClickAccept}>
 					수락
 				</Button>
 				<Button
 					variant="contained"
 					color="secondary"
 					className={classes.button}
+					onClick={onClickRefuse}
 				>
 					거절
 				</Button>
@@ -147,7 +151,7 @@ function ContractTable({
 	);
 }
 
-export default function Contracts({ rows, postList }) {
+export default function Contracts({ rows, postList, onClickAccept, onClickRefuse }) {
 	const classes = useStyles();
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
 	const [selectedContract, setSelectedContract] = React.useState(-1);
@@ -165,8 +169,14 @@ export default function Contracts({ rows, postList }) {
 		if (selectedIndex - 1 >= 0) setSelectedIndex(selectedIndex - 1);
 	};
 	const handleClickNext = () => {
-		if (selectedIndex + 1 < rows.length) setSelectedIndex(selectedIndex + 1);
+		if (selectedIndex + 1 < postList.length) setSelectedIndex(selectedIndex + 1);
 	};
+	const handleClickAccept = () => {
+		onClickAccept(selectedContract);
+	}
+	const handleClickRefuse = () => {
+		onClickRefuse(selectedContract);
+	}
 	return (
 		<div className={classes.root}>
 			<Typography gutterBottom variant="h5" component="h1">
@@ -199,6 +209,8 @@ export default function Contracts({ rows, postList }) {
 						onClickPrev={handleClickPrev}
 						onClickNext={handleClickNext}
 						onChangeRadio={handleChangeRadio}
+						onClickAccept={handleClickAccept}
+						onClickRefuse={handleClickRefuse}
 					/>
 				)}
 			</div>

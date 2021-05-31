@@ -5,8 +5,8 @@ import * as api from 'lib/api';
 //action types
 const GET_MY_POST = 'mypage/GET_MY_POST';
 const GET_SELLER_CONTRACT = 'mypage/GET_SELLER_CONTRACT';
-const ACCEPT_CONTRACT = 'mypage/ACCEPT_CONTRAC';
-const REFUSE_CONTRACT = 'mypage/REFUSE_CONTRAC';
+const ACCEPT_CONTRACT = 'mypage/ACCEPT_CONTRACT';
+const REFUSE_CONTRACT = 'mypage/REFUSE_CONTRACT';
 
 
 //action creators
