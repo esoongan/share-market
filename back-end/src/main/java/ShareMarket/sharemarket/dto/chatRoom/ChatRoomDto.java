@@ -4,22 +4,25 @@ import ShareMarket.sharemarket.domain.chat.Chat;
 import ShareMarket.sharemarket.domain.chatRoom.ChatRoom;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter //No HttpMessageConverter for ShareMarket.sharemarket.dto.chatRoom.ChatRoomDto
+@NoArgsConstructor
 public class ChatRoomDto {
     private Post post;
     private User user1;
     private User user2;
 
-    @Builder // 생성자
+    @Builder // 생성자 (setter대신 생성자로 값넣음)
     public ChatRoomDto(Post post, User user1, User user2) {
         this.post = post;
         this.user1 = user1;
         this.user2 = user2;
     }
-
 
     public ChatRoom toEntity() {
         return ChatRoom.builder() // 내부 빌더클래스 생성자

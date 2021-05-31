@@ -12,11 +12,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@RequiredArgsConstructor
 /*
 프론트에서 요청할때마다 이 필터를 먼저 거침,
 헤더에 담긴 토큰정보가 유효한지 확인하고 맞다면 요청을 수행한다.
 */
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;

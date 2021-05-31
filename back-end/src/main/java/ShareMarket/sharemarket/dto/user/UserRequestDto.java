@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.dto.user;
 
 
+import ShareMarket.sharemarket.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,12 @@ public class UserRequestDto {
     private String password;
     private String email;
     private String addr;
+
+    public UserRequestDto(User entity) {
+        this.username = entity.getUsername();
+        this.password = entity.getPassword();
+        this.email = entity.getEmail();
+        this.addr = entity.getAddr();
+    }
 
 }

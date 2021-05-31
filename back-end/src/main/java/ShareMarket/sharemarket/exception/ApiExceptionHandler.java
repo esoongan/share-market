@@ -27,4 +27,12 @@ public class ApiExceptionHandler {
                         HttpResponseMessage.FILE_NOT_FOUND+" : "+ex.getId()), HttpStatus.NOT_FOUND);
 
     }
+
+    @ExceptionHandler(ChatRoomExistException.class)
+    public ResponseEntity<DefaultRes> handleException(ChatRoomExistException ex) {
+        return new ResponseEntity<>(
+                DefaultRes.response(HttpStatusCode.BAD_REQUEST,
+                        HttpResponseMessage.ROOM_ALREADY_EXIST+" : "+ex.getId()), HttpStatus.BAD_REQUEST);
+
+    }
 }

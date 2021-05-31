@@ -15,6 +15,7 @@ public class HttpResponseMessage {
     public static final String ACCEPT_CONTRACT = "거래 수락 성공";
     public static final String DELETE_CONTRACT = "거래 삭제 성공";
     public static final String CREATE_ROOM = "채팅방 생성 성공";
+    public static final String ROOM_ALREADY_EXIST = "이미 존재하는 채팅방";
     public static final String READ_ROOM = "채팅방 조회 성공";
     public static final String CREAT_CHAT = "채팅 저장 성공";
     public static final String READ_CHAT = "채팅내역 조회 성공";
