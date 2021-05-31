@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,6 +14,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import moment from 'moment';
+import SendIcon from '@material-ui/icons/Send';
+import ChatModal from 'components/common/ChatModal';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -76,9 +78,11 @@ function ContractTable({
 	onChangeRadio,
 	onClickAccept,
 	onClickRefuse,
+	onClickChat,
 }) {
 	const classes = useStyles();
-//TODO: 포스트 정보 가져오기 (렌탈료), 보낸 사람 pk 말고 username으로 넣기
+	console.log(row);
+	//TODO: 포스트 정보 가져오기 (렌탈료), 보낸 사람 pk 말고 username으로 넣기
 	return (
 		<div style={{ flexGrow: 1 }}>
 			<header className={classes.contractHeader}>
@@ -102,10 +106,11 @@ function ContractTable({
 					<TableRow>
 						<TableCell> </TableCell>
 						<TableCell>상태</TableCell>
-						<TableCell>희망 대여 날짜</TableCell>
-						<TableCell>희망 반납 날짜</TableCell>
+						<TableCell>대여 날짜</TableCell>
+						<TableCell>반납 날짜</TableCell>
 						<TableCell align="right">총 렌탈료(₩)</TableCell>
 						<TableCell align="right">보낸 사람</TableCell>
+						<TableCell>대화하기</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -130,12 +135,30 @@ function ContractTable({
 								})}
 							</TableCell>
 							<TableCell align="right">{contract.buyerId}</TableCell>
+							<TableCell>
+								<IconButton
+									aria-label="send"
+									onClick={() =>
+										onClickChat(
+											contract.buyerId,
+											`${contract.postId} 게시물에 거래 요청해주셔서 감사합니다~!${'\n'}`,
+										)
+									}
+								>
+									<SendIcon fontSize="small" />
+								</IconButton>
+							</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
 			<div className={selectedContract !== -1 ? classes.buttons : classes.hide}>
-				<Button variant="contained" color="primary" className={classes.button} onClick={onClickAccept}>
+				<Button
+					variant="contained"
+					color="primary"
+					className={classes.button}
+					onClick={onClickAccept}
+				>
 					수락
 				</Button>
 				<Button
@@ -151,10 +174,19 @@ function ContractTable({
 	);
 }
 
-export default function Contracts({ rows, postList, onClickAccept, onClickRefuse }) {
+export default function Contracts({
+	rows,
+	postList,
+	onClickAccept,
+	onClickRefuse,
+	openChatModal,
+}) {
 	const classes = useStyles();
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
 	const [selectedContract, setSelectedContract] = React.useState(-1);
+	const [to, setTo] = useState(null);
+	const [defaultMsg, setDefaultMsg] = useState('');
+
 	React.useEffect(() => {
 		setSelectedContract(-1);
 	}, [selectedIndex]);
@@ -169,14 +201,20 @@ export default function Contracts({ rows, postList, onClickAccept, onClickRefuse
 		if (selectedIndex - 1 >= 0) setSelectedIndex(selectedIndex - 1);
 	};
 	const handleClickNext = () => {
-		if (selectedIndex + 1 < postList.length) setSelectedIndex(selectedIndex + 1);
+		if (selectedIndex + 1 < postList.length)
+			setSelectedIndex(selectedIndex + 1);
 	};
 	const handleClickAccept = () => {
 		onClickAccept(selectedContract);
-	}
+	};
 	const handleClickRefuse = () => {
 		onClickRefuse(selectedContract);
-	}
+	};
+	const handleClickChat = (to, defaultMsg) => {
+		setTo(to);
+		setDefaultMsg(defaultMsg);
+		openChatModal();
+	};
 	return (
 		<div className={classes.root}>
 			<Typography gutterBottom variant="h5" component="h1">
@@ -211,8 +249,14 @@ export default function Contracts({ rows, postList, onClickAccept, onClickRefuse
 						onChangeRadio={handleChangeRadio}
 						onClickAccept={handleClickAccept}
 						onClickRefuse={handleClickRefuse}
+						onClickChat={handleClickChat}
 					/>
 				)}
+				<ChatModal
+					post_id={postList[selectedIndex]}
+					to={to}
+					defaultMsg={defaultMsg}
+				/>
 			</div>
 		</div>
 	);

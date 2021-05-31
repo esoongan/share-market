@@ -79,7 +79,7 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 					<SendIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					{to}님에게 문의하기
+					{to}님과 대화하기
 				</Typography>
 				<div className={classes.form} noValidate>
 					<TextField

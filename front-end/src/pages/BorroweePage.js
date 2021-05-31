@@ -7,6 +7,7 @@ import Contracts from 'components/mypage/Contracts'
 import { useDispatch, useSelector } from 'react-redux';
 import { acceptContract, getMyPost, getSellerContract, refuseContract } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
+import { toggleModal } from 'store/modules/base';
 
 const useStyles = makeStyles(theme => ({
 }));
@@ -43,11 +44,14 @@ const BorroweePage = ({ history }) => {
 		if(window.confirm('거절하시겠습니까? 거절 시 요청이 삭제됩니다.'))
 			dispatch(refuseContract({id}));
 	}
+	const openChatModal = () => {
+		dispatch(toggleModal({modal:'chatModal', visible:true}))
+	}
 
 	return (
 		<>
 			<Navigation />
-      <Contracts rows={sellerContract} postList={postList} onClickAccept={onClickAccept} onClickRefuse={onClickRefuse}/>
+      <Contracts rows={sellerContract} postList={postList} onClickAccept={onClickAccept} onClickRefuse={onClickRefuse} openChatModal={openChatModal}/>
 			{/* <Renting /> */}
 			{/* <Reservation /> */}
 			<MyPost items={myPosts} history={history} />
