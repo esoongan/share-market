@@ -1,43 +1,32 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import {
-	Button,
-	Divider,
-	Hidden,
-	IconButton,
-	Paper,
-	Popover,
-	Radio,
-} from '@material-ui/core';
-import { testContracts, testContracts2 } from 'constant/test';
+import { Button, Divider, Hidden, IconButton, Radio } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import ItemCard from 'components/ItemCard';
-import InfoIcon from '@material-ui/icons/Info';
 import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
-	root:{
+	root: {
 		marginBottom: theme.spacing(10),
+		height: 350,
 	},
 	container: {
 		display: 'flex',
 	},
 	divider: {
 		margin: theme.spacing(0, 2, 0, 0),
-		height: 'inherit',
-		maxHeight: 300,
+		height: 350,
+		maxHeight: 350,
 	},
 	tableRow: {
 		'&:hover': {
@@ -46,7 +35,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	postList: {
 		width: 300,
-		// backgroundColor: theme.palette.background.paper,
 		overflow: 'auto',
 		maxHeight: 300,
 	},
@@ -68,38 +56,26 @@ const useStyles = makeStyles(theme => ({
 	button: {
 		marginLeft: theme.spacing(1),
 	},
-	hide:{
-		visibility:'hidden',
-	}
+	hide: {
+		visibility: 'hidden',
+	},
 }));
 
-function createData(postTitle, contracts) {
-	return {
-		postTitle,
-		contracts, //array [ contract1, contract2, ...]
-		/*
-			{
-            "id": 1,
-            "postId": 1,			//post title도 보내줘야 함
-            "sellerId": 1,		//username도 보내줘야 함
-            "buyerId": 2,
-            "startDate": "2021-05-09",
-            "endDate": "2021-05-11",
-            "state": "accept"
-        },
-		*/
-	};
-}
 const getPrice = ({ start, end, price }) => {
 	const startDate = moment(start, 'YYYY-MM-DD');
 	const endDate = moment(end, 'YYYY-MM-DD');
 	return price * (endDate.diff(startDate, 'days') + 1);
 };
 
-function ContractTable({ row, selectedContract,onClickPrev, onClickNext, onChangeRadio }) {
+function ContractTable({
+	row,
+	selectedContract,
+	onClickPrev,
+	onClickNext,
+	onChangeRadio,
+}) {
 	const classes = useStyles();
-
-
+//TODO: 포스트 정보 가져오기 (렌탈료), 보낸 사람 pk 말고 username으로 넣기
 	return (
 		<div style={{ flexGrow: 1 }}>
 			<header className={classes.contractHeader}>
@@ -107,7 +83,7 @@ function ContractTable({ row, selectedContract,onClickPrev, onClickNext, onChang
 					<NavigateBeforeIcon />
 				</IconButton>
 				<Typography variant="h6" gutterBottom component="div">
-					{row.postTitle} 요청 내역
+					{row[0].postId} 요청 내역
 				</Typography>
 				<IconButton aria-label="next post" onClick={onClickNext}>
 					<NavigateNextIcon />
@@ -130,32 +106,32 @@ function ContractTable({ row, selectedContract,onClickPrev, onClickNext, onChang
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{row.contracts.map(contractRow => (
-						<TableRow className={classes.tableRow} key={contractRow.date}>
+					{row.map(contract => (
+						<TableRow className={classes.tableRow} key={contract.id}>
 							<TableCell>
 								<Radio
-									checked={selectedContract === contractRow.id.toString()}
+									checked={selectedContract === contract.id.toString()}
 									onChange={onChangeRadio}
-									value={contractRow.id}
+									value={contract.id}
 									name="radio-button-contract"
 								/>
 							</TableCell>
-							<TableCell>{contractRow.state}</TableCell>
-							<TableCell>{contractRow.startDate}</TableCell>
-							<TableCell>{contractRow.endDate}</TableCell>
+							<TableCell>{contract.state}</TableCell>
+							<TableCell>{contract.startDate}</TableCell>
+							<TableCell>{contract.endDate}</TableCell>
 							<TableCell align="right">
 								{getPrice({
-									start: contractRow.startDate,
-									end: contractRow.endDate,
+									start: contract.startDate,
+									end: contract.endDate,
 									price: 1000,
 								})}
 							</TableCell>
-							<TableCell align="right">{contractRow.buyerId}</TableCell>
+							<TableCell align="right">{contract.buyerId}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
-			<div className={selectedContract!== -1 ? classes.buttons : classes.hide}>
+			<div className={selectedContract !== -1 ? classes.buttons : classes.hide}>
 				<Button variant="contained" color="primary" className={classes.button}>
 					수락
 				</Button>
@@ -171,27 +147,17 @@ function ContractTable({ row, selectedContract,onClickPrev, onClickNext, onChang
 	);
 }
 
-// TODO: 거래목록 조회 api로 받아오기
-const rows = [
-	createData('post title1', testContracts),
-	createData('post title2', testContracts2),
-	createData('post title3', testContracts),
-	createData('post title4', testContracts2),
-	createData('post title5', testContracts),
-];
-
-export default function Contracts() {
+export default function Contracts({ rows, postList }) {
 	const classes = useStyles();
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
 	const [selectedContract, setSelectedContract] = React.useState(-1);
+	React.useEffect(() => {
+		setSelectedContract(-1);
+	}, [selectedIndex]);
+
 	const handleChangeRadio = event => {
 		setSelectedContract(event.target.value);
 	};
-
-	React.useEffect(() => {
-		setSelectedContract(-1);
-	}, [selectedIndex])
-
 	const handleListItemClick = (event, index) => {
 		setSelectedIndex(index);
 	};
@@ -211,28 +177,30 @@ export default function Contracts() {
 					<List
 						className={classes.postList}
 						component="nav"
-						aria-label="main mailbox folders"
+						aria-label="post list"
 					>
-						{rows.map((row, index) => (
+						{postList.map((post, index) => (
 							<ListItem
 								key={index}
 								button
 								selected={selectedIndex === index}
 								onClick={event => handleListItemClick(event, index)}
 							>
-								<ListItemText primary={row.postTitle} />
+								<ListItemText primary={post} />
 							</ListItem>
 						))}
 					</List>
 				</Hidden>
 				<Divider className={classes.divider} orientation="vertical" />
-				<ContractTable
-					row={rows[selectedIndex]}
-					selectedContract={selectedContract}
-					onClickPrev={handleClickPrev}
-					onClickNext={handleClickNext}
-					onChangeRadio={handleChangeRadio}
-				/>
+				{postList.length > 0 && (
+					<ContractTable
+						row={rows.filter(r => r.postId === postList[selectedIndex])}
+						selectedContract={selectedContract}
+						onClickPrev={handleClickPrev}
+						onClickNext={handleClickNext}
+						onChangeRadio={handleChangeRadio}
+					/>
+				)}
 			</div>
 		</div>
 	);
