@@ -1,5 +1,6 @@
 package ShareMarket.sharemarket.exception;
 
+import ShareMarket.sharemarket.dto.chatRoom.ChatRoomResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,5 +9,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ChatRoomExistException extends RuntimeException {
-    private Long id;
+    private ChatRoomResponseDto roomResponseDto;
 }

@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ChatControllerTest {
+public class ChatRoomControllerTest {
 
     @Autowired
     private MockMvc mvc;

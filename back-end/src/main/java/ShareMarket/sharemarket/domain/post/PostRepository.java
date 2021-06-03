@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.domain.post;
 
-import ShareMarket.sharemarket.domain.contract.Contract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

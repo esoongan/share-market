@@ -17,12 +17,14 @@ public class ChatRoomResponseDto {
     private String user1Id;
     private String user2Id;
     private Long postId;
+    private String lastMessage;
 
-    public ChatRoomResponseDto(ChatRoom room) {
+    public ChatRoomResponseDto(ChatRoom room, String lastMessage) {
         this.id = room.getId();
         this.user1Id = room.getUser1().getUsername();
         this.user2Id = room.getUser2().getUsername();
         this.postId = room.getPost().getId();
+        this.lastMessage = lastMessage;
     }
 
 

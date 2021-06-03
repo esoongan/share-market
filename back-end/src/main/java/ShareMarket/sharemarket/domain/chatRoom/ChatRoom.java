@@ -1,5 +1,6 @@
 package ShareMarket.sharemarket.domain.chatRoom;
 
+import ShareMarket.sharemarket.domain.BaseTimeEntity;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.user.User;
 import lombok.Builder;
@@ -11,10 +12,10 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class ChatRoom {
+public class ChatRoom extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // roomId
 
     // 한명의 유저당 여러개의 채팅룸 가능
