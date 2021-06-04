@@ -46,13 +46,16 @@ const useStyles = makeStyles(theme => ({
 	me: {
 		marginLeft: 'auto', 
 		background: theme.palette.primary.main,
-		'& p': {
+		'& h6': {
 			color: theme.palette.primary.contrastText,
+		},
+		'& p': {
+			color: theme.palette.primary.light,
 		},
 	},
 }));
 
-const ChatMain = ({ chatList }) => {
+const ChatMain = ({ chatList, username }) => {
 	const classes = useStyles();
 
 	const Chat = ({ message, time, me }) => (
@@ -60,20 +63,18 @@ const ChatMain = ({ chatList }) => {
 				className={clsx(classes.chat, me && classes.me)}
 				elevation={2}
 			>
-				<Typography variant="body1" component='p'>{message}</Typography>
-				<br/>
-				<Typography variant="caption" component='p'>{time}</Typography>
+				<Typography variant="body1" component='h6'>{message}</Typography>
+				{/* <br/> */}
+				<Typography variant="caption" component='p' color='textSecondary'>{time}</Typography>
 			</Paper>
 	);
 
 	return (
 		<div className={classes.root}>
 			<section className={classes.chatSection}>
-				<Chat message="안녕하세요fasdfadsfsdfs" time="2021.5.24 12:00:23" me />
-				<Chat
-					message="네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지네 안녕하세요 받은 메세지"
-					time="2021.5.24 12:00:23"
-				/>
+				{chatList.map((chat) =>(
+					<Chat message={chat.message} time={chat.time} me={chat.sender !== username}/>
+				))}
 			</section>
 			<section className={classes.inputSection}>
 				<TextField

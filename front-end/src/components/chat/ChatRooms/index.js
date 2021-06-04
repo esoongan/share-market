@@ -2,7 +2,7 @@ import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Badge} from '@material-ui/core';
+import { Avatar, Badge } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 
 const drawerWidth = 300;
@@ -56,38 +56,39 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing(1),
 	},
 	chatRoomInfo: {
-		display: 'flex',
 		width: '100%',
-		justifyContent: 'space-between',
-		marginTop: theme.spacing(1),
-		marginRight: theme.spacing(1),
-		marginBottom: theme.spacing(0.5),
+		margin: theme.spacing(0, 1, 0),
 	},
 }));
 
-const ChatRooms = ({ roomList }) => {
+const ChatRooms = ({ chatRooms, version, onClickRoom }) => {
 	const classes = useStyles();
+
 	const ChatRoom = ({ room }) => {
-		let lastMsg = room.lastMsg;
-		// 12자 이상이면 자르기
-		if (room.lastMsg.length >= 16) {
-			lastMsg = room.lastMsg.substring(0, 16) + '...';
+		let lastMsg = room.lastMessage;
+		//상대방 아이디
+		let username = version === 'seller' ? room.buyer : room.seller;
+		// 16자 이상이면 자르기
+		if (room.lastMessage.length >= 16) {
+			lastMsg = room.lastMessage.substring(0, 16) + '...';
 		}
+		const handleClickRoom = () => {
+			onClickRoom({ room_id: room.id, post_id: room.post_id, username })
+		};
+
 		return (
 			// 왼쪽 사이드의 대화방 목록에 들어가는 아이템
-			<div className={classes.chatRoom}>
+			<div
+				className={classes.chatRoom}
+				onClick={handleClickRoom}
+			>
 				<div className={classes.chatRoomAvatar}>
 					<Badge color="secondary" variant="dot" invisible={false}>
-						<Avatar>{room.user_id.charAt(0).toUpperCase()}</Avatar>
+						<Avatar>{username.charAt(0).toUpperCase()}</Avatar>
 					</Badge>
 				</div>
-				<div style={{ marginLeft: '4px' }}>
-					<div className={classes.chatRoomInfo}>
-						<Typography variant="body1">{room.user_id}</Typography>
-						<Typography variant="caption" color="textSecondary">
-							{room.time}
-						</Typography>
-					</div>
+				<div className={classes.chatRoomInfo}>
+					<Typography variant="h6">{username}</Typography>
 					<Typography variant="body2" color="textSecondary">
 						{lastMsg}
 					</Typography>
@@ -101,14 +102,20 @@ const ChatRooms = ({ roomList }) => {
 			<div className={classes.toolbar} />
 			<Divider />
 			<div>
-				{roomList.map(room => (
-					<div key={room.room_id}>
-						<ChatRoom room={room} />
-						<Divider
-						style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto' }}
-						/>
-					</div>
-				))}
+				{chatRooms.map(room => {
+					return (
+						<div key={room.id}>
+							<ChatRoom room={room} />
+							<Divider
+								style={{
+									width: '80%',
+									marginLeft: 'auto',
+									marginRight: 'auto',
+								}}
+							/>
+						</div>
+					);
+				})}
 			</div>
 		</>
 	);

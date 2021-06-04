@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Chip} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import Popover from '@material-ui/core/Popover';
 import ItemCard from 'components/ItemCard';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ChatHeader = ({yourId, yourAddr, postContent, onClickItem}) => {
+const ChatHeader = ({username, postContent, onClickItem}) => {
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const handleClick = event => {
@@ -40,8 +40,8 @@ const ChatHeader = ({yourId, yourAddr, postContent, onClickItem}) => {
 	return (
 		<div className={classes.contentHeader}>
 			<div>
-				<Typography variant="h5">hy7873</Typography>
-				<Chip color="primary" label="서울 강남구" size="small" />
+				<Typography variant="h5">{username}</Typography>
+				{/* <Chip color="primary" label={yourAddr} size="small" /> */}
 			</div>
 			<div>
 				<Button variant="text" onClick={handleClick}>
