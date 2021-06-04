@@ -11,13 +11,14 @@ import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-    Optional<ChatRoom> findByPostAndUser1AndUser2(Post post, User user1, User user2);
+
+    Optional<ChatRoom> findByPostAndBuyerAndSeller(Post post, User buyer, User seller);
 
     //내가 user1인경우 - 구매자
-    Page<ChatRoom> findAllByUser1(User user1, Pageable pageable);
+    Page<ChatRoom> findAllByBuyer(User buyer, Pageable pageable);
 
     //내가 user2인경우 - 판매자
-    Page<ChatRoom> findAllByUser2(User user2, Pageable pageable);
+    Page<ChatRoom> findAllBySeller(User seller, Pageable pageable);
 
 
 }

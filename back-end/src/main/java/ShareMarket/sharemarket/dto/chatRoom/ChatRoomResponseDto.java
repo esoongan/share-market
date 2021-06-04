@@ -14,15 +14,15 @@ import java.time.LocalDate;
 public class ChatRoomResponseDto {
 
     private Long id;
-    private String user1Id;
-    private String user2Id;
+    private String seller;
+    private String buyer;
     private Long postId;
     private String lastMessage;
 
     public ChatRoomResponseDto(ChatRoom room, String lastMessage) {
         this.id = room.getId();
-        this.user1Id = room.getUser1().getUsername();
-        this.user2Id = room.getUser2().getUsername();
+        this.seller = room.getSeller().getUsername();
+        this.buyer = room.getBuyer().getUsername();
         this.postId = room.getPost().getId();
         this.lastMessage = lastMessage;
     }
