@@ -1,6 +1,8 @@
 package ShareMarket.sharemarket.domain.chat;
 
 import ShareMarket.sharemarket.domain.chatRoom.ChatRoom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,5 +17,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     Optional<Chat> findTopByRoom(ChatRoom room, Sort sort);
 
     Optional<Chat> findOneByRoom(ChatRoom room);
+
+    Page<Chat> findAllByRoom(ChatRoom room, Pageable pageable);
 
 }

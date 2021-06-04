@@ -19,6 +19,7 @@ public class ChatResponseDto {
     private String message;
     private LocalDateTime createdDate;
 
+
     public ChatResponseDto(Chat chat) {
         this.id = chat.getId();
         this.roomId = chat.getRoom().getId();
