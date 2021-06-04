@@ -19,12 +19,12 @@ const BorroweePage = ({ history }) => {
 	const { myPosts, sellerContract } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
 		sellerContract: mypage.sellerContract,
-	}));
+	}))
 
 	//최초 렌더링 시 실행
 	useEffect(() => {
 		dispatch(getMyPost());
-		dispatch(getSellerContract({state:'default'}));		//TODO: 모두 받아오기
+		dispatch(getSellerContract({state:'default'}));	
 	}, []);
 
 	useEffect(()=> {
