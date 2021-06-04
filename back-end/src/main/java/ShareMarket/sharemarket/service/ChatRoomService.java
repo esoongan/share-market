@@ -16,9 +16,6 @@ import ShareMarket.sharemarket.exception.ChatRoomExistException;
 import ShareMarket.sharemarket.exception.DefaultException;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.QueryParameterException;
-import org.hibernate.mapping.Array;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,9 +24,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 

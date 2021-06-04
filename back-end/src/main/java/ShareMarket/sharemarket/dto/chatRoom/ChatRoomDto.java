@@ -1,14 +1,11 @@
 package ShareMarket.sharemarket.dto.chatRoom;
 
-import ShareMarket.sharemarket.domain.chat.Chat;
 import ShareMarket.sharemarket.domain.chatRoom.ChatRoom;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.user.User;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter //No HttpMessageConverter for ShareMarket.sharemarket.dto.chatRoom.ChatRoomDto
 @NoArgsConstructor

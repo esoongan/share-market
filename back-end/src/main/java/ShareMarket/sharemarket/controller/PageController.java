@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import ShareMarket.sharemarket.model.DefaultRes;
 import ShareMarket.sharemarket.model.HttpResponseMessage;

@@ -1,14 +1,11 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.file.FileRepository;
-import ShareMarket.sharemarket.dto.file.FileDto;
 import ShareMarket.sharemarket.dto.file.FileResponseDto;
 import ShareMarket.sharemarket.model.DefaultRes;
 import ShareMarket.sharemarket.model.HttpResponseMessage;
 import ShareMarket.sharemarket.model.HttpStatusCode;
 import ShareMarket.sharemarket.service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,15 +1,12 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.domain.contract.Contract;
 import ShareMarket.sharemarket.dto.contract.ContractRequestDto;
 import ShareMarket.sharemarket.dto.contract.ContractResponseDto;
-import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.model.DefaultRes;
 import ShareMarket.sharemarket.model.HttpResponseMessage;
 import ShareMarket.sharemarket.model.HttpStatusCode;
 import ShareMarket.sharemarket.service.ContractService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 
 @CrossOrigin // 이게없어도 사실 되야되는데

@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.domain.chatRoom;
 
-import ShareMarket.sharemarket.domain.chat.Chat;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.user.User;
 import org.springframework.data.domain.Page;

@@ -2,7 +2,6 @@ package ShareMarket.sharemarket.dto.chat;
 
 import ShareMarket.sharemarket.domain.chat.Chat;
 import ShareMarket.sharemarket.domain.chatRoom.ChatRoom;
-import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;

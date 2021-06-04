@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.dto.chat.ChatDto;
 import ShareMarket.sharemarket.dto.chat.ChatRequestDto;
 import ShareMarket.sharemarket.dto.chat.ChatResponseDto;
 import ShareMarket.sharemarket.model.DefaultRes;
