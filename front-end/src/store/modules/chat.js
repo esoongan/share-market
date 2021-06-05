@@ -8,6 +8,7 @@ const INITIALIZE = 'chat/INITIALIZE';
 const CREATE_CHATROOM = 'chat/CREATE_CHATROOM';
 const GET_CHATROOMS = 'chat/GET_CHATROOM';
 const SEND_CHAT = 'chat/SEND_CHAT';
+const GET_CHATS = 'chat/GET_CHATS';
 
 
 //action creators
@@ -15,6 +16,7 @@ export const initialize = createAction(INITIALIZE);
 export const createChatroom = createAction(CREATE_CHATROOM, api.createChatroom);
 export const getChatrooms = createAction(GET_CHATROOMS, api.getChatrooms);
 export const sendChat = createAction(SEND_CHAT, api.sendChat);
+export const getChats = createAction(GET_CHATS, api.getChats);
 
 //initial state
 const initialState = {

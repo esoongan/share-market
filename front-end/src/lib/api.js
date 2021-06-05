@@ -25,6 +25,7 @@ export const search = ({params, page, size}) => axios.get(`/api/post/page${param
 export const createChatroom = ({post_id, seller, buyer}) => axios.post(`/uauth/api/chatroom/`, {postId: post_id, seller, buyer});
 export const getChatrooms = ({version, page}) => axios.get(`/uauth/api/chatroom/?ver=${version}&page=${page}`);
 export const sendChat = ({room_id, message}) => axios.post(`/uauth/api/chat`, {roomId:room_id, message});
+export const getChats = ({room_id}) => axios.get(`/uauth/api/chat/${room_id}`);
 
 export const getMyPost = () => axios.get(`/uauth/api/post`);
 export const getSellerContract = ({state}) => axios.get(`/uauth/api/contract/seller?state=${state}`);

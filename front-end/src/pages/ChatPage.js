@@ -7,14 +7,12 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
-import { testChat, testRooms } from 'constant/test';
 import Header from 'components/common/Header';
 import ChatRooms from 'components/chat/ChatRooms';
 import ChatHeader from 'components/chat/ChatHeader';
 import ChatMain from 'components/chat/ChatMain';
-import { chat } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChatrooms } from 'store/modules/chat';
+import { getChatrooms, getChats } from 'store/modules/chat';
 
 const drawerWidth = 300;
 
@@ -50,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function ChatPage({window}) {
+function ChatPage({ window }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const container =
@@ -59,7 +57,11 @@ function ChatPage({window}) {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [selectedRoom, setSelectedRoom] = useState(null);
 	const [version, setVersion] = useState('seller');
-	/*selectedRoom = 
+	const [chats, setChats] = useState([]);
+
+	const { chatRooms, totalElements } = useSelector(({ chat }) => ({
+		chatRooms: chat.chatRooms,
+		/*chatRoom
 	{
 		"id": 3,
     "seller": "hayoung",
@@ -67,15 +69,24 @@ function ChatPage({window}) {
     "postId": 1,
     "lastMessage": "this is last3"
 	}
-	*/
-	const { chatRooms, totalElements } = useSelector(({ chat }) => ({
-		chatRooms: chat.chatRooms,
+*/
 		totalElements: chat.totalElements,
 	}));
 
 	useEffect(() => {
-		dispatch(getChatrooms({version, page:0}));
+		dispatch(getChatrooms({ version, page: 0 }));
 	}, []);
+	useEffect(() => {
+		if (selectedRoom) {
+			dispatch(getChats({ room_id: selectedRoom.room_id }))
+				.then(({ data }) => {
+					const chats = data.data.content;
+					setChats(chats);
+					setMobileOpen(false);
+				})
+				.catch(reason => console.log(reason));
+		}
+	}, [selectedRoom]);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -116,7 +127,7 @@ function ChatPage({window}) {
 						<ChatRooms
 							chatRooms={chatRooms}
 							onClickRoom={onClickRoom}
-							version={version}		
+							version={version}
 						/>
 					</Drawer>
 				</Hidden>
@@ -145,7 +156,7 @@ function ChatPage({window}) {
 				<Divider style={{ margin: '8px 0px 8px 0px' }} />
 				<ChatMain
 					username={selectedRoom && selectedRoom.username}
-					chatList={testChat}
+					chatList={chats}
 				/>
 			</main>
 		</div>
