@@ -4,13 +4,17 @@ import { pender } from 'redux-pender';
 
 
 //action types
+const INITIALIZE = 'chat/INITIALIZE';
 const CREATE_CHATROOM = 'chat/CREATE_CHATROOM';
 const GET_CHATROOMS = 'chat/GET_CHATROOM';
+const SEND_CHAT = 'chat/SEND_CHAT';
 
 
 //action creators
+export const initialize = createAction(INITIALIZE);
 export const createChatroom = createAction(CREATE_CHATROOM, api.createChatroom);
 export const getChatrooms = createAction(GET_CHATROOMS, api.getChatrooms);
+export const sendChat = createAction(SEND_CHAT, api.sendChat);
 
 //initial state
 const initialState = {
@@ -22,6 +26,7 @@ const initialState = {
 //reducer
 export default handleActions(
 	{
+		[INITIALIZE]: (state, action) => initialState,
 		...pender({
 			//처음 대화 시작 시 채팅방 생성
 				type: CREATE_CHATROOM,
