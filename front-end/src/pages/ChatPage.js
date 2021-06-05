@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function ChatPage({ window }) {
+function ChatPage({ window, history }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const container =
@@ -58,16 +58,25 @@ function ChatPage({ window }) {
 	const [version, setVersion] = useState('seller');
 	const [chats, setChats] = useState([]); // { id, roomId, username, message, createdDate }
 	const [page, setPage] = useState(0);
-	const { chatRooms, maximumPage } = useSelector(({ chat }) => ({
+	const { logged, chatRooms, maximumPage } = useSelector(({ chat, auth }) => ({
+		logged: auth.logged,
 		chatRooms: chat.chatRooms[version].chatRooms, // [ { id, seller(username), buyer(username), postId, lastMessage} ]
-		maximumPage: parseInt(Number(chat.chatRooms[version].totalElements) / 10) + 1,
+		maximumPage:
+			parseInt(Number(chat.chatRooms[version].totalElements) / 10) + 1,
 	}));
 
 	// 최초 렌더링 시 채팅방 목록 가져오기
 	useEffect(() => {
-		dispatch(getChatrooms({ version: 'seller', page }));
-		dispatch(getChatrooms({ version: 'buyer', page }));
-	}, []);
+		if (logged) {
+			dispatch(getChatrooms({ version: 'seller', page }));
+			dispatch(getChatrooms({ version: 'buyer', page }));
+		}
+		//로그인 상태가 아니면 접근 못하도록
+		else{
+			alert('먼저 로그인을 해주세요.');
+			history.replace('/');
+		}
+	}, [logged, dispatch, history]);
 
 	// 채팅방 선택 시 해당 채팅방의 채팅 목록 가져오기
 	useEffect(() => {
@@ -103,9 +112,9 @@ function ChatPage({ window }) {
 		setPage(value - 1);
 		dispatch(getChatrooms({ version, page: value - 1 }));
 	};
-	const toggleVersion = ({version}) => {
+	const toggleVersion = ({ version }) => {
 		setVersion(version);
-	}
+	};
 
 	function chatRoomsProps() {
 		return {
