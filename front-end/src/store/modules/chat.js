@@ -22,7 +22,6 @@ const initialState = {
 	chatRooms : [],
 	totalElements : 0, 
 };
-
 //reducer
 export default handleActions(
 	{
@@ -31,10 +30,12 @@ export default handleActions(
 			//처음 대화 시작 시 채팅방 생성
 				type: CREATE_CHATROOM,
 				onSuccess: (state, action) => {
-					return {
-						createdChatroom: action.data.data.id,		//생성된 chatroom id
+					const chatroom = action.payload.data.data;
+					console.log('chatroom.id', chatroom.id);
+					return ({
 						...state,
-					};
+						createdChatroom: chatroom.id,		//생성된 chatroom id
+					});
 				},
 				onFailure: (state, action) => (initialState),
     }),
@@ -42,9 +43,9 @@ export default handleActions(
 			//ChatPage의 Chatrooms 컴포넌트의 props로
 			type: GET_CHATROOMS,
 			onSuccess: (state, action) => ({
-				chatRooms : action.data.data.content,
-				totalElements: action.data.data.totalElements,
 				...state,
+				chatRooms : action.payload.data.data.content,
+				totalElements: action.payload.data.data.totalElements,
 			}),
 			onFailure: (state, action) => (initialState),
 		}),

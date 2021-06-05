@@ -59,6 +59,8 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 	useEffect(() => {
 		if(createdChatroom){
 			dispatch(sendChat({room_id: createdChatroom, message: input}));
+			alert('메시지를 전송하였습니다. 마이페이지 > 채팅에서 대화를 이어나갈 수 있습니다.')
+			handleClose();
 		}
 	}, [createdChatroom]);
 
@@ -73,8 +75,6 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 		}
 		// 새 채팅방 생성
 		dispatch(createChatroom({post_id, seller: to, buyer: myName}));
-		alert('메시지를 전송하였습니다. 마이페이지 > 채팅에서 대화를 이어나갈 수 있습니다.')
-		handleClose();
 	};
 
 	const handleClose = () => {
