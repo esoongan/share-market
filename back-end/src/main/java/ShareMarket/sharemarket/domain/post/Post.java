@@ -2,14 +2,12 @@ package ShareMarket.sharemarket.domain.post;
 
 import ShareMarket.sharemarket.domain.BaseTimeEntity;
 import ShareMarket.sharemarket.domain.user.User;
-import ShareMarket.sharemarket.dto.post.PostRequestDto;
 import ShareMarket.sharemarket.dto.post.PostUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 
 @Getter
 @NoArgsConstructor // 기본생성자 자동생성 -> public Posts() {}와 같은효과 -> JPA를 사용하기위해서는 맨밑에처럼 생성자를 따로 생성하더라도 매개변수없는 기본생성자는 필수임

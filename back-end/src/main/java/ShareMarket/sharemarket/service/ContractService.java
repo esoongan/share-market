@@ -5,7 +5,6 @@ import ShareMarket.sharemarket.domain.contract.ContractRepository;
 import ShareMarket.sharemarket.domain.contract.ContractSpecification;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
-import ShareMarket.sharemarket.domain.post.PostSpecification;
 import ShareMarket.sharemarket.dto.contract.ContractRequestDto;
 import ShareMarket.sharemarket.dto.contract.ContractResponseDto;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
@@ -17,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor

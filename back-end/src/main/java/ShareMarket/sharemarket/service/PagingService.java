@@ -5,7 +5,6 @@ import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.post.PostSpecification;
 import ShareMarket.sharemarket.dto.file.FileResponseDto;
-import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

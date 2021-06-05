@@ -1,9 +1,8 @@
 package ShareMarket.sharemarket.dto.post;
 
 import ShareMarket.sharemarket.domain.post.Post;
-import ShareMarket.sharemarket.domain.user.User;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
+import lombok.Getter;
 
 
 @Getter

@@ -1,15 +1,10 @@
 package ShareMarket.sharemarket.domain.post;
 
-import ShareMarket.sharemarket.domain.contract.Contract;
 import ShareMarket.sharemarket.domain.user.User;
-import org.hibernate.engine.transaction.jta.platform.internal.JOnASJtaPlatform;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 // Specification 인터페이스를 사용하는 helper class
 // 검색 조건을 모아놓은 클래스 만들기 (Jpa의 Criteria API를 사용하게 됨) : 체

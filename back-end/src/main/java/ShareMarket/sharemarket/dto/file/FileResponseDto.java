@@ -2,7 +2,6 @@ package ShareMarket.sharemarket.dto.file;
 
 import ShareMarket.sharemarket.domain.file.File;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 

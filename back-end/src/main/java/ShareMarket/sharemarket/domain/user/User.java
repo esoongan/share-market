@@ -15,15 +15,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/*
+SpringSecurity는 UserDetails객체를 통해 권한정보를 관리하므로 UserDetails 인터페이스 구현하고 이를 통해 DB에 저장된 계정과 인증검사를 할 수 있다.
+Entity와 UserDetails는 구분할수도 같은클래수에서도 관리할수있지만, 이 플젝에서는 같은클래스에서 관리하도록 함
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Entity
-/*
-SpringSecurity는 UserDetails객체를 통해 권한정보를 관리하므로 UserDetails 인터페이스 구현하고 이를 통해 DB에 저장된 계정과 인증검사를 할 수 있다.
-Entity와 UserDetails는 구분할수도 같은클래수에서도 관리할수있지만, 이 플젝에서는 같은클래스에서 관리하도록 함
- */
 public class User implements UserDetails {
 
     @Id // pk

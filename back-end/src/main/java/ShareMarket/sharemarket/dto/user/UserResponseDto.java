@@ -2,7 +2,6 @@ package ShareMarket.sharemarket.dto.user;
 
 import ShareMarket.sharemarket.domain.user.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class UserResponseDto {
