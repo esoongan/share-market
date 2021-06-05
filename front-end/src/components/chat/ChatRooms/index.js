@@ -3,6 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Badge } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import { grey } from '@material-ui/core/colors';
 
 const drawerWidth = 300;
@@ -59,13 +60,30 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		margin: theme.spacing(0, 1, 0),
 	},
+	paginationSection: {
+		padding: theme.spacing(4,2),
+		display: 'flex',
+		justifyContent: 'center',
+		marginTop: 'auto',
+		maxWidth: drawerWidth,
+	},
 }));
 
-const ChatRooms = ({ chatRooms, version, onClickRoom }) => {
+const ChatRooms = ({
+	chatRooms,
+	version,
+	onClickRoom,
+	page,
+	onMovePage,
+	maximumPage,
+}) => {
 	const classes = useStyles();
+	const handleMovePage = (event, value) => {
+		onMovePage(value);
+	};
 
 	const ChatRoom = ({ room }) => {
-		let lastMsg = room.lastMessage ? room.lastMessage : '';		//마지막 메시지가 없으면 공백으로 바꿈
+		let lastMsg = room.lastMessage ? room.lastMessage : ''; //마지막 메시지가 없으면 공백으로 바꿈
 		//상대방 아이디
 		let username = version === 'seller' ? room.buyer : room.seller;
 		// 24자 이상이면 자르기
@@ -73,15 +91,12 @@ const ChatRooms = ({ chatRooms, version, onClickRoom }) => {
 			lastMsg = room.lastMessage.substring(0, 24) + ' ...';
 		}
 		const handleClickRoom = () => {
-			onClickRoom({ room_id: room.id, post_id: room.post_id, username })
+			onClickRoom({ room_id: room.id, post_id: room.post_id, username });
 		};
 
 		return (
 			// 왼쪽 사이드의 대화방 목록에 들어가는 아이템
-			<div
-				className={classes.chatRoom}
-				onClick={handleClickRoom}
-			>
+			<div className={classes.chatRoom} onClick={handleClickRoom}>
 				<div className={classes.chatRoomAvatar}>
 					<Badge color="secondary" variant="dot" invisible={false}>
 						<Avatar>{username.charAt(0).toUpperCase()}</Avatar>
@@ -117,6 +132,14 @@ const ChatRooms = ({ chatRooms, version, onClickRoom }) => {
 					);
 				})}
 			</div>
+			<section className={classes.paginationSection}>
+				<Pagination
+					page={Number(page)}
+					onChange={handleMovePage}
+					count={maximumPage}
+					size='small'
+				/>
+			</section>
 		</>
 	);
 };

@@ -55,27 +55,21 @@ function ChatPage({ window }) {
 		window !== undefined ? () => window().document.body : undefined;
 
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const [selectedRoom, setSelectedRoom] = useState(null);		//{ room_id, post_id, username(상대방) }
+	const [selectedRoom, setSelectedRoom] = useState(null); //{ room_id, post_id, username(상대방) }
 	const [version, setVersion] = useState('seller');
-	const [chats, setChats] = useState([]);		// { id, roomId, username, message, createdDate }
-
-	const { chatRooms, totalElements } = useSelector(({ chat }) => ({
-		chatRooms: chat.chatRooms,
-		/*chatRoom
-	{
-		"id": 3,
-    "seller": "hayoung",
-    "buyer": "sjinlee97",
-    "postId": 1,
-    "lastMessage": "this is last3"
-	}
-*/
-		totalElements: chat.totalElements,
+	const [chats, setChats] = useState([]); // { id, roomId, username, message, createdDate }
+	const [page, setPage] = useState(0);
+	const { chatRooms, maximumPage } = useSelector(({ chat }) => ({
+		chatRooms: chat.chatRooms,	// [ { id, seller(username), buyer(username), postId, lastMessage} ]
+		maximumPage: parseInt(Number(chat.totalElements) / 10) + 1,
 	}));
 
+	// 최초 렌더링 시 채팅방 목록 가져오기
 	useEffect(() => {
-		dispatch(getChatrooms({ version, page: 0 }));
+		dispatch(getChatrooms({ version, page }));
 	}, []);
+
+	// 채팅방 선택 시 해당 채팅방의 채팅 목록 가져오기
 	useEffect(() => {
 		if (selectedRoom) {
 			dispatch(getChats({ room_id: selectedRoom.room_id }))
@@ -95,12 +89,20 @@ function ChatPage({ window }) {
 		setSelectedRoom({ room_id, post_id, username });
 	};
 
-	const onSend = ({message})=>{
-		dispatch(sendChat({room_id:selectedRoom.room_id, message})).then(({data})=> {
-			const newChat = data.data;
-			setChats([newChat, ...chats]);
-		});
-	}
+	// 메시지 보내기 버튼 눌렀을 때 api 호출 후 화면에 새 메세지 추가
+	const onSend = ({ message }) => {
+		dispatch(sendChat({ room_id: selectedRoom.room_id, message })).then(
+			({ data }) => {
+				const newChat = data.data;
+				setChats([newChat, ...chats]);
+			},
+		);
+	};
+	// 채팅방 목록 페이징
+	const onMovePage = value => {
+		setPage(value-1);
+		dispatch(getChatrooms({ version, page: value-1 }));
+	};
 
 	return (
 		<div className={classes.root}>
@@ -135,6 +137,9 @@ function ChatPage({ window }) {
 							chatRooms={chatRooms}
 							onClickRoom={onClickRoom}
 							version={version}
+							page={page}
+							onMovePage={onMovePage}
+							maximumPage={maximumPage}
 						/>
 					</Drawer>
 				</Hidden>
@@ -150,6 +155,9 @@ function ChatPage({ window }) {
 							chatRooms={chatRooms}
 							onClickRoom={onClickRoom}
 							version={version}
+							page={page}
+							onMovePage={onMovePage}
+							maximumPage={maximumPage}
 						/>
 					</Drawer>
 				</Hidden>
