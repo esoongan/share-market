@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getChatrooms, getChats, sendChat } from 'store/modules/chat';
 
 const drawerWidth = 300;
-
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
@@ -60,13 +59,14 @@ function ChatPage({ window }) {
 	const [chats, setChats] = useState([]); // { id, roomId, username, message, createdDate }
 	const [page, setPage] = useState(0);
 	const { chatRooms, maximumPage } = useSelector(({ chat }) => ({
-		chatRooms: chat.chatRooms,	// [ { id, seller(username), buyer(username), postId, lastMessage} ]
-		maximumPage: parseInt(Number(chat.totalElements) / 10) + 1,
+		chatRooms: chat.chatRooms[version].chatRooms, // [ { id, seller(username), buyer(username), postId, lastMessage} ]
+		maximumPage: parseInt(Number(chat.chatRooms[version].totalElements) / 10) + 1,
 	}));
 
 	// 최초 렌더링 시 채팅방 목록 가져오기
 	useEffect(() => {
-		dispatch(getChatrooms({ version, page }));
+		dispatch(getChatrooms({ version: 'seller', page }));
+		dispatch(getChatrooms({ version: 'buyer', page }));
 	}, []);
 
 	// 채팅방 선택 시 해당 채팅방의 채팅 목록 가져오기
@@ -100,9 +100,24 @@ function ChatPage({ window }) {
 	};
 	// 채팅방 목록 페이징
 	const onMovePage = value => {
-		setPage(value-1);
-		dispatch(getChatrooms({ version, page: value-1 }));
+		setPage(value - 1);
+		dispatch(getChatrooms({ version, page: value - 1 }));
 	};
+	const toggleVersion = ({version}) => {
+		setVersion(version);
+	}
+
+	function chatRoomsProps() {
+		return {
+			chatRooms,
+			onClickRoom,
+			version,
+			page,
+			onMovePage,
+			maximumPage,
+			toggleVersion,
+		};
+	}
 
 	return (
 		<div className={classes.root}>
@@ -119,6 +134,7 @@ function ChatPage({ window }) {
 					</IconButton>
 				</Header>
 			</AppBar>
+
 			<nav className={classes.drawer} aria-label="chat room list">
 				<Hidden mdUp implementation="css">
 					<Drawer
@@ -133,14 +149,7 @@ function ChatPage({ window }) {
 							keepMounted: true, // Better open performance on mobile.
 						}}
 					>
-						<ChatRooms
-							chatRooms={chatRooms}
-							onClickRoom={onClickRoom}
-							version={version}
-							page={page}
-							onMovePage={onMovePage}
-							maximumPage={maximumPage}
-						/>
+						<ChatRooms {...chatRoomsProps()} />
 					</Drawer>
 				</Hidden>
 				<Hidden smDown implementation="css">
@@ -151,14 +160,7 @@ function ChatPage({ window }) {
 						variant="permanent"
 						open
 					>
-						<ChatRooms
-							chatRooms={chatRooms}
-							onClickRoom={onClickRoom}
-							version={version}
-							page={page}
-							onMovePage={onMovePage}
-							maximumPage={maximumPage}
-						/>
+						<ChatRooms {...chatRoomsProps()} />
 					</Drawer>
 				</Hidden>
 			</nav>

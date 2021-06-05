@@ -5,6 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Badge } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { grey } from '@material-ui/core/colors';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import StoreIcon from '@material-ui/icons/Store';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const drawerWidth = 300;
 
@@ -76,6 +80,7 @@ const ChatRooms = ({
 	page,
 	onMovePage,
 	maximumPage,
+	toggleVersion,
 }) => {
 	const classes = useStyles();
 	const handleMovePage = (event, value) => {
@@ -114,7 +119,19 @@ const ChatRooms = ({
 
 	return (
 		<>
-			<div className={classes.toolbar} />
+			<div className={classes.toolbar}>
+			<BottomNavigation
+				value={version}
+				onChange={(event, newValue) => {
+					toggleVersion({version: newValue});
+				}}
+				showLabels
+				className={classes.root}
+			>
+				<BottomNavigationAction label="판매자 모드" value={'seller'} icon={<StoreIcon/>}/>
+				<BottomNavigationAction label="구매자 모드" value={'buyer'} icon={<ShoppingCartIcon/>}/>
+			</BottomNavigation>
+			</div>
 			<Divider />
 			<div>
 				{chatRooms.map(room => {

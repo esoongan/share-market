@@ -102,6 +102,7 @@ const ChatMain = ({ chatList, username, onSend }) => {
 					fullWidth
 					placeholder="메시지를 입력하세요"
 					onChange={onChangeInput}
+					value={message}
 				/>
 				<Button
 					variant="contained"
