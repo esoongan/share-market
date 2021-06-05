@@ -74,7 +74,7 @@ function ChatPage({window}) {
 	}));
 
 	useEffect(() => {
-		dispatch(getChatrooms({version, page: 1}));
+		dispatch(getChatrooms({version, page:0}));
 	}, []);
 
 	const handleDrawerToggle = () => {

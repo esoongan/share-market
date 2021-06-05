@@ -65,12 +65,12 @@ const ChatRooms = ({ chatRooms, version, onClickRoom }) => {
 	const classes = useStyles();
 
 	const ChatRoom = ({ room }) => {
-		let lastMsg = room.lastMessage;
+		let lastMsg = room.lastMessage ? room.lastMessage : '';		//마지막 메시지가 없으면 공백으로 바꿈
 		//상대방 아이디
 		let username = version === 'seller' ? room.buyer : room.seller;
-		// 16자 이상이면 자르기
-		if (room.lastMessage.length >= 16) {
-			lastMsg = room.lastMessage.substring(0, 16) + '...';
+		// 24자 이상이면 자르기
+		if (room.lastMessage.length >= 24) {
+			lastMsg = room.lastMessage.substring(0, 24) + ' ...';
 		}
 		const handleClickRoom = () => {
 			onClickRoom({ room_id: room.id, post_id: room.post_id, username })
