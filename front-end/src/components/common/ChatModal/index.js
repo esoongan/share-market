@@ -5,7 +5,7 @@ import { Avatar, Button, TextField, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal } from 'store/modules/base';
 import SendIcon from '@material-ui/icons/Send';
-import { createChatroom } from 'store/modules/chat';
+import { createChatroom, initialize, sendChat } from 'store/modules/chat';
 
 const modalStyle = {
 	top: `30%`,
@@ -44,14 +44,23 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 	const dispatch = useDispatch();
 	const [input, setInput] = useState(defaultMsg);
 
-	const { open } = useSelector(({ base }) => ({
+	const { open, createdChatroom, myName } = useSelector(({ base, chat, auth }) => ({
 		open: base.modals.chatModal,
+		createdChatroom: chat.createdChatroom,
+		myName: auth.user.username,
 	}));
 
 	//모달의 visibility가 바뀌면 폼 초기화
 	useEffect(() => {
+		dispatch(initialize());
 		setInput(defaultMsg);
 	}, [open]);
+
+	useEffect(() => {
+		if(createdChatroom){
+			dispatch(sendChat({room_id: createdChatroom, message: input}));
+		}
+	}, [createdChatroom]);
 
 	const onChangeInput = e => {
 		const { value } = e.target;
@@ -63,7 +72,7 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 			return;
 		}
 		// 새 채팅방 생성
-		dispatch(createChatroom({post_id}));
+		dispatch(createChatroom({post_id, seller: to, buyer: myName}));
 		alert('메시지를 전송하였습니다. 마이페이지 > 채팅에서 대화를 이어나갈 수 있습니다.')
 		handleClose();
 	};

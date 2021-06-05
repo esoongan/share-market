@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Divider from '@material-ui/core/Divider';
@@ -13,7 +13,8 @@ import ChatRooms from 'components/chat/ChatRooms';
 import ChatHeader from 'components/chat/ChatHeader';
 import ChatMain from 'components/chat/ChatMain';
 import { chat } from 'store/modules';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getChatrooms } from 'store/modules/chat';
 
 const drawerWidth = 300;
 
@@ -49,23 +50,32 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function ChatPage(props) {
-	const { window } = props;
+function ChatPage({window}) {
+	const classes = useStyles();
+	const dispatch = useDispatch();
 	const container =
 		window !== undefined ? () => window().document.body : undefined;
 
-	const classes = useStyles();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [selectedRoom, setSelectedRoom] = useState(null);
-	/*selectedRoom = {
-		room_id
-		post_id
-		username -> 대화 상대의 username
-	}*/
+	const [version, setVersion] = useState('seller');
+	/*selectedRoom = 
+	{
+		"id": 3,
+    "seller": "hayoung",
+    "buyer": "sjinlee97",
+    "postId": 1,
+    "lastMessage": "this is last3"
+	}
+	*/
 	const { chatRooms, totalElements } = useSelector(({ chat }) => ({
 		chatRooms: chat.chatRooms,
 		totalElements: chat.totalElements,
 	}));
+
+	useEffect(() => {
+		dispatch(getChatrooms({version, page: 1}));
+	}, []);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -103,7 +113,11 @@ function ChatPage(props) {
 							keepMounted: true, // Better open performance on mobile.
 						}}
 					>
-						<ChatRooms chatRooms={testRooms} onClickRoom={onClickRoom} version='seller'/>
+						<ChatRooms
+							chatRooms={chatRooms}
+							onClickRoom={onClickRoom}
+							version={version}		
+						/>
 					</Drawer>
 				</Hidden>
 				<Hidden smDown implementation="css">
@@ -114,7 +128,11 @@ function ChatPage(props) {
 						variant="permanent"
 						open
 					>
-						<ChatRooms chatRooms={testRooms} onClickRoom={onClickRoom} version='seller'/>
+						<ChatRooms
+							chatRooms={chatRooms}
+							onClickRoom={onClickRoom}
+							version={version}
+						/>
 					</Drawer>
 				</Hidden>
 			</nav>
@@ -125,7 +143,10 @@ function ChatPage(props) {
 					onClickItem
 				/>
 				<Divider style={{ margin: '8px 0px 8px 0px' }} />
-				<ChatMain username={selectedRoom && selectedRoom.username} chatList={testChat}/>
+				<ChatMain
+					username={selectedRoom && selectedRoom.username}
+					chatList={testChat}
+				/>
 			</main>
 		</div>
 	);
