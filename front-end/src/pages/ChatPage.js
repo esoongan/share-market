@@ -12,7 +12,7 @@ import ChatRooms from 'components/chat/ChatRooms';
 import ChatHeader from 'components/chat/ChatHeader';
 import ChatMain from 'components/chat/ChatMain';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChatrooms, getChats } from 'store/modules/chat';
+import { getChatrooms, getChats, sendChat } from 'store/modules/chat';
 
 const drawerWidth = 300;
 
@@ -55,9 +55,9 @@ function ChatPage({ window }) {
 		window !== undefined ? () => window().document.body : undefined;
 
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const [selectedRoom, setSelectedRoom] = useState(null);
+	const [selectedRoom, setSelectedRoom] = useState(null);		//{ room_id, post_id, username(상대방) }
 	const [version, setVersion] = useState('seller');
-	const [chats, setChats] = useState([]);
+	const [chats, setChats] = useState([]);		// { id, roomId, username, message, createdDate }
 
 	const { chatRooms, totalElements } = useSelector(({ chat }) => ({
 		chatRooms: chat.chatRooms,
@@ -94,6 +94,13 @@ function ChatPage({ window }) {
 	const onClickRoom = ({ room_id, post_id, username }) => {
 		setSelectedRoom({ room_id, post_id, username });
 	};
+
+	const onSend = ({message})=>{
+		dispatch(sendChat({room_id:selectedRoom.room_id, message})).then(({data})=> {
+			const newChat = data.data;
+			setChats([newChat, ...chats]);
+		});
+	}
 
 	return (
 		<div className={classes.root}>
@@ -157,6 +164,7 @@ function ChatPage({ window }) {
 				<ChatMain
 					username={selectedRoom && selectedRoom.username}
 					chatList={chats}
+					onSend={onSend}
 				/>
 			</main>
 		</div>

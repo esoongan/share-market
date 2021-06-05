@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -11,6 +11,8 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 	},
 	chatSection: {
+		display: 'flex',
+		flexDirection: 'column-reverse',
 		background: 'white',
 		padding: theme.spacing(2),
 		margin: 0,
@@ -44,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing(1),
 	},
 	me: {
-		marginLeft: 'auto', 
+		marginLeft: 'auto',
 		background: theme.palette.primary.main,
 		'& h6': {
 			color: theme.palette.primary.contrastText,
@@ -55,40 +57,63 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ChatMain = ({ chatList, username }) => {
+const ChatMain = ({ chatList, username, onSend }) => {
 	const classes = useStyles();
+	const [message, setMessage] = useState('');
+	const onChangeInput = e => {
+		const { value } = e.target;
+		setMessage(value);
+	};
 
-	const Chat = ({ message, time, me }) => (
-			<Paper
-				className={clsx(classes.chat, me && classes.me)}
-				elevation={2}
-			>
-				<Typography variant="body1" component='h6'>{message}</Typography>
+	const Chat = ({ message, datetime, me }) => {
+		const date = datetime.substring(0, 10);
+		const time = datetime.substring(11, 19);
+		return (
+			<Paper className={clsx(classes.chat, me && classes.me)} elevation={2}>
+				<Typography variant="body1" component="h6">
+					{message}
+				</Typography>
 				{/* <br/> */}
-				<Typography variant="caption" component='p' color='textSecondary'>{time}</Typography>
+				<Typography variant="caption" component="p" color="textSecondary">
+					{date + ' ' + time}
+				</Typography>
 			</Paper>
-	);
+		);
+	};
 
 	return (
 		<div className={classes.root}>
 			<section className={classes.chatSection}>
-				{chatList.map((chat) =>(
-					<Chat message={chat.message} time={chat.time} me={chat.sender !== username}/>
+				{chatList.map(chat => (
+					<Chat
+						key={chat.id}
+						message={chat.message}
+						datetime={chat.createdDate}
+						me={chat.username !== username}
+					/>
 				))}
 			</section>
 			<section className={classes.inputSection}>
 				<TextField
-					variant="filled"
+					name="send message"
+					variant="outlined"
 					multiline
 					rows={4}
-					size="medium"
 					fullWidth
+					placeholder="메시지를 입력하세요"
+					onChange={onChangeInput}
 				/>
 				<Button
 					variant="contained"
 					color="primary"
 					className={classes.button}
 					endIcon={<SendIcon />}
+					onClick={() => {
+						if (message !== '') {
+							onSend({ message });
+							setMessage('');
+						}
+					}}
 				>
 					보내기
 				</Button>
