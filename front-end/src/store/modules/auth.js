@@ -67,6 +67,7 @@ export default handleActions(
 			},
 			onFailure: (state, action) => {
         localStorage.removeItem('X-AUTH-TOKEN');  //저장된 토큰 지움  
+				axios.defaults.headers.common['X-AUTH-TOKEN'] = ``;
 				return initialState;
 			},
 		}),
