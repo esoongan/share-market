@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,6 +12,7 @@ import ChatHeader from 'components/chat/ChatHeader';
 import ChatMain from 'components/chat/ChatMain';
 import { useDispatch, useSelector } from 'react-redux';
 import { getChatrooms, getChats, sendChat } from 'store/modules/chat';
+import { getPost } from 'store/modules/post';
 
 const drawerWidth = 300;
 const useStyles = makeStyles(theme => ({
@@ -57,6 +57,7 @@ function ChatPage({ window, history }) {
 	const [selectedRoom, setSelectedRoom] = useState(null); //{ room_id, post_id, username(상대방) }
 	const [version, setVersion] = useState('seller');
 	const [chats, setChats] = useState([]); // { id, roomId, username, message, createdDate }
+	const [post, setPost] = useState(null); // { id, user_id, title, content, category, addr, price, deposit}
 	const [page, setPage] = useState(0);
 	const { logged, chatRooms, maximumPage } = useSelector(({ chat, auth }) => ({
 		logged: auth.logged,
@@ -72,7 +73,7 @@ function ChatPage({ window, history }) {
 			dispatch(getChatrooms({ version: 'buyer', page }));
 		}
 		//로그인 상태가 아니면 접근 못하도록
-		else{
+		else {
 			alert('먼저 로그인을 해주세요.');
 			history.replace('/');
 		}
@@ -86,6 +87,15 @@ function ChatPage({ window, history }) {
 					const chats = data.data.content;
 					setChats(chats);
 					setMobileOpen(false);
+					//선택 된 채팅방의 포스트 정보 가져오기	
+					dispatch(getPost({ post_id: selectedRoom.post_id }))
+						.then(({ data }) => {
+							setPost(data);
+						})
+						.catch(reason => {
+							console.log(reason);
+							setSelectedRoom(null);
+						});
 				})
 				.catch(reason => console.log(reason));
 		}
@@ -174,16 +184,21 @@ function ChatPage({ window, history }) {
 				</Hidden>
 			</nav>
 			<main className={classes.content}>
-				<ChatHeader
-					username={selectedRoom && selectedRoom.username}
-					postContent
-					onClickItem
-				/>
-				<ChatMain
-					username={selectedRoom && selectedRoom.username}
-					chatList={chats}
-					onSend={onSend}
-				/>
+				{selectedRoom && post ? (
+					<>
+						<ChatHeader
+							username={selectedRoom.username}
+							post={post}
+						/>
+						<ChatMain
+							username={selectedRoom.username}
+							chatList={chats}
+							onSend={onSend}
+						/>
+					</>
+				) : (
+					<></>
+				)}
 			</main>
 		</div>
 	);

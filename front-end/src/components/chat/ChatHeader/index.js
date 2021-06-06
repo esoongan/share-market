@@ -16,6 +16,8 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RoomIcon from '@material-ui/icons/Room';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -66,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ChatHeader = ({ username, postContent, onClickItem }) => {
+const ChatHeader = ({ username, post, onClickItem }) => {
 	const classes = useStyles();
 	const theme = useTheme();
 
@@ -89,16 +91,16 @@ const ChatHeader = ({ username, postContent, onClickItem }) => {
 							<div className={classes.postInfo}>
 								<Chip
 									color="primary"
-									label={'postContent.category'}
+									label={post.category}
 									size="small"
 								/>
 								<div className={classes.addr}>
 									<RoomIcon />
-									<Typography component="span">{'postContent.addr'}</Typography>
+									<Typography component="span">{post.addr}</Typography>
 								</div>
 							</div>
 							<Typography gutterBottom variant="h5" component="h2">
-								{'title'}
+								{post.title}
 							</Typography>
 						</div>
 						<div className={classes.priceInfo}>
@@ -107,19 +109,19 @@ const ChatHeader = ({ username, postContent, onClickItem }) => {
 									1일 렌탈료
 								</Typography>
 								<br />
-								<Typography variant="h6">{`postContent.price`}₩</Typography>
+								<Typography variant="h6">{post.price}₩</Typography>
 							</div>
 							<div>
 								<Typography variant="caption" color="textSecondary">
 									보증금
 								</Typography>
 								<br />
-								<Typography variant="h6">{`postContent.deposit`}20000₩</Typography>
+								<Typography variant="h6">{post.deposit}₩</Typography>
 							</div>
 						</div>
 					</AccordionDetails>
 					<AccordionActions style={{ padding: theme.spacing(0, 4, 1) }}>
-						<Button endIcon={<OpenInNewIcon/>} size="large" color="primary">
+						<Button endIcon={<OpenInNewIcon/>} size="large" color="primary" component={RouterLink} to={`/post/${post.id}`}>
 							자세히
 						</Button>
 					</AccordionActions>
