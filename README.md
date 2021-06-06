@@ -6,7 +6,11 @@
 
 ---
 
-[System Environment](https://www.notion.so/4f97ed1ffa6249fd8ad3f84bf11b8e17)
+### System Environment
+
+- Server - SpringBoot v2.3.9
+- Front - React
+- DB - MySql
 
 ### Contributors
 
