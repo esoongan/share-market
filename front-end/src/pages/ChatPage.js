@@ -179,7 +179,6 @@ function ChatPage({ window, history }) {
 					postContent
 					onClickItem
 				/>
-				<Divider style={{ margin: '8px 0px 8px 0px' }} />
 				<ChatMain
 					username={selectedRoom && selectedRoom.username}
 					chatList={chats}
