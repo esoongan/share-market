@@ -8,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
 	floatingPaper: {
@@ -34,6 +35,9 @@ export default function FloatingMenu({
 	deposit,
 	editable,
 	onClickReserve,
+	onClickChat,
+	blocked,
+	reserved,
 }) {
 	const classes = useStyles();
 	const [alert, setAlert] = useState(false);
@@ -72,16 +76,47 @@ export default function FloatingMenu({
 			setAlert(false);
 		}
 		// 날짜를 선택하지 않고 예약버튼을 눌렀을 때 처리
-		else{
+		else {
 			setAlert(true);
 		}
 	};
 
+	const isDayBlocked = day => {
+		if (blocked.length === 0) {
+			return false;
+		}
+		const fDay = moment(day.format('YYYY-MM-DD'));
+		let isBlocked = false;
+		for (let b of blocked) {
+			const fStart = moment(b.startDate, 'YYYY-MM-DD').subtract(1, 'day');
+			const fEnd = moment(b.endDate, 'YYYY-MM-DD').add(1, 'day');
+			if (fDay.isBetween(fStart, fEnd)) isBlocked = true;
+		}
+		return isBlocked;
+	};
 	return (
 		<Paper className={classes.floatingPaper} elevation={8}>
-			{alert && <Alert style={{width: '100%', marginBottom: '4px'}} severity="info">
-				먼저 날짜를 선택해 주세요.
-			</Alert>}
+			{alert && (
+				<Alert style={{ width: '100%', marginBottom: '4px' }} severity="info">
+					먼저 날짜를 선택해 주세요.
+				</Alert>
+			)}
+			{reserved === true && (
+				<Alert
+					style={{ width: '100%', marginBottom: '4px' }}
+					severity="success"
+				>
+					예약 요청을 보냈습니다.
+				</Alert>
+			)}
+			{reserved === false && (
+				<Alert
+					style={{ width: '100%', marginBottom: '4px' }}
+					severity="error"
+				>
+					예약 요청에 실패하였습니다. 다시 시도해주세요.
+				</Alert>
+			)}
 			<DateRangePicker
 				startDate={dateRange.startDate} // momentPropTypes.momentObj or null,
 				startDateId="start_date" // PropTypes.string.isRequired,
@@ -92,6 +127,7 @@ export default function FloatingMenu({
 				onFocusChange={onFocusInput} // PropTypes.func.isRequired
 				endDatePlaceholderText="반납일"
 				startDatePlaceholderText="대여일"
+				isDayBlocked={isDayBlocked}
 			/>
 			<Table className={classes.table} aria-label="price-table" size="small">
 				<TableBody>
@@ -111,7 +147,7 @@ export default function FloatingMenu({
 				variant="contained"
 				color="primary"
 				style={{ marginTop: '16px' }}
-				disabled={editable}
+				disabled={editable || reserved}
 				onClick={handleClickReserve}
 			>
 				예약하기
@@ -121,8 +157,9 @@ export default function FloatingMenu({
 				variant="contained"
 				color="secondary"
 				disabled={editable}
+				onClick={onClickChat}
 			>
-				쪽지보내기
+				문의하기
 			</Button>
 		</Paper>
 	);

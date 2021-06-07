@@ -1,6 +1,5 @@
 package ShareMarket.sharemarket.controller;
 
-import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import ShareMarket.sharemarket.model.DefaultRes;
 import ShareMarket.sharemarket.model.HttpResponseMessage;
@@ -39,11 +38,9 @@ public class PageController {
                                                              @RequestParam(required = false) String addr,
                                                              @RequestParam(required = false) String start,
                                                              @RequestParam(required = false) String end) {
-        // String -> LocalDate
-        LocalDate startDate = LocalDate.parse(start);
-        LocalDate endDate = LocalDate.parse(end);
 
-        Page<PagingResponseDto> pagingDtos = pagingService.searchPaging(keyword, category, addr, startDate, endDate, pageRequest);
+
+        Page<PagingResponseDto> pagingDtos = pagingService.searchPaging(keyword, category, addr, start, end, pageRequest);
         return new ResponseEntity(DefaultRes.response(
                 HttpStatusCode.OK,
                 HttpResponseMessage.READ_POST,

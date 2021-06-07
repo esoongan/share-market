@@ -1,8 +1,11 @@
 package ShareMarket.sharemarket.config.security;
 
 
+import ShareMarket.sharemarket.service.JwtUserDetailService;
 import io.jsonwebtoken.*;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,23 +19,26 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
-@RequiredArgsConstructor
-@Component
+
 
 /*
 토큰을 생성하고 검증하는 컴포넌트
 실제로 이 컴포넌트를 이용하는것은 인증작업을 진행하는 Filter클래스
 Filter는 검증이 끝난 JWT로부터 유저정보를 받아와서 UsernamePasswordAuthenticationFilter로 전달 */
+@RequiredArgsConstructor
+@Component
 public class JwtTokenProvider {
+
+    // Security UserDetailService
+    private final UserDetailsService userDetailsService;
+//    private final JwtUserDetailService userDetailsService;
 
     //보호키
     private String secretKey = "sharemarket";
 
     //토큰 지속시간 30분
-    private long TokenValidTime = 30 * 60 * 1000L;
+    private static final long TokenValidTime = 30 * 60 * 1000L;
 
-    // Security UserDetailService
-    private final UserDetailsService userDetailsService;
 
     //객체초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct

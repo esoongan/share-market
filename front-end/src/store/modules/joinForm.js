@@ -4,9 +4,11 @@ import * as api from 'lib/api';
 
 //action types
 const POST_USER = 'join/POST_USER';
+const INITIALIZE = 'join/INITIALIZE';
 
 //action creators
 export const postUser = createAction(POST_USER, api.join);
+export const initialize = createAction(INITIALIZE);
 
 //initial state
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
 //reducer
 export default handleActions(
 	{
+		[INITIALIZE]: (state, action) => initialState,
 		...pender({
 			type: POST_USER,
 			onSuccess: (state, action) => {

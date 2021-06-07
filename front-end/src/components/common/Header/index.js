@@ -11,15 +11,17 @@ import { Link as RouterLink } from 'react-router-dom';
 import { logout } from 'store/modules/auth';
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexDirection: 'row',
-	},
+	
 	title: {
 		flexGrow: 1,
+		'&:visited':{
+			color: 'white',
+		},
+		textDecoration: 'none',
 	},
 }));
 
-export default function Header() {
+export default function Header({children}) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const { logged } = useSelector(({ auth }) => ({ logged: auth.logged }));
@@ -39,13 +41,14 @@ export default function Header() {
 	};
 
 	return (
-		<div className={classes.root}>
+		<div>
 			<AppBar position="static">
 				<Toolbar>
-					<Typography variant="h6" className={classes.title}>
+					{children}
+
+					<Typography component={RouterLink} to='/' variant="h6" className={classes.title}>
 						로고
 					</Typography>
-					{/* !logged로 바꿔야 됨! */}
 					{!logged ? (
 						<div>
 							<Button color="inherit" onClick={onClickLogin}>

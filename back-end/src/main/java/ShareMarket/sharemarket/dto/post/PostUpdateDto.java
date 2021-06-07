@@ -1,7 +1,5 @@
 package ShareMarket.sharemarket.dto.post;
 
-import ShareMarket.sharemarket.domain.user.User;
-
 public class PostUpdateDto {
 
     // 바뀌는 정보만 필드로 갖기때문에 response랑 다름

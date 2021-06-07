@@ -64,7 +64,7 @@ const EditorPage = ({ history }) => {
 		//로그인 상태가 아니면 로그인 모달 띄우기
 		if (!logged) {
 			alert('먼저 로그인을 해주세요.');
-			history.push('/');
+			history.replace('/');
 		}
 	}, [logged, history]);
 

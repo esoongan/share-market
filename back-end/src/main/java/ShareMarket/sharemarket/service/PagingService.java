@@ -5,7 +5,6 @@ import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.post.PostSpecification;
 import ShareMarket.sharemarket.dto.file.FileResponseDto;
-import ShareMarket.sharemarket.dto.paging.PagingDto;
 import ShareMarket.sharemarket.dto.paging.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class PagingService {
     private final ContractService contractService;
     private final UserService userService;
 
-    public Page<PagingResponseDto> searchPaging(String keyword, String category, String addr, LocalDate startDate, LocalDate endDate, Pageable pageable) {
+    public Page<PagingResponseDto> searchPaging(String keyword, String category, String addr, String start, String end, Pageable pageable) {
         Specification<Post> spec = null;
         // 키워드 - 제목이나 내용
         if (keyword != null) {
@@ -52,8 +51,11 @@ public class PagingService {
                 spec = spec.and(PostSpecification.equalAddr(addr));
             }
         }
-        // 대여기간 (시작시간과 종료기간은 무조건 같이오게됨-> 시작날짜만 체크해도 됨)
-        if (startDate != null) {
+        // 대여기간
+        if (start != null && end!=null) {
+            // String -> LocalDate
+            LocalDate startDate = LocalDate.parse(start);
+            LocalDate endDate = LocalDate.parse(end);
             // 클라로부터 온 기간안에 accept인 거래가 있는 게시글목록들 ( 즉 빼야하는애들 )
             List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate);
             log.info("제외시킬 게시글개수 : "+ String.valueOf(postIdtoExclude.size()));

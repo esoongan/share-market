@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import JoinForm from 'components/JoinForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { postUser } from 'store/modules/joinForm';
+import { initialize, postUser } from 'store/modules/joinForm';
 import Alert from '@material-ui/lab/Alert';
 
 const emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -45,7 +45,9 @@ const JoinPage = ({ history }) => {
 				setError('네트워크 에러');
 			}
 		}
-	}, [isSucceed, status, history]);
+		return dispatch(initialize());
+
+	}, [isSucceed, status, history, dispatch]);
 
 	const onSubmit = e => {
 		e.preventDefault();

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import List from 'components/list';
 import qs from 'qs';
-import { categories, cities } from 'constant/locale';
+import { categories } from 'constant/locale';
 import { getLabel } from 'lib/util';
 import { useDispatch, useSelector } from 'react-redux';
 import { search } from 'store/modules/list';
@@ -22,8 +22,7 @@ const ListPage = ({ location, match, history }) => {
 	const query = qs.parse(location.search, {
 		ignoreQueryPrefix: true, //문자열 앞의 '?'는 생략
 	}); //쿼리 파싱 결과의 value는 string
-	const { addr, category, keyword, period } = query; //없는 key에는 undefined가 들어감
-	//period 포맷: 200101200107 => 20/01/01 ~ 20/01/07
+	const { addr, category, keyword, start, end } = query; //없는 key에는 undefined가 들어감
 
 	const load = (page) => {
 		if(location.search){
@@ -54,22 +53,17 @@ const ListPage = ({ location, match, history }) => {
 		history.push(`/post/${post_id}`);
 	}
 	const searchbarStyle = {
-		// position: 'absolute',
-		// top: '1px',
-		// left: '18vw',
-		// width: '64vw',
-		// zIndex: 100,
 		marginTop:8,
 		marginBottom: 8,
 		marginLeft:'auto',
 		marginRight:'auto',
+		width: '60%',
 	}
 
 	const maximumPage = parseInt(Number(totalElements)/size) + 1;
 	return (
 		<>
 		<div style = {searchbarStyle}>
-			{/* TODO: 라우터 추가 */}
 			<Searchbar/>
 		</div>
 			{failure ? (
@@ -77,9 +71,9 @@ const ListPage = ({ location, match, history }) => {
 			) : (
 				<List
 					city={addr ? addr : '모든 도시'}
-					category={category ? getLabel(categories, category) : '모든 카테고리'}
+					category={category ? category : '모든 카테고리'}
 					keyword={keyword ? keyword : '전체'}
-					period={period ? period : '모든 기간'}
+					period={start&&end ? `${start} ~ ${end}` : '모든 기간'}
 					items={content}
 					totalElements={totalElements}
 					page={page}

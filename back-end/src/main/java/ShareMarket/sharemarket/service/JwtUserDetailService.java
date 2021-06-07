@@ -7,12 +7,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
-@Service
+
 /*
 UserDetailsService를 상속받아 재정의하는 클래스 -> 토큰에 저장된 유저정보를 활용하기위함
 DB에서 UserDetail을 얻어와 AuthenticationManager에게 제공하는 역할을 수행합니다.
  */
+@RequiredArgsConstructor
+@Service
 public class JwtUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;

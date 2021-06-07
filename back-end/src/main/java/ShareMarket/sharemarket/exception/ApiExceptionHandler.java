@@ -24,7 +24,24 @@ public class ApiExceptionHandler {
     public ResponseEntity<DefaultRes> handleException(FileNotFoundException ex) {
         return new ResponseEntity<>(
                 DefaultRes.response(HttpStatusCode.NOT_FOUND,
-                        HttpResponseMessage.FILE_NOT_FOUND+" : "+ex.getId()), HttpStatus.NOT_FOUND);
+                        HttpResponseMessage.FILE_NOT_FOUND + " : " + ex.getId()), HttpStatus.NOT_FOUND);
 
     }
+
+    @ExceptionHandler(ChatRoomExistException.class)
+    public ResponseEntity<DefaultRes> handleException(ChatRoomExistException ex) {
+        return new ResponseEntity<>(
+                DefaultRes.response(HttpStatusCode.BAD_REQUEST,
+                        HttpResponseMessage.ROOM_ALREADY_EXIST, ex.getRoomResponseDto()), HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(DefaultException.class)
+    public ResponseEntity<DefaultRes> handleException(DefaultException ex) {
+        return new ResponseEntity<>(
+                DefaultRes.response(HttpStatusCode.BAD_REQUEST,
+                        ex.getMessage()), HttpStatus.BAD_REQUEST
+        );
+    }
+
 }

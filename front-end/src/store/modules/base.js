@@ -12,6 +12,7 @@ export const toggleSnackbar = createAction(TOGGLE_SNACKBAR);
 const initialState = {
 	modals: {
 		loginModal: false,
+		chatModal: false,
 	},
 	snackbars: {},
 };
@@ -19,7 +20,6 @@ const initialState = {
 //reducer
 export default handleActions(
 	{
-
 		[TOGGLE_MODAL]: (state, { payload }) =>{
 			const {modal, visible} = payload;
 			return produce(state, draft => {
