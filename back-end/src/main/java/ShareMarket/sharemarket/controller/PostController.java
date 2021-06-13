@@ -34,7 +34,7 @@ public class PostController {
     //ResponseEntity : 응답헤더에 대한 구현체로, 스프링에서 제공하는 클래스
     public ResponseEntity<PostResponseDto> savePost(@RequestBody PostRequestDto postRequestDto, Authentication authentication) throws URISyntaxException { //postsavedto객체에 담긴 정보를 저장한다.
         PostResponseDto postResponseDto = postService.save(postRequestDto, authentication);
-        URI url = new URI(String.format("/posts/$d", postResponseDto.getId()));
+//        URI url = new URI(String.format("/posts/$d", postResponseDto.getId()));
 //        return ResponseEntity.created(url).body(postResponseDto);
         return new ResponseEntity(DefaultRes.response(
                 HttpStatusCode.CREATED,

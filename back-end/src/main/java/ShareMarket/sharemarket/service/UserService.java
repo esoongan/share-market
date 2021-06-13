@@ -79,11 +79,12 @@ public class UserService {
 
     }
 
+    // 토큰으로부터 유저엔티티 조회
     public User getUserByToken(Object principal) {
         String userName = ((UserDetails) principal).getUsername();
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 없습니다."));
-        log.info("토큰으로부터 사용자PK추출"+user.getId().toString());
+        log.info("토큰으로부터 사용자추출"+user.getId().toString());
         return user;
     }
 
