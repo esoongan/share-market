@@ -13,10 +13,10 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     Optional<ChatRoom> findByPostAndBuyerAndSeller(Post post, User buyer, User seller);
 
-    //내가 user1인경우 - 구매자
+    //내가 구매자인경우
     Page<ChatRoom> findAllByBuyer(User buyer, Pageable pageable);
 
-    //내가 user2인경우 - 판매자
+    //내가 판매자인경우
     Page<ChatRoom> findAllBySeller(User seller, Pageable pageable);
 
 
