@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import List from 'components/list';
 import qs from 'qs';
-import { categories } from 'constant/locale';
-import { getLabel } from 'lib/util';
 import { useDispatch, useSelector } from 'react-redux';
 import { search } from 'store/modules/list';
 import Searchbar from 'components/common/Searchbar';

@@ -54,10 +54,10 @@ export const cities = [
 ]
 
 export const categories = [
-    { value: "mobility", label: "모빌리티", img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS33Ki8Xonuhd2S43FutoyAKZNuIqGxuK40Zg&usqp=CAU' },
-    { value: "camera", label: "카메라", img:'https://photographyconcentrate.com/wp-content/uploads/best-camera-for-landscape-photography-scaled.jpg' },
-    { value: "carrier", label: "케리어", img:'https://newsimg.sedaily.com/2020/06/12/1Z3ZZOKI8W_1.jpg' },
-    { value: "sports", label: "스포츠/헬스", img:'https://blog.lgchem.com/wp-content/themes/bucket_child/images/post/20180717/img_headline.jpg' },
-    { value: "baking", label: "베이킹", img:'https://previews.123rf.com/images/brebca/brebca1511/brebca151100014/49171436-%EC%BC%80%EC%9D%B4%ED%81%AC-%EB%98%90%EB%8A%94-%EC%BF%A0%ED%82%A4-%EC%9A%A9-%EC%9E%AC%EB%A3%8C%EB%A1%9C-%EB%B2%A0%EC%9D%B4%ED%82%B9-%EC%9A%A9%ED%92%88.jpg' },
-    { value: "fashion", label: "패션", img:'https://cdn.pixabay.com/photo/2015/11/07/11/46/fashion-1031469__480.jpg' },
+    { value: "모빌리티", label: "모빌리티", img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS33Ki8Xonuhd2S43FutoyAKZNuIqGxuK40Zg&usqp=CAU' },
+    { value: "카메라", label: "카메라", img:'https://photographyconcentrate.com/wp-content/uploads/best-camera-for-landscape-photography-scaled.jpg' },
+    { value: "케리어", label: "케리어", img:'https://newsimg.sedaily.com/2020/06/12/1Z3ZZOKI8W_1.jpg' },
+    { value: "스포츠", label: "스포츠", img:'https://blog.lgchem.com/wp-content/themes/bucket_child/images/post/20180717/img_headline.jpg' },
+    { value: "베이킹", label: "베이킹", img:'https://previews.123rf.com/images/brebca/brebca1511/brebca151100014/49171436-%EC%BC%80%EC%9D%B4%ED%81%AC-%EB%98%90%EB%8A%94-%EC%BF%A0%ED%82%A4-%EC%9A%A9-%EC%9E%AC%EB%A3%8C%EB%A1%9C-%EB%B2%A0%EC%9D%B4%ED%82%B9-%EC%9A%A9%ED%92%88.jpg' },
+    { value: "패션", label: "패션", img:'https://cdn.pixabay.com/photo/2015/11/07/11/46/fashion-1031469__480.jpg' },
 ]
