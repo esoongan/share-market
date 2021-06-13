@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ public class PagingService {
     private final ContractService contractService;
     private final UserService userService;
 
+    @Transactional(readOnly = true) // Spring Data JPA - LazyInitialization 에러
     public Page<PagingResponseDto> searchPaging(String keyword, String category, String addr, String start, String end, Pageable pageable) {
         Specification<Post> spec = null;
         // 키워드 - 제목이나 내용
@@ -86,6 +88,7 @@ public class PagingService {
                 ));
     }
 
+    @Transactional(readOnly = true)
     // default : 페이징으로 게시글 반환
     public Page<PagingResponseDto> paging(Pageable pageable){
 
@@ -137,6 +140,7 @@ public class PagingService {
     }
 
 
+    @Transactional(readOnly = true)
     // 작성자랑 같은지 찾는거
     public Page<PagingResponseDto> pagingByWriter(Pageable pageable, Authentication authentication){
 
