@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -18,6 +19,14 @@ public class MvcConfiguration implements WebMvcConfigurer {
         multipartResolver.setMaxUploadSize(5 * 1024 * 1024);
 
         return multipartResolver;
+    }
+
+    // ip:port/images/~로 접근했을때 바로 클래스패스의 images폴더로 접근하하기위해
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("classpath:/images/");
+
     }
 
     // cors 설정

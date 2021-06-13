@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,8 +22,11 @@ import java.util.UUID;
 public class FileService {
 
     private final FileRepository fileRepository;
-    // 지영 요청대로 폴더명 변경
-    private final String uploadPath = System.getProperty("user.dir") + "_storage";
+    // System.getProperty("user.dir") : 절대경로를 구하는 방법
+
+    //    private final String uploadPath = System.getProperty("user.dir");
+    private final String uploadPath = System.getProperty("user.dir") ;
+
 
     //서버에 생성할 파일명을 처리할 랜덤 문자열 반환
     private String getRandomString(){
@@ -43,10 +44,13 @@ public class FileService {
         //업로드 파일 정보를 담을 비어있는 리스트
         List<FileResponseDto> attachList = new ArrayList<>();
 
-        //uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든디렉토리 생성
-        java.io.File dir = new java.io.File(uploadPath);
+        // 여기다가 저장할것임!!!
+        String path = "src/main/resources/images";
+
+        //path 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든디렉토리 생성
+        java.io.File dir = new java.io.File(path);
         if (!dir.exists()) {
-            dir.mkdirs();
+            dir.mkdirs(); // mkdir()함수와 다른점은 상위 디렉토리가 존재하지 않으면, 그것까지 생성함
         }
 
         // 파일 개수만큼 forEach실행
@@ -58,8 +62,10 @@ public class FileService {
                 // 서버에 저장될 파일명 (랜덤문자열 + 확장자)
                 final String saveName = getRandomString() + "." + extension;
 
-                // target이라는 이름으로, 업로드 경로와 파일명이 담긴 파일객체를 생성
-                java.io.File target = new java.io.File(uploadPath, saveName);
+                // 업로드 경로와 파일명이 담긴 파일객체를 생성
+                java.io.File target = new java.io.File(uploadPath+ "/"+path, saveName);
+//                java.io.File target = new java.io.File(uploadPath, saveName);
+
 
                 // target에 담긴 파일정보에 해당하는 파일을 생성
                 // transferTo메서드는 서버에 물리적으로 파일을 생성하는 기능 (파일생성은 디스크에 영향을 주는 I/O작업임)
@@ -68,11 +74,11 @@ public class FileService {
                 // 테이블에 파일정보를 저장하기위해 fileDto객체에 파일 정보를 담고 attachList에 파일정보를 추가
                 FileDto fileDto = new FileDto();
 
-                // fileDto에 게시글번호, 원본파일명, 서버파일명 저장후 DB에 저장!
+                // fileDto에 게시글번호, 원본파일명, 서버파일명 저장후 DB에 저장! -> 빌더로 바꾸기
                 fileDto.setPostId(postId);
                 fileDto.setOrigFilename(file.getOriginalFilename());
                 fileDto.setFilename(saveName);
-                fileDto.setFilepath(uploadPath);
+                fileDto.setFilepath(uploadPath+"/"+path);
 
                 // Dto객체 -> entity로 변환후 저장 -> 저장된 엔티티로 생성된 id값을 포함하는 reponseDto를 리턴
                 File entity = fileRepository.save(fileDto.toEntity());

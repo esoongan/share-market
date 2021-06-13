@@ -1,6 +1,7 @@
 package ShareMarket.sharemarket.domain.contract;
 
 import ShareMarket.sharemarket.domain.post.Post;
+import ShareMarket.sharemarket.domain.user.User;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,9 +13,10 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
 
     List<Contract> findAllByPost(Post post);
 
-    List<Contract> findAllBySellerIdAndState(Long sellerId, String state);
+    List<Contract> findAllBySellerAndState(User seller, String state);
+    //List<Contract> findAllBySellerIdAndState(Long sellerId, String state);
 
-    List<Contract> findAllByBuyerIdAndState(Long buyerId, String state);
+    List<Contract> findAllByBuyerAndState(User buyer, String state);
 
     //1번조건 : 시작시간이 start, end사이이거나
     List<Contract> findAllByStartDateBetween(LocalDate startDate, LocalDate endDate);

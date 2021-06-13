@@ -5,6 +5,7 @@ import ShareMarket.sharemarket.domain.contract.ContractRepository;
 import ShareMarket.sharemarket.domain.contract.ContractSpecification;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
+import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.dto.contract.ContractRequestDto;
 import ShareMarket.sharemarket.dto.contract.ContractResponseDto;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
@@ -39,8 +40,8 @@ public class ContractService {
                 .orElseThrow(() -> new PostNotFoundException(contractRequestDto.getPostId()));
         contractRequestDto.setPost(post);
         // 아직은 jpa join관계를 가지지않는 구조지만 USER를 테이블에서 가지도록 쉽게 변경 가능함
-        contractRequestDto.setSellerId(contractRequestDto.getPost().getUser().getId());
-        contractRequestDto.setBuyerId(userService.getUserByToken(authentication.getPrincipal()).getId());
+        contractRequestDto.setSeller(contractRequestDto.getPost().getUser());
+        contractRequestDto.setBuyer(userService.getUserByToken(authentication.getPrincipal()));
         contractRequestDto.setState("default");
         // DB에 저장
         Contract contract = contractRepository.save(contractRequestDto.toEntity());
@@ -52,8 +53,10 @@ public class ContractService {
     // update -> state:accept
     @Transactional
     public ContractResponseDto update(Long id) {
+        // contract PK로 contract찾고
         Contract contract = contractRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 거래가 없습니다. id=" + id));
+        //update함수 호출 --> 상태만 accept로 바꾸는 업데이트
         contract.update("accept");
         return new ContractResponseDto(contract);
     }
@@ -68,8 +71,8 @@ public class ContractService {
     // 거래조회 판매자ver
     @Transactional
     public List<ContractResponseDto> findContractSeller(String state, Authentication authentication) {
-        Long userId = userService.getUserByToken(authentication.getPrincipal()).getId();
-        List<Contract> contractList = contractRepository.findAllBySellerIdAndState(userId, state);
+        User seller = userService.getUserByToken(authentication.getPrincipal());
+        List<Contract> contractList = contractRepository.findAllBySellerAndState(seller, state);
 
         List<ContractResponseDto> responseDtoList = new ArrayList<>();
         for(Contract contract: contractList){
@@ -83,8 +86,8 @@ public class ContractService {
     //거래조회 : 구매자
     @Transactional
     public List<ContractResponseDto> findContractBuyer(String state, Authentication authentication) {
-        Long userId = userService.getUserByToken(authentication.getPrincipal()).getId();
-        List<Contract> contractList = contractRepository.findAllByBuyerIdAndState(userId, state);
+        User buyer = userService.getUserByToken(authentication.getPrincipal());
+        List<Contract> contractList = contractRepository.findAllByBuyerAndState(buyer, state);
 
         List<ContractResponseDto> responseDtoList = new ArrayList<>();
         for(Contract contract: contractList){
