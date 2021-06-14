@@ -12,7 +12,6 @@ import {
 	initialize,
 } from 'store/modules/post';
 import Grid from '@material-ui/core/Grid';
-import { toggleEditMode } from 'store/modules/editor';
 import { toggleModal } from 'store/modules/base';
 import ChatModal from 'components/common/ChatModal';
 
@@ -60,8 +59,7 @@ const PostPage = ({ match, history }) => {
 		const defaultMsg = `'${post.title}' 게시물에 대해 문의드립니다~!${'\n'}`;
 		//내가 작성한 게시물 수정
 		const onClickEdit = () => {
-			dispatch(toggleEditMode(true));
-			history.push('/post/editor');
+			history.push(`/post/editor/${post_id}`);
 		};
 
 		//내가 작성한 게시물 삭제
@@ -88,8 +86,7 @@ const PostPage = ({ match, history }) => {
 				//로그인 상태가 아니면
 				dispatch(toggleModal({ modal: 'loginModal', visible: true })); //로그인 모달 띄우기
 				return;
-			}
-			else dispatch(toggleModal({modal: 'chatModal', visible: true}));
+			} else dispatch(toggleModal({ modal: 'chatModal', visible: true }));
 		};
 
 		return (
@@ -122,7 +119,11 @@ const PostPage = ({ match, history }) => {
 						/>
 					</Grid>
 				</Grid>
-				<ChatModal post_id={post_id} to={post.username} defaultMsg={defaultMsg} />
+				<ChatModal
+					post_id={post_id}
+					to={post.username}
+					defaultMsg={defaultMsg}
+				/>
 			</div>
 		);
 	} else if (failure) {

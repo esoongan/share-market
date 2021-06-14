@@ -16,7 +16,7 @@ import ReactImageUploading from 'react-images-uploading';
 import Alert from '@material-ui/lab/Alert';
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
-import EmptyBackground from './empty.png'
+import EmptyBackground from './empty.png';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 	empty: {
 		height: 366,
 		borderRadius: '4px',
-		objectFit: 'contain'
+		objectFit: 'contain',
 	},
 	uploadBtn: {
 		width: '99%',
@@ -274,7 +274,7 @@ const Editor = ({
 				variant="outlined"
 				color="primary"
 			>
-				{editMode? '수정하기' : '작성하기'}
+				{editMode ? '수정하기' : '작성하기'}
 			</Button>
 		</div>
 	);
