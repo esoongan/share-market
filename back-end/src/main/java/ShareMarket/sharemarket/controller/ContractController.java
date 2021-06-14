@@ -55,8 +55,9 @@ public class ContractController {
 
     }
 
-
     //거래1개조회
+    //todo
+
 
     //거래목록조회(판매자ver)
     // 로그인한 유저가 판매자인 거래중, state상태에 따라서
@@ -73,7 +74,7 @@ public class ContractController {
         }
     }
 
-    //거래목록조회(구매자ver)
+    // 거래목록조회(구매자ver)
     @GetMapping("/uauth/api/contract/buyer")
     public ResponseEntity<List<ContractResponseDto>> getContractBuyerVer(@RequestParam String state, Authentication authentication) {
         List<ContractResponseDto> responseDtoList = contractService.findContractBuyer(state, authentication);
