@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	carouselImage: {
 		width: '100%',
+		
 	},
 }));
 
@@ -38,7 +39,7 @@ const ImageViewer = ({ images }) => {
 					<Grid item md={6}>
 						<img
 							className={classes.carouselImage}
-							src={images[0].filepath+'/'+images[0].filename}
+							src={'http://localhost:8080/images/'+images[0].filename}
 							alt=""
 						/>
 					</Grid>
@@ -47,7 +48,7 @@ const ImageViewer = ({ images }) => {
 							<Grid key={index} item md={6}>
 								<img
 									className={classes.carouselImage}
-									src={image.filepath+'/'+image.filename}
+									src={'http://localhost:8080/images/'+image.filename}
 									alt=""
 								/>
 							</Grid>
