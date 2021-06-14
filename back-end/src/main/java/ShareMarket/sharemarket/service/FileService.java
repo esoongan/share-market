@@ -35,14 +35,16 @@ public class FileService {
 
     // 서버에 첨부파일을 생성하고 업로드 파일목록 반환하는 함수 _ 인자로 파일리스트와 게시글아이디받음
     // MultipartFile[]타입의 files에는 업로드할 파일의 정보가 담겨있음
-    public List<FileResponseDto> uploadFiles(MultipartFile[] files, Long postId) {
+    public List<FileResponseDto> uploadFiles(List<MultipartFile> files, Long postId) {
 
-        // 파일이 비어있으면 비어있는 리스트 반환
-        if (files[0].getSize() < 1){
-            return Collections.emptyList();
-        }
+
         //업로드 파일 정보를 담을 비어있는 리스트
         List<FileResponseDto> attachList = new ArrayList<>();
+
+        // 파일이 비어있으면 비어있는 리스트 반환
+        if (files.isEmpty()){
+            return attachList;
+        }
 
         // 여기다가 저장할것임!!!
         String path = "src/main/resources/images";

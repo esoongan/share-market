@@ -23,7 +23,7 @@ public class FileController {
     // 파일업로드
     // 요청에서 파일객체를 받아 FileDto리스트에 담아서 DB에 저장하고 결과를 반환함
     @PostMapping("/api/file/{postId}")
-    public List<FileResponseDto> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @PathVariable Long postId) {
+    public List<FileResponseDto> uploadMultipleFiles(@RequestParam("files") List<MultipartFile> files, @PathVariable Long postId) {
         List<FileResponseDto> fileDtoList = fileService.uploadFiles(files, postId);
         return fileDtoList;
     }
