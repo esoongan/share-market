@@ -31,3 +31,6 @@ export const getMyPost = () => axios.get(`/uauth/api/post`);
 export const getSellerContract = ({state}) => axios.get(`/uauth/api/contract/seller?state=${state}`);
 export const acceptContract = ({id}) => axios.put(`/uauth/api/contract/${id}`);
 export const refuseContract = ({id}) => axios.delete(`/uauth/api/contract/${id}`);
+export const getBuyerContract = ({state}) => axios.get(`/uauth/api/contract/seller?state=${state}`);
+
+
