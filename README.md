@@ -12,6 +12,13 @@
 - Front - React
 - DB - MySql
 
+### 서버 API 스펙문서
+
+[api-specification-sharemarket](https://www.notion.so/URI-7586458dc8814afea3ff301e41844ea0)
+
+### 프론트 화면
+
+
 ### Contributors
 
 [esoongan - Overview](https://github.com/esoongan)
