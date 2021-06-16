@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Renting from '../components/mypage/Renting';
-import MyPost from 'components/mypage/MyPost';
+import MyPost from 'components/mypage/Mypost';
 import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts'
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptContract, getMyPost, getSellerContract, refuseContract } from 'store/modules/mypage';
+import { acceptContract, getMyPost, getSellerContract, refuseContract, getSellerRenting } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
 import { toggleModal } from 'store/modules/base';
 
@@ -16,15 +16,17 @@ const BorroweePage = ({ history }) => {
 	const dispatch = useDispatch();
 	const [postList, setPostList] = useState([]);
 
-	const { myPosts, sellerContract } = useSelector(({ mypage }) => ({
+	const { myPosts, sellerContract, sellerrenting } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
 		sellerContract: mypage.sellerContract,
+		sellerrenting: mypage.sellerrenting,
 	}))
 
 	//최초 렌더링 시 실행
 	useEffect(() => {
 		dispatch(getMyPost());
 		dispatch(getSellerContract({state:'default'}));	
+		dispatch(getSellerRenting({state:'accept'}));
 	}, []);
 
 	useEffect(()=> {
@@ -52,7 +54,7 @@ const BorroweePage = ({ history }) => {
 		<>
 			<Navigation />
       <Contracts rows={sellerContract} postList={postList} onClickAccept={onClickAccept} onClickRefuse={onClickRefuse} openChatModal={openChatModal}/>
-			{/* <Renting /> */}
+			 <Renting items={sellerrenting} history={history} /> 
 			{/* <Reservation /> */}
 			<MyPost items={myPosts} history={history} />
 		</>

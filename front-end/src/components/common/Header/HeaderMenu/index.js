@@ -54,7 +54,7 @@ export default function HeaderMenu({
 				open={Boolean(anchorEl)}
 				onClose={onClose}
 			>
-				<StyledMenuItem>
+				<StyledMenuItem component={RouterLink} to='/mypage/borrowee'>
 					<ListItemIcon>
 						<SendIcon fontSize="small" />
 					</ListItemIcon>

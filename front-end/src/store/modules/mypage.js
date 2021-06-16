@@ -9,8 +9,8 @@ const ACCEPT_CONTRACT = 'mypage/ACCEPT_CONTRACT';
 const REFUSE_CONTRACT = 'mypage/REFUSE_CONTRACT';
 const GET_BUYER_CONTRACT = 'mypage/GET_BUYER_CONTRACT';
 
-const GET_RESERVATION = 'mypage/GET_RESERVATION';
-
+const GET_BUYER_RENTING = 'mypage/GET_BUYER_RENTING';
+const GET_SELLER_RENTING = 'mypage/GET_SELLER_RENTING';
 
 //action creators
 export const getMyPost = createAction(GET_MY_POST, api.getMyPost);
@@ -18,13 +18,17 @@ export const getSellerContract = createAction(GET_SELLER_CONTRACT, api.getSeller
 export const acceptContract = createAction(ACCEPT_CONTRACT, api.acceptContract);
 export const refuseContract = createAction(REFUSE_CONTRACT, api.refuseContract);
 export const getBuyerContract = createAction(GET_BUYER_CONTRACT, api.getBuyerContract);
-
+export const getSellerRenting = createAction(GET_SELLER_RENTING, api.getSellerRenting);
+export const getBuyerRenting = createAction(GET_BUYER_RENTING, api.getBuyerRenting);
+//renting을 위한 것 --> state == accept인 것들만 받아옴
 
 //initial state
 const initialState = {
 	myPosts: [],
 	sellerContract: [],
 	buyerContract: [],
+	buyerrenting: [],
+	sellerrenting:[],
 };
 
 //reducer
@@ -43,7 +47,12 @@ export default handleActions(
 		...pender({
 			type: GET_SELLER_CONTRACT,
 			onSuccess: (state, action) => {
-				const { data } = action.payload.data;
+			/* 	const { data } = action.payload.data; */
+				let { data } = action.payload.data;
+				// 아이템이 없을 때 처리
+				if(!data){
+					data = [];
+				}
 				return {
 					...state,
 					sellerContract: data,
@@ -60,6 +69,26 @@ export default handleActions(
 				};
 			},
 		}),	
+		...pender({
+			type: GET_SELLER_RENTING,
+			onSuccess: (state, action) => {
+				const { data } = action.payload.data;
+				return {
+					...state,
+					sellerrenting: data,
+				};
+			},
+		}),
+		...pender({
+			type: GET_BUYER_RENTING,
+			onSuccess: (state, action) => {
+				const { data } = action.payload.data;
+				return {
+					...state,
+					buyerrenting: data,
+				};
+			},
+		}),
 	},
 	initialState,
 );

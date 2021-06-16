@@ -1,17 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Renting from '../components/mypage/Renting';
-import MyPost from '../components/mypage/MyPost';
+import MyPost from '../components/mypage/Mypost';
 import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
+import Contracts from 'components/mypage/Contracts'
+import { useDispatch, useSelector } from 'react-redux';
+import { getMyPost, getBuyerContract, getBuyerRenting } from 'store/modules/mypage';
+import { makeStyles } from '@material-ui/core';
+import { toggleModal } from 'store/modules/base';
 
 
-const BorrowerPage = () => {
+
+const useStyles = makeStyles(theme => ({
+}));
+const BorrowerPage = ({history}) => {
+  const classes = useStyles();
+	const dispatch = useDispatch();
+	const [postList, setPostList] = useState([]);
+
+	const { myPosts, buyerContract, logged, failure, buyerrenting } = useSelector(({ mypage, auth, pender }) => ({
+		myPosts: mypage.myPosts,
+		buyerContract: mypage.buyerContract,
+		logged: auth.logged,
+		failure: pender.failure[mypage/'GET_BUYER_CONTRACT'],
+		buyerrenting: mypage.buyerrenting,
+	}))
+
+	//최초 렌더링 시 실행
+	useEffect(() => {
+		if(logged){
+		dispatch(getMyPost());
+		dispatch(getBuyerContract({state:'default'}));
+       /*  dispatch(getBuyerContract({state:'accept'})); 
+		 */
+		dispatch(getBuyerRenting({state:'accept'}));
+
+	}
+		else
+		{
+			alert('먼저 로그인을 해주세요.');
+			history.replace('/');
+		}
+	}, [logged, dispatch, history]);
+
+
   return (
     <>
     <Navigation/>
-    <Renting/>
-    <Reservation/>
-    <MyPost/>
+	{failure? (<div>리스트 불러오기 실패</div>) :(
+    <Renting items={buyerrenting} history={history}/>)} 
+	{/* <Reservation 
+	items={reservation} history={history}/> )} */}
+    <MyPost items={myPosts} history={history}/>
     </>
   );
 };
