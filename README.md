@@ -10,7 +10,7 @@
 
 - Server - SpringBoot v2.3.9
 - Front - React
-- DB - MySql
+- DB - JPA, MySql
 
 ### 서버 API 스펙문서
 
