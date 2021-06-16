@@ -21,8 +21,8 @@
 
 ### Contributors
 
-[esoongan - Overview](https://github.com/esoongan)
+[서버개발 - esoongan - Overview](https://github.com/esoongan)
 
-[mooyaaho - Overview](https://github.com/mooyaaho)
+[프론트개발 - mooyaaho - Overview](https://github.com/mooyaaho)
 
-[jiyoungtt - Overview](https://github.com/jiyoungtt)
+[프론트개발 - jiyoungtt - Overview](https://github.com/jiyoungtt)
