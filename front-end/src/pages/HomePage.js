@@ -21,9 +21,13 @@ const useStyles = makeStyles(theme => ({
 		paddingRight: theme.spacing(8),
 	},
 	searchSection: {
-		background: grey[200],
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(32),
+	},
+	background: {
+		// backgroundImage: 'url(https://cdn.pixabay.com/photo/2017/09/07/08/54/money-2724241_1280.jpg)',
+		backgroundSize: 'cover',
+		background: grey[200]
 	},
 	cityIcon: {
 		width: 60,
@@ -92,13 +96,15 @@ const HomePage = ({history}) => {
 
 	return (
 		<div className={classes.root}>
-			<section className={classes.searchSection}>
-				<Grid container justify="center">
-					<Grid item xs={12} sm={10} md={8}>
-						<Searchbar />
+			<div className={classes.background}>
+				<section className={classes.searchSection}>
+					<Grid container justify="center">
+						<Grid item xs={12} sm={10} md={8}>
+							<Searchbar />
+						</Grid>
 					</Grid>
-				</Grid>
-			</section>
+				</section>
+			</div>
 			<section className={classes.section}>
 				<Typography variant="h5" gutterBottom>
 					지역별 마켓 둘러보기

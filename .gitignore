@@ -24,3 +24,5 @@ front-end/yarn-debug.log*
 front-end/yarn-error.log*
 
 back-end/files/
+
+.vscode/settings.json
