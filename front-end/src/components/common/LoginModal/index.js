@@ -8,7 +8,6 @@ import { toggleModal } from 'store/modules/base';
 import { checkUser, login} from 'store/modules/auth'
 import Alert from '@material-ui/lab/Alert';
 
-//todo: getUser 오류 처리
 const modalStyle = {
 	top: `30%`,
 	left: `50%`,
@@ -49,10 +48,9 @@ export default function LoginModal() {
 	});
   const [error, setError] = useState(null);
 
-	const { open, logged, failure } = useSelector(({ auth, base, pender }) => ({
+	const { open, logged } = useSelector(({ auth, base }) => ({
 		open: base.modals.loginModal,
 		logged: auth.logged,
-		failure: pender.failure['auth/LOGIN'],
 	}));
 	//모달의 visibility가 바뀌면 폼 초기화
 	useEffect(() => {
@@ -70,10 +68,7 @@ export default function LoginModal() {
       dispatch(checkUser({token})); //토큰으로 유저 정보 가져오기 -> 스토어에 저장
       dispatch(toggleModal({modal:'loginModal', visible: false}));  //모달 닫기
     }
-		else if(failure===true){
-			setError('다시 시도해보세요.');
-		}
-  }, [logged, dispatch, failure]);
+  }, [logged, dispatch]);
 
 	const onChangeInput = e => {
 		const { value, name } = e.target;
@@ -86,8 +81,15 @@ export default function LoginModal() {
 		if (inputs.username === '' || inputs.password === '') {
 			return;
 		}
-		dispatch(login(inputs));
+		dispatch(login(inputs)).catch(() => {
+				setError('다시 시도해보세요.');
+		});
 	};
+	const onKeyPress = (e) =>{
+		if(e.key ==='Enter'){
+			onSubmit();
+		}
+	}
 
 	const handleClose = () => {
 		dispatch(toggleModal({modal: 'loginModal', visible: false}));
@@ -107,6 +109,7 @@ export default function LoginModal() {
 						id="username"
 						value={inputs.username}
 						onChange={onChangeInput}
+						onKeyPress={onKeyPress}
 						variant="outlined"
 						margin="normal"
 						required
@@ -120,6 +123,7 @@ export default function LoginModal() {
 						id="password"
 						value={inputs.password}
 						onChange={onChangeInput}
+						onKeyPress={onKeyPress}
 						variant="outlined"
 						margin="normal"
 						required
@@ -130,7 +134,6 @@ export default function LoginModal() {
 						autoComplete="current-password"
 					/>
 					<Button
-					//todo: 엔터키를 눌러도 로그인 되도록
 						onClick={onSubmit}
 						fullWidth
 						variant="contained"
