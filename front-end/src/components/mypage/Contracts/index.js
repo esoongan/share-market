@@ -101,7 +101,7 @@ const getState = ({state, start, end}) => {
 
 // 포스트 별 들어온 거래 요청을 테이블로 보여주는 컴포넌트
 function ContractTable({
-	row,
+	row: contracts,
 	selectedContract,
 	onClickPrev,
 	onClickNext,
@@ -119,7 +119,7 @@ function ContractTable({
 					<NavigateBeforeIcon />
 				</IconButton>
 				<Typography variant="h6" gutterBottom component="div">
-					{row[0].postId}
+					{contracts[0].postTitle}
 				</Typography>
 				<IconButton aria-label="next post" onClick={onClickNext}>
 					<NavigateNextIcon />
@@ -143,7 +143,7 @@ function ContractTable({
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{row.map(contract => {
+					{contracts.map(contract => {
 						const state = getState({state: contract.state, start:contract.startDate, end:contract.endDate})
 						return (
 						<TableRow className={classes.tableRow} key={contract.id}>
@@ -165,14 +165,14 @@ function ContractTable({
 									end: contract.endDate,
 								})}
 							</TableCell> */}
-							<TableCell align="right">{contract.buyerId}</TableCell>
+							<TableCell align="right">{contract.buyer}</TableCell>
 							<TableCell>
 								<IconButton
 									aria-label="send"
 									onClick={() =>
 										onClickChat(
-											contract.buyerId,
-											`${contract.postId} 게시물에 거래 요청해주셔서 감사합니다~!${'\n'}`,
+											contract.buyerId,		//todo: 바꾸기
+											`${contract.postTitle} 게시물에 거래 요청해주셔서 감사합니다~!${'\n'}`,
 										)
 									}
 								>
@@ -206,7 +206,7 @@ function ContractTable({
 }
 
 export default function Contracts({
-	rows,
+	contracts,
 	postList,
 	onClickAccept,
 	onClickRefuse,
@@ -233,7 +233,7 @@ export default function Contracts({
 		if (selectedIndex - 1 >= 0) setSelectedIndex(selectedIndex - 1);
 	};
 	const handleClickNext = () => {
-		if (selectedIndex + 1 < postList.length)
+		if (selectedIndex + 1 < postList.ids.length)
 			setSelectedIndex(selectedIndex + 1);
 	};
 	const handleClickAccept = () => {
@@ -242,6 +242,7 @@ export default function Contracts({
 	const handleClickRefuse = () => {
 		onClickRefuse(selectedContract);
 	};
+	//todo: chatroom 요청 바디 바꾸기
 	const handleClickChat = (to, defaultMsg) => {
 		setTo(to);
 		setDefaultMsg(defaultMsg);
@@ -267,15 +268,15 @@ export default function Contracts({
 						component="nav"
 						aria-label="post list"
 					>
-						{postList.length>0 ? 
-						postList.map((post, index) => (
+						{postList.titles.length>0 ? 
+						postList.titles.map((title, index) => (
 							<ListItem
 								key={index}
 								button
 								selected={selectedIndex === index}
 								onClick={event => handleListItemClick(event, index)}
 							>
-								<ListItemText primary={post} />
+								<ListItemText primary={title} />
 							</ListItem>
 						)) : 
 						<ListItem>
@@ -285,9 +286,9 @@ export default function Contracts({
 					</List>
 				</Hidden>
 				<Divider className={classes.divider} orientation="vertical" />
-				{postList.length > 0 && (
+				{postList.ids.length > 0 && (
 					<ContractTable
-						row={rows.filter(r => r.postId === postList[selectedIndex])}
+						row={contracts.filter(contract => contract.postId === postList.ids[selectedIndex])}
 						selectedContract={selectedContract}
 						onClickPrev={handleClickPrev}
 						onClickNext={handleClickNext}
@@ -298,7 +299,7 @@ export default function Contracts({
 					/>
 				)}
 				<ChatModal
-					post_id={postList[selectedIndex]}
+					post_id={postList.ids[selectedIndex]}
 					to={to}
 					defaultMsg={defaultMsg}
 				/>
