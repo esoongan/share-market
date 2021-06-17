@@ -250,7 +250,7 @@ export default function Contracts({
 	onClickAccept,
 	onClickRefuse,
 	openChatModal,
-	mode,
+	mode,		//전체 내역 보기 <-> 대기중, 예약중만 보임 (todo:)
 }) {
 	const classes = useStyles();
 	const [selectedIndex, setSelectedIndex] = useState(0); //postList에서 선택한 게시글의 index

@@ -4,6 +4,8 @@ import MyPost from 'components/mypage/MyPost';
 import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts';
+import Requests from 'components/mypage/Requests';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	acceptContract,
@@ -62,7 +64,7 @@ const BorroweePage = ({ history }) => {
 	return (
 		<>
 			<Navigation />
-			<Contracts
+			<Requests
 				contracts={sellerContract}
 				postList={postList}
 				onClickAccept={onClickAccept}
