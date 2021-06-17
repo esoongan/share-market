@@ -121,7 +121,8 @@ const PostPage = ({ match, history }) => {
 				</Grid>
 				<ChatModal
 					post_id={post_id}
-					to={post.username}
+					seller={post.username}
+					buyer={myId}
 					defaultMsg={defaultMsg}
 				/>
 			</div>

@@ -46,7 +46,17 @@ export default handleActions(
 					createdChatroom: chatroom.id, //생성된 chatroom id
 				};
 			},
-			onFailure: (state, action) => initialState,
+			onFailure: (state, action) => {
+				const response = action.payload.response;
+				console.log('failure', response);
+				if (response.data.statusCode && response.data.statusCode === 400) {
+					const roomId = response.data.data.id;
+					return {
+						...state,
+						createdChatroom: roomId,
+					};
+				} else return initialState;
+			},
 		}),
 		...pender({
 			//ChatPage의 Chatrooms 컴포넌트의 props로
