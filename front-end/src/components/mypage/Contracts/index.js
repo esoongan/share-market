@@ -24,6 +24,7 @@ import { contractState } from 'constant/constant';
 import { Link as RouterLink } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import { getState } from 'lib/getState';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -87,32 +88,6 @@ const useStyles = makeStyles(theme => ({
 		visibility: 'hidden',
 	},
 }));
-
-// const getDays = ({ start, end }) => {
-// 	const startDate = moment(start, 'YYYY-MM-DD');
-// 	const endDate = moment(end, 'YYYY-MM-DD');
-// 	return endDate.diff(startDate, 'days') + 1;
-// };
-const getState = ({ state, start, end }) => {
-	const startDate = moment(start, 'YYYY-MM-DD');
-	const endDate = moment(end, 'YYYY-MM-DD');
-
-	if (state === 'default') {
-		if (startDate.isBefore(moment())) {
-			return contractState['expired']; //수락하지 않고 요청 시작 날짜가 지났을 때
-		}
-		return contractState['waiting'];
-	} else if (state === 'accept') {
-		if (endDate.isBefore(moment())) {
-			return contractState['completed']; //수락되었고 대여 종료 날짜가 지났을 때
-		} else if (startDate.isBefore(moment())) {
-			return contractState['ing']; //수락되었고 대여 중일 때
-		}
-		return contractState['reserved'];
-	} else if (state === 'refused') {
-		return contractState['refused'];
-	}
-};
 
 // 포스트 별 들어온 거래 요청을 테이블로 보여주는 컴포넌트
 function ContractTable({
