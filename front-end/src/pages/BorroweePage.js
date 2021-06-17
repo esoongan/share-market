@@ -37,12 +37,16 @@ const BorroweePage = ({ history }) => {
 
 	const onClickAccept = (id) => {
 		if(window.confirm('수락하시겠습니까? 수락 시 거래가 성사됩니다.'))
-			dispatch(acceptContract({id}));
+			dispatch(acceptContract({id})).then(()=>{		//거래 요청 목록 다시 가져오기
+				dispatch(getSellerContract({state:'default'}))
+			});
 	}
 
 	const onClickRefuse = (id) => {
 		if(window.confirm('거절하시겠습니까? 거절 시 요청이 삭제됩니다.'))
-			dispatch(refuseContract({id}));
+			dispatch(refuseContract({id})).then(()=>{		//거래 요청 목록 다시 가져오기
+				dispatch(getSellerContract({state:'default'}))
+			});;
 	}
 	const openChatModal = () => {
 		dispatch(toggleModal({modal:'chatModal', visible:true}))
