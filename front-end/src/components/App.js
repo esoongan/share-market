@@ -5,8 +5,8 @@ import {
 	EditorPage,
 	PostPage,
 	ListPage,
-	BorroweePage,
-	BorrowerPage,
+	SellerPage,
+	BuyerPage,
 	ChatPage,
 } from 'pages';
 import React from 'react';
@@ -44,8 +44,8 @@ const App = () => {
 						<Route exact path="/post/editor/:post_id?" component={EditorPage} />
 						<Route exact path="/post/:post_id" component={PostPage} />
 						<Route exact path="/list/:pageNumber?" component={ListPage} />
-						<Route exact path="/mypage/borrower" component={BorrowerPage} />
-						<Route exact path="/mypage/borrowee" component={BorroweePage} />
+						<Route exact path="/mypage/buyer" component={BuyerPage} />
+						<Route exact path="/mypage/seller" component={SellerPage} />
 						<Route exact path="/mypage/chat" component={ChatPage} />
 						<Route component={NotFoundPage} />
 					</Switch>
