@@ -70,7 +70,7 @@ const ChatMain = ({ chatList, username, onSend }) => {
 		const time = datetime.substring(11, 19);
 		return (
 			<Paper className={clsx(classes.chat, me && classes.me)} elevation={2}>
-				<Typography variant="body1" component="h6">
+				<Typography variant="body1" component="h6" style={{whiteSpace: 'pre-line'}}>
 					{message}
 				</Typography>
 				{/* <br/> */}
