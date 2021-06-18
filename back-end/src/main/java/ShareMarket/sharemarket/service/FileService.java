@@ -25,7 +25,7 @@ public class FileService {
     // System.getProperty("user.dir") : 절대경로를 구하는 방법
 
     //    private final String uploadPath = System.getProperty("user.dir");
-    private final String uploadPath = System.getProperty("user.dir") ;
+   //private final String uploadPath = System.getProperty("user.dir") ;
 
 
     //서버에 생성할 파일명을 처리할 랜덤 문자열 반환
@@ -35,23 +35,26 @@ public class FileService {
 
     // 서버에 첨부파일을 생성하고 업로드 파일목록 반환하는 함수 _ 인자로 파일리스트와 게시글아이디받음
     // MultipartFile[]타입의 files에는 업로드할 파일의 정보가 담겨있음
-    public List<FileResponseDto> uploadFiles(MultipartFile[] files, Long postId) {
+    public List<FileResponseDto> uploadFiles(List<MultipartFile> files, Long postId) {
 
-        // 파일이 비어있으면 비어있는 리스트 반환
-        if (files[0].getSize() < 1){
-            return Collections.emptyList();
-        }
+
         //업로드 파일 정보를 담을 비어있는 리스트
         List<FileResponseDto> attachList = new ArrayList<>();
 
+        // 파일이 비어있으면 비어있는 리스트 반환
+        if (files.isEmpty()){
+            return attachList;
+        }
+
         // 여기다가 저장할것임!!!
-        String path = "src/main/resources/images";
+        String path = "/usr/local/etc/nginx/images";
+        //String path = "/Users/iseungjin/Public/images";
 
         //path 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든디렉토리 생성
-        java.io.File dir = new java.io.File(path);
-        if (!dir.exists()) {
-            dir.mkdirs(); // mkdir()함수와 다른점은 상위 디렉토리가 존재하지 않으면, 그것까지 생성함
-        }
+//        java.io.File dir = new java.io.File(path);
+//        if (!dir.exists()) {
+//            dir.mkdirs(); // mkdir()함수와 다른점은 상위 디렉토리가 존재하지 않으면, 그것까지 생성함
+//        }
 
         // 파일 개수만큼 forEach실행
         for (MultipartFile file : files) {
@@ -63,7 +66,9 @@ public class FileService {
                 final String saveName = getRandomString() + "." + extension;
 
                 // 업로드 경로와 파일명이 담긴 파일객체를 생성
-                java.io.File target = new java.io.File(uploadPath+ "/"+path, saveName);
+//                java.io.File target = new java.io.File(uploadPath+ "/"+path, saveName);
+                java.io.File target = new java.io.File(path, saveName);
+
 //                java.io.File target = new java.io.File(uploadPath, saveName);
 
 
@@ -78,7 +83,8 @@ public class FileService {
                 fileDto.setPostId(postId);
                 fileDto.setOrigFilename(file.getOriginalFilename());
                 fileDto.setFilename(saveName);
-                fileDto.setFilepath(uploadPath+"/"+path);
+//                fileDto.setFilepath(uploadPath+"/"+path);
+                fileDto.setFilepath(path);
 
                 // Dto객체 -> entity로 변환후 저장 -> 저장된 엔티티로 생성된 id값을 포함하는 reponseDto를 리턴
                 File entity = fileRepository.save(fileDto.toEntity());

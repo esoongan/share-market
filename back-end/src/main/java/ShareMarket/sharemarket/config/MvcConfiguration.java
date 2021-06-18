@@ -24,9 +24,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
     // ip:port/images/~로 접근했을때 바로 클래스패스의 images폴더로 접근하하기위해
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("classpath:/images/");
-
+        registry.addResourceHandler("/images/**") // /images로 접근시
+                .addResourceLocations("classpath:/images/") // resources/images/로 매핑
+                .setCachePeriod(20);
     }
 
     // cors 설정

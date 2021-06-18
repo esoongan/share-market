@@ -31,8 +31,8 @@ public class PostSpecification {
 
     // 내용에 키워드
     public static Specification<Post> likeContent(final String searchKey) {
-        return (Specification<Post>) ((root, query, builder) ->
-                builder.like(root.get("content"), "%" + searchKey + "%"));
+        return (Specification<Post>) ((root, query, cb) ->
+                cb.like(root.get("content"), "%" + searchKey + "%"));
     }
 
     //카테고리
@@ -46,8 +46,7 @@ public class PostSpecification {
             public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 //얘를 위해서 jpa연관관게를 가지는 조인컬럼을 지정
                 Join<Post, User> postUserJoin = root.join("user", JoinType.INNER);
-
-                return cb.equal(postUserJoin.get("addr"), addr);
+                return cb.like(postUserJoin.get("addr"), "%" + addr + "%");
 
             }
         };
@@ -57,9 +56,9 @@ public class PostSpecification {
     public static Specification<Post> notEqualPostId(List<Long> postId) {
         return new Specification<Post>() {
             @Override
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 // not in을 구현하는 방법, value에 collection을 줘도 되는구나
-                return criteriaBuilder.in(root.get("id")).value(postId).not();
+                return cb.in(root.get("id")).value(postId).not();
             }
         };
     }
