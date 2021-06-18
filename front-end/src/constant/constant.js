@@ -6,3 +6,5 @@ export const contractState = {  //거래 상태
   ing: '진행중',
   expired: '만료됨',
 }
+
+export const imagePath = 'http://localhost:80/images/';

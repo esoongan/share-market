@@ -92,8 +92,11 @@ const PostPage = ({ match, history }) => {
 		return (
 			<div>
 				<PostTitle title={post.title} />
-				<ImageViewer images={images} />
 				<Grid container spacing={4}>
+					<Grid item xs={12} md={12}>
+						<ImageViewer images={images} />
+					</Grid>
+
 					<Grid item xs={12} md={8}>
 						<PostContent
 							post_id={post_id}
