@@ -18,7 +18,7 @@ const BorroweePage = ({ history }) => {
 
 	const { myPosts, sellerContract } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
-		sellerContract: mypage.sellerContract,
+		sellerContract: mypage.sellerContract,		// [{id, postId, seller }]
 	}))
 
 	//최초 렌더링 시 실행

@@ -38,7 +38,11 @@ export default handleActions(
 		...pender({
 			type: GET_SELLER_CONTRACT,
 			onSuccess: (state, action) => {
-				const { data } = action.payload.data;
+				let { data } = action.payload.data;
+				// 아이템이 없을 때 처리
+				if(!data){
+					data = [];
+				}
 				return {
 					...state,
 					sellerContract: data,

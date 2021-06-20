@@ -96,7 +96,7 @@ const ChatRooms = ({
 			lastMsg = room.lastMessage.substring(0, 24) + ' ...';
 		}
 		const handleClickRoom = () => {
-			onClickRoom({ room_id: room.id, post_id: room.post_id, username });
+			onClickRoom({ room_id: room.id, post_id: room.postId, username });
 		};
 
 		return (
