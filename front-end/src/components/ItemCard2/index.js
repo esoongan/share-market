@@ -37,6 +37,12 @@ const getDday = ({ end }) => {
 	return (endDate.diff(nowTime, 'days'));
 };
 
+const deletDday = ({ getDday}) =>{
+  const dday = getDday;
+  if(dday<0){}
+   
+};
+
 const ItemCard2 = ({ id, seller,  startDate, endDate, createdDate, postTitle, onClickItem, img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => {
 const classes = useStyles();
  /*  const categoryLabel = getLabel(categories, category); */
@@ -63,6 +69,7 @@ const classes = useStyles();
             D-  
         {getDday({	
 		end:endDate,})}
+   
             </Typography>
         {/* 이곳에 나는 디데이를 넣을 것이다. */}
         </div>

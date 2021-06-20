@@ -9,6 +9,7 @@ import ItemCard2 from 'components/ItemCard2';
 const useStyles = makeStyles(theme => ({
 	root:{
 		marginBottom: theme.spacing(10),
+		height: 350,
 	},
 	itemsContainer: {
 		display: 'flex',

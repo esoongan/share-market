@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { acceptContract, getMyPost, getSellerContract, refuseContract, getSellerRenting } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
 import { toggleModal } from 'store/modules/base';
+import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
 }));
@@ -16,18 +17,23 @@ const BorroweePage = ({ history }) => {
 	const dispatch = useDispatch();
 	const [postList, setPostList] = useState([]);
 
-	const { myPosts, sellerContract, sellerrenting } = useSelector(({ mypage }) => ({
+	const { myPosts, sellerContract, sellerrenting, endDate, startDate } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
 		sellerContract: mypage.sellerContract,
 		sellerrenting: mypage.sellerrenting,
+		endDate: mypage.sellerrenting.endDate,
+		startDate: mypage.sellerrenting.startDate,
 	}))
+
+
 
 	//최초 렌더링 시 실행
 	useEffect(() => {
 		dispatch(getMyPost());
 		dispatch(getSellerContract({state:'default'}));	
-		dispatch(getSellerRenting({state:'accept'}));
+	
 	}, []);
+
 
 	useEffect(()=> {
 	// TODO: post_id를 postTitle로 바꾸기
@@ -49,6 +55,18 @@ const BorroweePage = ({ history }) => {
 	const openChatModal = () => {
 		dispatch(toggleModal({modal:'chatModal', visible:true}))
 	}
+
+
+	const end = moment(endDate, 'YYYY-MM-DD');
+	const start = moment(startDate, 'YYYY-MM-DD');
+	const now = moment().format('YYYY-MM-DD');
+
+	//승인 받고, 시작 날짜에 화면에 뜬다, 또한 대여날짜가 끝나면 사라진다.
+	useEffect(()=>{
+		if((end.diff(now, 'days'))>=0 && (now.diff(start, 'days'))>=0 ){
+			dispatch(getSellerRenting({state:'accept'}));
+		}
+	},[dispatch]);
 
 	return (
 		<>

@@ -6,6 +6,7 @@ import ItemCard from 'components/ItemCard';
 const useStyles = makeStyles(theme => ({
 	root:{
 		marginBottom: theme.spacing(10),
+		height: 350,
 	},
 	itemsContainer: {
 		display: 'flex',
