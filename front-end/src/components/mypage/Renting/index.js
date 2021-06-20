@@ -31,12 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 /////////////////////////////////////////////////////////
 
-/* const getDday = ({ start, end}) => {
-	const startDate = moment(start, 'YYYY-MM-DD');
-	const endDate = moment(end, 'YYYY-MM-DD');
-	return (endDate.diff(startDate, 'days') + 1);
-};
-console.log(getDday); */
+
 
 
 export default function Renting({ history, items }) {

@@ -12,6 +12,10 @@ const GET_BUYER_CONTRACT = 'mypage/GET_BUYER_CONTRACT';
 const GET_BUYER_RENTING = 'mypage/GET_BUYER_RENTING';
 const GET_SELLER_RENTING = 'mypage/GET_SELLER_RENTING';
 
+const GET_FILES = 'mypage/GET_FILES';
+
+
+
 //action creators
 export const getMyPost = createAction(GET_MY_POST, api.getMyPost);
 export const getSellerContract = createAction(GET_SELLER_CONTRACT, api.getSellerContract)
@@ -20,6 +24,7 @@ export const refuseContract = createAction(REFUSE_CONTRACT, api.refuseContract);
 export const getBuyerContract = createAction(GET_BUYER_CONTRACT, api.getBuyerContract);
 export const getSellerRenting = createAction(GET_SELLER_RENTING, api.getSellerRenting);
 export const getBuyerRenting = createAction(GET_BUYER_RENTING, api.getBuyerRenting);
+export const getFiles = createAction(GET_FILES, api.getFiles);
 //renting을 위한 것 --> state == accept인 것들만 받아옴
 
 //initial state
@@ -34,6 +39,18 @@ const initialState = {
 //reducer
 export default handleActions(
 	{
+
+		...pender({
+			type: GET_FILES,
+			onSuccess: (state, action) => {
+				const { data: images } = action.payload;
+				return {
+					...state,
+					images,
+				};
+			},
+			onFailure: (state, action) => initialState,
+		}),
 			...pender({
 			type: GET_MY_POST,
 			onSuccess: (state, action) => {
