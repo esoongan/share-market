@@ -8,7 +8,9 @@ import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.dto.contract.ContractRequestDto;
 import ShareMarket.sharemarket.dto.contract.ContractResponseDto;
+import ShareMarket.sharemarket.dto.mail.MailDto;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,22 +32,33 @@ public class ContractService {
     private final ContractRepository contractRepository;
     private final PostRepository postRepository;
     private final UserService userService;
+    private final MailService mailService;
 
     // 거래요청 - state:default
     @Transactional
     public ContractResponseDto request(ContractRequestDto contractRequestDto, Authentication authentication) {
 //        contractRequestDto.setSellerId(getUserPkByPostId(contractRequestDto.getPost().getId()));
         // JPA연관관계 후 : getPost -> getUser -> getId (getUserPKByPostID함수 사용할필요 없음)
+
         Post post = postRepository.findById(contractRequestDto.getPostId())
                 .orElseThrow(() -> new PostNotFoundException(contractRequestDto.getPostId()));
         contractRequestDto.setPost(post);
-        // 아직은 jpa join관계를 가지지않는 구조지만 USER를 테이블에서 가지도록 쉽게 변경 가능함
-        contractRequestDto.setSeller(contractRequestDto.getPost().getUser());
-        contractRequestDto.setBuyer(userService.getUserByToken(authentication.getPrincipal()));
+
+        User seller = contractRequestDto.getPost().getUser();
+        User buyer = userService.getUserByToken(authentication.getPrincipal());
+
+        contractRequestDto.setSeller(seller);
+        contractRequestDto.setBuyer(buyer);
         contractRequestDto.setState("default");
+
         // DB에 저장
         Contract contract = contractRepository.save(contractRequestDto.toEntity());
         log.info("Contract DB insert complete");
+
+
+        MailDto mailDto = new MailDto(contractRequestDto);
+        mailService.sendMail(mailDto);
+
         // ResoponseDto로 반환
         return new ContractResponseDto(contract);
     }
