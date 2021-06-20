@@ -61,6 +61,18 @@ public class ContractService {
         return new ContractResponseDto(contract);
     }
 
+    @Transactional
+    public ContractResponseDto update(Long id, String state) {
+        // contract PK로 contract찾고
+        Contract contract = contractRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 거래가 없습니다. id=" + id));
+        //update함수 호출 --> 상태만 accept로 바꾸는 업데이트
+        contract.update(state);
+        return new ContractResponseDto(contract);
+    }
+
+
+
     // delete -> 거절
     @Transactional
     public void delete(Long id) {
@@ -71,6 +83,8 @@ public class ContractService {
     // 거래조회 판매자ver
     @Transactional
     public List<ContractResponseDto> findContractSeller(String state, Authentication authentication) {
+
+
         User seller = userService.getUserByToken(authentication.getPrincipal());
         List<Contract> contractList = contractRepository.findAllBySellerAndState(seller, state);
 
@@ -80,7 +94,6 @@ public class ContractService {
             responseDtoList.add(responseDto);
         }
         return responseDtoList;
-
     }
 
     //거래조회 : 구매자
@@ -96,6 +109,26 @@ public class ContractService {
         }
         return responseDtoList;
 
+    }
+
+    // 판매자인지 구매자인지에 따라 다르고 state는 상관없이 모두 응답
+    @Transactional
+    public List<ContractResponseDto> findContract(String ver, Authentication authentication) {
+        User user = userService.getUserByToken(authentication.getPrincipal());
+        List<Contract> contractList;
+        if (ver.equals("buyer")) {
+            contractList = contractRepository.findAllByBuyer(user);
+        }else{
+            contractList = contractRepository.findAllBySeller(user);
+        }
+
+        List<ContractResponseDto> responseDtoList = new ArrayList<>();
+        for (Contract contract : contractList) {
+            ContractResponseDto responseDto = new ContractResponseDto(contract);
+            responseDtoList.add(responseDto);
+        }
+
+        return responseDtoList;
     }
 
     // spec을 통해 주어진 기간안에 accept인 거래를 모두 찾고 distinct postId를 찾는 함수 --> 이 게시글들을 제외한 모든 게시글들을 보여주면 끝

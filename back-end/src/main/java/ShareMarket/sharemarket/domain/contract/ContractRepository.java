@@ -18,6 +18,10 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
 
     List<Contract> findAllByBuyerAndState(User buyer, String state);
 
+    List<Contract> findAllBySeller(User seller);
+
+    List<Contract> findAllByBuyer(User buyer);
+
     //1번조건 : 시작시간이 start, end사이이거나
     List<Contract> findAllByStartDateBetween(LocalDate startDate, LocalDate endDate);
 

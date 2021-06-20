@@ -39,7 +39,7 @@ const ImageViewer = ({ images }) => {
 					<Grid item md={6}>
 						<img
 							className={classes.carouselImage}
-							src={'http://localhost:8080/images/'+images[0].filename}
+							src={'http://localhost:80/images/'+images[0].filename}
 							alt=""
 						/>
 					</Grid>
@@ -48,7 +48,7 @@ const ImageViewer = ({ images }) => {
 							<Grid key={index} item md={6}>
 								<img
 									className={classes.carouselImage}
-									src={'http://localhost:8080/images/'+image.filename}
+									src={'http://localhost:80/images/'+image.filename}
 									alt=""
 								/>
 							</Grid>
