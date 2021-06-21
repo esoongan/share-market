@@ -244,20 +244,22 @@ function ContractTable({
 	);
 }
 
+const ALL_MODE = true;
+const ONLY_MODE = false
 export default function Contracts({
 	contracts,
 	postList,
 	onClickAccept,
 	onClickRefuse,
 	openChatModal,
-	mode,		//전체 내역 보기 <-> 대기중, 예약중만 보임 (todo:)
+	// mode,		//전체 내역 보기 <-> 대기중, 예약중만 보임 (todo:)
 }) {
 	const classes = useStyles();
 	const [selectedIndex, setSelectedIndex] = useState(0); //postList에서 선택한 게시글의 index
 	const [selectedContract, setSelectedContract] = useState(-1); //선택한 거래 요청의 id (거래 pk)
 	const [duplicated, setDuplicated] = useState([]); //선택한 거래 요청과 기간이 중복되는 요청을 저장 [id(거래 pk)]
 	const [chat, setChat] = useState(null); // {seller, buyer, defaultMsg}
-
+	const [mode, setMode] = useState(ONLY_MODE);
 	// 다른 포스트를 클릭했으면 selectedContract 초기화
 	React.useEffect(() => {
 		setSelectedContract(-1);
@@ -292,7 +294,7 @@ export default function Contracts({
 					거래 요청 내역
 				</Typography>
 				<FormControlLabel
-					control={<Switch checked={mode} name="mode" />}
+					control={<Switch checked={mode} name="mode" onChange={(event)=>setMode(event.target.checked)} />}
 					label="전체 내역"
 				/>
 			</div>

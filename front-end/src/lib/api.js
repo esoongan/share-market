@@ -29,6 +29,8 @@ export const sendChat = ({room_id, message}) => axios.post(`/uauth/api/chat`, {r
 export const getChats = ({room_id}) => axios.get(`/uauth/api/chat/${room_id}`);
 
 export const getMyPost = () => axios.get(`/uauth/api/post`);
-export const getSellerContract = ({state}) => axios.get(`/uauth/api/contract/seller?state=${state}`);
+// export const getSellerContract = ({state}) => axios.get(`/uauth/api/contract/seller?state=${state}`);
+export const getContracts = ({version}) => axios.get(`/uauth/api/contract?ver=${version}`);
+
 export const acceptContract = ({id}) => axios.put(`/uauth/api/contract/${id}`);
 export const refuseContract = ({id}) => axios.delete(`/uauth/api/contract/${id}`);
