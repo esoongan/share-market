@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
 const ImageViewer = ({ images }) => {
 	const classes = useStyles();
 
+	if(!images){
+		return <></>;
+	}
 	return (
 		<section className={classes.photoSection}>
 			{/* photo  */}
@@ -60,7 +63,7 @@ const ImageViewer = ({ images }) => {
 							alt=""
 						/>
 					</Grid>
-					<Grid classNAme={classes.photosContainer} container spacing={1} item md={6}>
+					<Grid className={classes.photosContainer} container spacing={1} item md={6}>
 						{images.slice(1).map((image, index) => (
 							<Grid key={index} item md={6}>
 								<img

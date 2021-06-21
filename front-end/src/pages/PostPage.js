@@ -32,19 +32,21 @@ const PostPage = ({ match, history }) => {
 			reserved: post.reserved,
 		}));
 	useEffect(() => {
-		return dispatch(initialize());
-	}, [myId, dispatch]);
+		dispatch(getFiles({ post_id })); //GET 이미지 api 호출
+		dispatch(getPost({ post_id })); //GET 게시물 api 호출
+		dispatch(getBlockedDates({ post_id })); // 이미 예약된 날짜들 불러오기
+
+		return () => dispatch(initialize());
+	}, []);
 
 	useEffect(() => {
-		dispatch(getPost({ post_id })); //POST 게시물 api 호출
-		dispatch(getFiles({ post_id })); //POST 파일 api 호출
-		dispatch(getBlockedDates({ post_id })); // 이미 예약된 날짜들 불러오기
 		if (myId === post.username) {
 			//내가 쓴 게시물일 때
 			setEditable(true);
 		} else {
 			setEditable(false);
 		}
+
 	}, [dispatch, post_id, myId, post.username]);
 
 	useEffect(() => {
