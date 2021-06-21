@@ -47,7 +47,7 @@ public class FileService {
         }
 
         // 여기다가 저장할것임!!!
-        String path = "/usr/local/etc/nginx/images";
+        String path = "C:/Program Files (x86)/nginx-1.20.1/nginx-1.20.1";
         //String path = "/Users/iseungjin/Public/images";
 
         //path 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든디렉토리 생성

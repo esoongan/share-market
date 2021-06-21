@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Renting from '../components/mypage/Renting';
-import MyPost from '../components/mypage/MyPost';
+import MyPost from '../components/mypage/Mypost';
 import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts';
@@ -23,7 +23,7 @@ const BorrowerPage = ({ history }) => {
 	const { myPosts, buyerContract, logged, failure, buyerrenting } = useSelector(
 		({ mypage, auth, pender }) => ({
 			myPosts: mypage.myPosts,
-			buyerContract: mypage.contract.buyer,
+			buyerContract: mypage.contracts.buyer,
 			logged: auth.logged,
 			failure: pender.failure[mypage / 'GET_BUYER_CONTRACT'],
 			buyerrenting: mypage.renting.buyer,

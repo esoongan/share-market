@@ -52,7 +52,7 @@ const getSday = ({ start }) => {
 
 
 const now = moment().format('YYYY-MM-DD'); //오늘의 날짜
-const ItemCard2 = ({ id, seller,  startDate, endDate, createdDate, postTitle, onClickItem, img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => { 
+const ItemCard2 = ({ id, seller,  startDate, endDate, createdDate, postTitle, onClickItem, thumbnail }) => { 
   
 const now_start = getSday({start: startDate, });
 const end_now = getDday({ end:endDate});
@@ -74,7 +74,7 @@ const classes = useStyles();
  	  <CardActionArea>
 		<CardMedia
           className={classes.media}
-		  image={img}
+		  image={thumbnail}
           onClick= {handleClickItem}
 		/>
 	  </CardActionArea> 
@@ -108,13 +108,10 @@ const classes = useStyles();
         }
 
         else{
-
-         /*  이부분에는 blur처리 */
-
+ //오늘이 대여기간이 아니면 나오지 마!!!!
          return (
     
           <Card className={classes.root} color='transparent' >
-            
           </Card>
           );
         }

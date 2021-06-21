@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem,  img='https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=559&q=80' }) => {
+const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem,thumbnail }) => {
 	const classes = useStyles();
   const handleClickItem = () => {
     onClickItem(id);
@@ -38,7 +38,7 @@ const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem,
 			<CardActionArea>
 				<CardMedia
 					className={classes.media}
-					image={img}
+					image={thumbnail}
           onClick= {handleClickItem}
 				/>
 

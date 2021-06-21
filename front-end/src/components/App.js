@@ -44,6 +44,7 @@ const App = () => {
 						<Route exact path="/post/editor/:post_id?" component={EditorPage} />
 						<Route exact path="/post/:post_id" component={PostPage} />
 						<Route exact path="/mypage/buyer" component={BuyerPage} />
+						<Route exact path="/mypage/seller" component={SellerPage} />
 						<Route exact path="/mypage/chat" component={ChatPage} />
 						<Route component={NotFoundPage} />
 					</Switch>

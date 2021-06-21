@@ -5,7 +5,7 @@ import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts'
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptContract, getMyPost, getContract, refuseContract, getRenting } from 'store/modules/mypage';
+import { acceptContract, getMyPost, getContracts, refuseContract, getRenting } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
 import { toggleModal } from 'store/modules/base';
 import moment from 'moment'
@@ -19,7 +19,7 @@ const BorroweePage = ({ history }) => {
 
 	const { myPosts, contracts, sellerrenting } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
-		contracts: mypage.Contract.seller,
+		contracts: mypage.contracts.seller,
 		sellerrenting: mypage.renting.seller,
 	
 	}))
@@ -29,7 +29,7 @@ const BorroweePage = ({ history }) => {
 	//최초 렌더링 시 실행
 	useEffect(() => {
 		dispatch(getMyPost());
-		dispatch(getContract({version:'seller'}));	
+		dispatch(getContracts({version:'seller'}));	
 		dispatch(getRenting({version:'seller'}));	
 	
 	}, []);
