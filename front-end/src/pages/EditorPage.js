@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Editor from 'components/Editor';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+	deleteFile,
 	editFiles,
 	editPost,
 	uploadFiles,
 	writePost,
 } from 'store/modules/editor';
-import { post } from 'store/modules';
 
-//writePost 성공 시 uploadFiles도 성공한다고 가정함.
 const EditorPage = ({ history, match }) => {
 	const matchId = match.params.post_id;
 	const dispatch = useDispatch();
@@ -22,13 +21,13 @@ const EditorPage = ({ history, match }) => {
 	});
 	const [error, setError] = useState(null);
 	const [images, setImages] = useState([]);
-	const { logged, username, old_post, old_img } = useSelector(
+	const { logged, username, old_post, old_images } = useSelector(
 		({ auth, post }) => {
 			return {
 				logged: auth.logged,
 				username: auth.user.username,
 				old_post: post.post, //수정모드일 때 대상 post 정보
-				old_img: post.images,
+				old_images: post.images, //nullable
 			};
 		},
 	);
@@ -37,7 +36,6 @@ const EditorPage = ({ history, match }) => {
 		// 수정모드일 때는 원래 데이터 모두 불러오기
 		if (matchId) {
 			//내가 쓴 글이 아닌데 접근했을 때
-			console.log(old_post, username);
 			if (!old_post.id || username !== old_post.username) {
 				alert('허용되지 않은 접근입니다.');
 				history.replace('/');
@@ -97,8 +95,7 @@ const EditorPage = ({ history, match }) => {
 				console.log(reason);
 			});
 	};
-	const onSubmit = e => {
-		e.preventDefault();
+	const onSubmit = deletedImages => {
 		const { category, title, content, price, deposit } = inputs;
 
 		/* 포맷 확인 */
@@ -114,7 +111,12 @@ const EditorPage = ({ history, match }) => {
 		} else if (isNaN(price) || isNaN(deposit)) {
 			setError('가격은 숫자만 입력가능합니다.');
 			return;
-		} else if (images.length === 0) {
+		} else if (
+			(images.length === 0 && !old_images) ||
+			(deletedImages &&
+				old_images &&
+				images.length + old_images.length - deletedImages.length <= 0)
+		) {
 			setError('최소 1장 이상의 사진을 등록해주세요.');
 			return;
 		} else {
@@ -122,17 +124,25 @@ const EditorPage = ({ history, match }) => {
 		}
 
 		/* api 호출 */
-		if (matchId && old_post.id)
+		if (matchId && old_post.id) {
 			//edit mode
 			// PUT /uauth/api/post
+			for (const fileId of deletedImages) {
+				// 이미지 파일 삭제
+				dispatch(deleteFile({ fileId }));
+			}
 			dispatch(editPost({ ...inputs, post_id: old_post.id }))
 				.then(cb)
 				.catch(reason => console.log(reason));
-		else {
+		} else {
 			// POST /uauth/api/post
 			dispatch(writePost(inputs))
 				.then(cb)
 				.catch(reason => console.log(reason));
+		}
+	};
+	const onDeleteImage = ({ fileId }) => {
+		if (window.confirm('정말 삭제하시겠습니까?')) {
 		}
 	};
 
@@ -149,6 +159,8 @@ const EditorPage = ({ history, match }) => {
 				onSelectImages={onSelectImages}
 				editMode={matchId}
 				error={error}
+				old_images={old_images}
+				onDeleteImage={onDeleteImage}
 			/>
 		</>
 	);

@@ -1,5 +1,5 @@
 import Select from 'react-select';
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { categories } from 'constant/locale';
 import Button from '@material-ui/core/Button';
@@ -15,8 +15,10 @@ import {
 import ReactImageUploading from 'react-images-uploading';
 import Alert from '@material-ui/lab/Alert';
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import EmptyBackground from './empty.png';
+import { imagePath } from 'constant/constant';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -62,6 +64,13 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		height: 400,
 	},
+	editGridList: {
+		flexWrap: 'nowrap',
+		// Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+		transform: 'translateZ(0)',
+		height: 160,
+		alignItems: 'center',
+	},
 	empty: {
 		height: 366,
 		borderRadius: '4px',
@@ -83,8 +92,10 @@ const Editor = ({
 	onSelectImages,
 	editMode,
 	error,
+	old_images,
 }) => {
 	const classes = useStyles();
+	const [deletedImages, setDeletedImages] = useState([]);
 	const handleChangeInput = e => {
 		const { value, name } = e.target;
 		onChangeInput({ value, name });
@@ -92,7 +103,11 @@ const Editor = ({
 	const onSelect = ({ value }) => {
 		onChangeInput({ value, name: 'category' });
 	};
-
+	const handleSubmit = e => {
+		e.preventDefault();
+		onSubmit(deletedImages);
+	}
+	console.log('Editor images', images);
 	return (
 		<div className={classes.root}>
 			{error !== null && (
@@ -138,84 +153,134 @@ const Editor = ({
 				alignContent="flex-end"
 			>
 				<Grid item xs={4}>
-					<ReactImageUploading
-						multiple
-						value={images}
-						onChange={onSelectImages}
-						// onChange={imageList => setImages(imageList)}
-						maxNumber={5}
-						dataURLKey="data_url"
-					>
-						{({
-							imageList,
-							onImageUpload,
-							onImageUpdate,
-							onImageRemove,
-							isDragging,
-							dragProps,
-							errors,
-						}) => (
-							<div
-								className={classes.uploader}
-								style={isDragging ? {backgroundColor: 'rgba(0,0,0,0.05)' } : null}
-								{...dragProps}
-							>
-								{errors !== null && errors.maxNumber && (
-									<Alert severity="error">
-										최대 5장까지만 업로드 가능합니다.
-									</Alert>
-								)}
-								{imageList.length === 0 ? (
-									<img
-										className={classes.empty}
-										alt="empty"
-										src={EmptyBackground}
-									/>
-								) : (
-									<GridList
-										className={
-											imageList.length === 0 ? classes.empty : classes.gridList
-										}
-										cellHeight={160}
-										cols={2}
-									>
-										{imageList.map((image, index) => (
-											<GridListTile key={index} cols={1}>
-												<img
-													src={image.data_url}
-													alt=""
-													onClick={() => onImageUpdate(index)}
-												/>
-												<GridListTileBar
-													title={image.file.name}
-													actionIcon={
-														<IconButton
-															aria-label={`delete`}
-															className={classes.icon}
-															onClick={() => onImageRemove(index)}
-														>
-															<HighlightOffOutlinedIcon
-																style={{ color: 'white' }}
-															/>
-														</IconButton>
-													}
-												/>
-											</GridListTile>
-										))}
-									</GridList>
-								)}
-								<Button
-									className={classes.uploadBtn}
-									variant="contained"
-									color="primary"
-									onClick={onImageUpload}
+					<div>
+						<ReactImageUploading
+							multiple
+							value={images}
+							onChange={onSelectImages}
+							// onChange={imageList => setImages(imageList)}
+							maxNumber={old_images ? 5-old_images.length+ deletedImages.length : 5}
+							dataURLKey="data_url"
+						>
+							{({
+								imageList,
+								onImageUpload,
+								onImageUpdate,
+								onImageRemove,
+								isDragging,
+								dragProps,
+								errors,
+							}) => (
+								<div
+									className={classes.uploader}
+									style={
+										isDragging ? { backgroundColor: 'rgba(0,0,0,0.05)' } : null
+									}
+									{...dragProps}
 								>
-									<AddAPhotoRoundedIcon style={{ marginRight: 8 }} />
-									업로드
-								</Button>
-							</div>
+									{errors !== null && errors.maxNumber && (
+										<Alert severity="error">
+											최대 5장까지만 업로드 가능합니다.
+										</Alert>
+									)}
+									{imageList.length === 0 ? (
+										<img
+											className={classes.empty}
+											alt="empty"
+											src={EmptyBackground}
+										/>
+									) : (
+										<GridList
+											className={
+												imageList.length === 0
+													? classes.empty
+													: classes.gridList
+											}
+											cellHeight={160}
+											cols={2}
+										>
+											{imageList.map((image, index) => (
+												<GridListTile key={index} cols={1}>
+													<img
+														src={image.data_url}
+														alt=""
+														onClick={() => onImageUpdate(index)}
+													/>
+													<GridListTileBar
+														title={image.file.name}
+														actionIcon={
+															<IconButton
+																aria-label={`delete`}
+																className={classes.icon}
+																onClick={() => onImageRemove(index)}
+															>
+																<HighlightOffOutlinedIcon
+																	style={{ color: 'white' }}
+																/>
+															</IconButton>
+														}
+													/>
+												</GridListTile>
+											))}
+										</GridList>
+									)}
+									<Button
+										className={classes.uploadBtn}
+										variant="contained"
+										color="primary"
+										onClick={onImageUpload}
+									>
+										<AddAPhotoRoundedIcon style={{ marginRight: 8 }} />
+										업로드
+									</Button>
+								</div>
+							)}
+						</ReactImageUploading>
+						{/* edit mode - 기존의 사진 파일을 보여주고 삭제 가능하도록 */}
+						{old_images && (
+							<GridList
+								className={classes.editGridList}
+								cols={2.5}
+								cellHeight={140}
+							>
+								{old_images.map((img, index) => (
+									<GridListTile key={img.id}>
+										<img
+											src={imagePath + img.filename}
+											alt={img.origFilename}
+										/>
+										<GridListTileBar
+											title={img.origFilename}
+											actionIcon={
+												<IconButton
+													aria-label={`remove ${img.origFilename}`}
+													onClick={() => {
+														if (deletedImages.includes(img.id)) {
+															console.log( deletedImages.filter((value) => value !== img.id));
+															//기존 이미지 삭제 취소하기
+															setDeletedImages(
+																deletedImages.filter((value) => value !== img.id)
+															);
+														} else {
+															//기존 이미지 삭제하기
+															setDeletedImages([...deletedImages, img.id]);
+														}
+													}}
+												>
+													{deletedImages.includes(img.id) ? (
+														<AddCircleOutlineIcon style={{ color: 'white' }} /> //기존 이미지 삭제 취소 시 플러스 아이콘
+													) : (
+														<HighlightOffOutlinedIcon
+															style={{ color: 'red' }} /> //기존 이미지 삭제 시 마이너스 아이콘
+													)}
+												</IconButton>
+											}
+										/>
+									</GridListTile>
+								))}
+							</GridList>
 						)}
-					</ReactImageUploading>
+					</div>
 				</Grid>
 
 				<Grid item xs={6}>
@@ -269,7 +334,7 @@ const Editor = ({
 				<Grid item xs={1} />
 			</Grid>
 			<Button
-				onClick={onSubmit}
+				onClick={handleSubmit}
 				className={classes.writeBtn}
 				variant="outlined"
 				color="primary"

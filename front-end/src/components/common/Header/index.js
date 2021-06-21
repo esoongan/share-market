@@ -47,7 +47,7 @@ export default function Header({children}) {
 					{children}
 
 					<Typography component={RouterLink} to='/' variant="h6" className={classes.title}>
-						로고
+						SHARE MARKET
 					</Typography>
 					{!logged ? (
 						<div>
