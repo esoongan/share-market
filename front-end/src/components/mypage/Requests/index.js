@@ -15,6 +15,7 @@ import SendIcon from '@material-ui/icons/Send';
 import ChatModal from 'components/common/ChatModal';
 import { Link as RouterLink } from 'react-router-dom';
 import { getState } from 'lib/getState';
+import { contractState } from 'constant/constant';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // 내가 보낸 거래 요청을 테이블로 보여주는 컴포넌트
-function RequestTable({ row: requests, onClickChat }) {
+function RequestTable({ row: requests, onClickChat, mode }) {
 	const classes = useStyles();
 
 	const columns = [
@@ -108,18 +109,23 @@ function RequestTable({ row: requests, onClickChat }) {
 				<DataGrid
 					isRowSelectable={false}
 					columns={columns}
-					rows={rows}
+					rows={rows.filter(row => {
+						return mode === ONLY_MODE
+							? row['상태'] === contractState.waiting ||
+									row['상태'] === contractState.reserved
+							: true;
+					})}
 					hideFooter
 				/>
 			</div>
 		</div>
 	);
 }
-
-export default function Requests({ contracts, openChatModal, mode }) {
-	//mode: 전체 내역 보기 (지난 모든 거래 요청들까지) <-> 대기중, 거절됨, 예약됨만 보임 (todo:)
+const ONLY_MODE = false;
+export default function Requests({ contracts, openChatModal}) {
 	const classes = useStyles();
 	const [chat, setChat] = useState(null); // {post_id, seller, buyer, defaultMsg}
+	const [mode, setMode] = useState(ONLY_MODE); //전체 내역 보기 <-> 대기중, 예약중만 보임
 
 	const handleClickChat = ({ post_id, seller, buyer, defaultMsg }) => {
 		setChat({ post_id, seller, buyer, defaultMsg });
@@ -132,14 +138,23 @@ export default function Requests({ contracts, openChatModal, mode }) {
 					내가 보낸 요청 내역
 				</Typography>
 				<FormControlLabel
-					control={<Switch checked={mode} name="mode" />}
+					control={
+						<Switch
+							checked={mode}
+							name="mode"
+							onChange={event => setMode(event.target.checked)}
+						/>
+					}
 					label="전체 내역"
 				/>
 			</div>
 
 			<div className={classes.container}>
-				<RequestTable row={contracts} onClickChat={handleClickChat} />
-
+				<RequestTable
+					row={contracts}
+					onClickChat={handleClickChat}
+					mode={mode}
+				/>
 				{chat && (
 					<ChatModal
 						post_id={chat.post_id}

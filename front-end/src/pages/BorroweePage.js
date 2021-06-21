@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Renting from '../components/mypage/Renting';
 import MyPost from 'components/mypage/MyPost';
-import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts';
 import Requests from 'components/mypage/Requests';
@@ -76,7 +75,6 @@ const BorroweePage = ({ history }) => {
 				openChatModal={openChatModal}
 			/>
 			{/* <Renting /> */}
-			{/* <Reservation /> */}
 			<MyPost items={myPosts} history={history} />
 		</>
 	);

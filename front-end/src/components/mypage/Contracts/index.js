@@ -101,6 +101,7 @@ function ContractTable({
 	onClickAccept,
 	onClickRefuse,
 	onClickChat,
+	mode,
 }) {
 	const classes = useStyles();
 
@@ -213,7 +214,12 @@ function ContractTable({
 						params.row['상태'] === contractState.waiting
 					}
 					columns={columns}
-					rows={rows}
+					rows={rows.filter(row => {
+						return mode === ONLY_MODE
+							? row['상태'] === contractState.waiting ||
+									row['상태'] === contractState.reserved
+							: true;
+					})}
 					hideFooter
 					getRowClassName={params =>
 						duplicated.includes(params.row.id) ? 'duplicatedRow' : ''
@@ -247,7 +253,6 @@ function ContractTable({
 	);
 }
 
-const ALL_MODE = true;
 const ONLY_MODE = false;
 export default function Contracts({
 	contracts,
@@ -255,14 +260,15 @@ export default function Contracts({
 	onClickAccept,
 	onClickRefuse,
 	openChatModal,
-	// mode,		//전체 내역 보기 <-> 대기중, 예약중만 보임 (todo:)
 }) {
 	const classes = useStyles();
 	const [selectedIndex, setSelectedIndex] = useState(0); //postList에서 선택한 게시글의 index
 	const [selectedContract, setSelectedContract] = useState(-1); //선택한 거래 요청의 id (거래 pk)
 	const [duplicated, setDuplicated] = useState([]); //선택한 거래 요청과 기간이 중복되는 요청을 저장 [id(거래 pk)]
 	const [chat, setChat] = useState(null); // {seller, buyer, defaultMsg}
-	const [mode, setMode] = useState(ONLY_MODE);
+	
+	const [mode, setMode] = useState(ONLY_MODE);	//전체 내역 보기 <-> 대기중, 예약중만 보임
+
 	// 다른 포스트를 클릭했으면 selectedContract 초기화
 	React.useEffect(() => {
 		setSelectedContract(-1);
@@ -309,6 +315,7 @@ export default function Contracts({
 			</div>
 
 			<div className={classes.container}>
+				{/* 포스트 리스트 */}
 				<Hidden smDown>
 					<List
 						className={classes.postList}
@@ -336,9 +343,10 @@ export default function Contracts({
 				<Divider className={classes.divider} orientation="vertical" />
 				{postList.ids.length > 0 && (
 					<ContractTable
-						row={contracts.filter(
-							contract => contract.postId === postList.ids[selectedIndex],
-						)}
+						row={contracts.filter(contract => {
+							return contract.postId === postList.ids[selectedIndex];
+						})}
+						mode={mode}
 						selectedContract={selectedContract}
 						setSelectedContract={setSelectedContract}
 						duplicated={duplicated}
