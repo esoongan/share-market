@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 	background: {
 		// backgroundImage: 'url(https://cdn.pixabay.com/photo/2017/09/07/08/54/money-2724241_1280.jpg)',
 		backgroundSize: 'cover',
-		background: grey[200]
+		background: grey[200],
 	},
 	cityIcon: {
 		width: 60,
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative' /* If you want text inside of it */,
 		borderRadius: theme.spacing(1),
 	},
-	categoryCover:{
+	categoryCover: {
 		position: 'absolute',
 		top: 0,
 		left: 0,
@@ -60,28 +60,27 @@ const useStyles = makeStyles(theme => ({
 		background: 'rgba(0,0,0,0.4)',
 		zIndex: 100,
 		opacity: 0,
-		'&:hover':{
+		'&:hover': {
 			opacity: 1,
 			zIndex: 10,
-		}
-	}
-	,
-	categoryLabel:{
-		display:'flex',
+		},
+	},
+	categoryLabel: {
+		display: 'flex',
 		justifyContent: 'center',
-		alignItems:'center',
+		alignItems: 'center',
 		position: 'absolute',
 		top: 0,
 		left: 0,
 		width: '100%',
 		height: '100%',
 		color: 'white',
-		textAlign:'center',
+		textAlign: 'center',
 		opacity: 0,
 		zIndex: 50,
-		'&:hover':{
+		'&:hover': {
 			opacity: 1,
-		}
+		},
 	},
 	categoryImg: {
 		width: '100%',
@@ -91,7 +90,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const HomePage = ({history}) => {
+const HomePage = ({ history }) => {
 	const classes = useStyles();
 
 	return (
@@ -112,7 +111,11 @@ const HomePage = ({history}) => {
 				<Grid container spacing={1}>
 					{cities.map(item => (
 						<Grid item key={item.value} xs={6} sm={3} md={3}>
-							<div id={item.value} className={classes.clickable} onClick={()=> history.push(`list/1?addr=${item.label}`)}>
+							<div
+								id={item.value}
+								className={classes.clickable}
+								onClick={() => history.push(`list/1?addr=${item.label}`)}
+							>
 								<Grid
 									container
 									spacing={0}
@@ -145,16 +148,33 @@ const HomePage = ({history}) => {
 					카테고리 별 둘러보기
 				</Typography>
 				<Grid container spacing={2}>
-					{categories.map(item => (
-						<Grid key={item.value} item xs={12} sm={6} md={4} >
-							<Paper className={clsx(classes.category, classes.clickable)} elevation={3} onClick={()=> history.push(`list/1?category=${item.value}`)}>
-								<img className={classes.categoryImg} src={item.img} alt={item.label} />
-								<div className={classes.categoryCover}>
-									<Typography variant='h4' component='span' className={classes.categoryLabel} >{item.label}</Typography>
-								</div>
-							</Paper>
-						</Grid>
-					))}
+					{categories.map((item, index) => {
+						if (index === categories.length - 1) return null;
+						return (
+							<Grid key={item.value} item xs={12} sm={6} md={4}>
+								<Paper
+									className={clsx(classes.category, classes.clickable)}
+									elevation={3}
+									onClick={() => history.push(`list/1?category=${item.value}`)}
+								>
+									<img
+										className={classes.categoryImg}
+										src={item.img}
+										alt={item.label}
+									/>
+									<div className={classes.categoryCover}>
+										<Typography
+											variant="h4"
+											component="span"
+											className={classes.categoryLabel}
+										>
+											{item.label}
+										</Typography>
+									</div>
+								</Paper>
+							</Grid>
+						);
+					})}
 				</Grid>
 			</section>
 		</div>

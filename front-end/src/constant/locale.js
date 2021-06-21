@@ -107,4 +107,5 @@ export const categories = [
     { value: "스포츠", label: "스포츠", img:'https://blog.lgchem.com/wp-content/themes/bucket_child/images/post/20180717/img_headline.jpg' },
     { value: "베이킹", label: "베이킹", img:'https://previews.123rf.com/images/brebca/brebca1511/brebca151100014/49171436-%EC%BC%80%EC%9D%B4%ED%81%AC-%EB%98%90%EB%8A%94-%EC%BF%A0%ED%82%A4-%EC%9A%A9-%EC%9E%AC%EB%A3%8C%EB%A1%9C-%EB%B2%A0%EC%9D%B4%ED%82%B9-%EC%9A%A9%ED%92%88.jpg' },
     { value: "패션", label: "패션", img:'https://cdn.pixabay.com/photo/2015/11/07/11/46/fashion-1031469__480.jpg' },
+    { value: "기타", label: "기타", img:'' },
 ]
