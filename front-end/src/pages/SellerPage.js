@@ -5,7 +5,7 @@ import Reservation from '../components/mypage/Reservation';
 import Navigation from 'components/mypage/Navigation';
 import Contracts from 'components/mypage/Contracts'
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptContract, getMyPost, getSellerContract, refuseContract, getSellerRenting } from 'store/modules/mypage';
+import { acceptContract, getMyPost, getContract, refuseContract, getRenting } from 'store/modules/mypage';
 import { makeStyles } from '@material-ui/core';
 import { toggleModal } from 'store/modules/base';
 import moment from 'moment'
@@ -17,10 +17,10 @@ const BorroweePage = ({ history }) => {
 	const dispatch = useDispatch();
 	const [postList, setPostList] = useState([]);
 
-	const { myPosts, sellerContract, sellerrenting } = useSelector(({ mypage }) => ({
+	const { myPosts, contracts, sellerrenting } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
-		sellerContract: mypage.sellerContract,
-		sellerrenting: mypage.sellerrenting,
+		contracts: mypage.Contract.seller,
+		sellerrenting: mypage.renting.seller,
 	
 	}))
 
@@ -29,19 +29,19 @@ const BorroweePage = ({ history }) => {
 	//최초 렌더링 시 실행
 	useEffect(() => {
 		dispatch(getMyPost());
-		dispatch(getSellerContract({state:'default'}));	
-		dispatch(getSellerRenting({state:'accept'}));	
+		dispatch(getContract({version:'seller'}));	
+		dispatch(getRenting({version:'seller'}));	
 	
 	}, []);
 
 
 	useEffect(()=> {
 	// TODO: post_id를 postTitle로 바꾸기
-	if(sellerContract.length > 0){
-			let postList = [...new Set(sellerContract.map(c => (c.postId)))];
+	if(contracts.length > 0){
+			let postList = [...new Set(contracts.map(c => (c.postId)))];
 			setPostList(postList);
 		}
-	}, [sellerContract]);
+	}, [contracts]);
 
 	const onClickAccept = (id) => {
 		if(window.confirm('수락하시겠습니까? 수락 시 거래가 성사됩니다.'))
@@ -61,7 +61,7 @@ const BorroweePage = ({ history }) => {
 	return (
 		<>
 			<Navigation />
-      <Contracts rows={sellerContract} postList={postList} onClickAccept={onClickAccept} onClickRefuse={onClickRefuse} openChatModal={openChatModal}/>
+      <Contracts rows={contracts} postList={postList} onClickAccept={onClickAccept} onClickRefuse={onClickRefuse} openChatModal={openChatModal}/>
 			 <Renting items={sellerrenting} history={history} /> 
 			{/* <Reservation /> */}
 			<MyPost items={myPosts} history={history} />
