@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import RoomIcon from '@material-ui/icons/Room';
 import moment from 'moment';
+import {imagePath} from 'constant/constant'
+import ImageViewer from 'components/post/ImageViewer';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -69,14 +71,21 @@ const classes = useStyles();
 
   if((startDate <= today) &&(endDate>= today)){
   return (
-    
+     
 	<Card className={classes.root}>
  	  <CardActionArea>
-		<CardMedia
-          className={classes.media}
-		  image={thumbnail}
-          onClick= {handleClickItem}
-		/>
+		<CardMedia>
+    className={classes.media}
+   image = {
+    <thumbnail
+									/* className={classes.media} */
+									src={thumbnail.filePath + thumbnail.filename}
+									alt=""
+								/>}
+                onClick= {handleClickItem}
+
+    </CardMedia>
+          
 	  </CardActionArea> 
 
     <CardActionArea>

@@ -36,12 +36,22 @@ const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem,
   return (
 		<Card className={classes.root}>
 			<CardActionArea>
-				<CardMedia
+				{/* <CardMedia
 					className={classes.media}
 					image={thumbnail}
           onClick= {handleClickItem}
-				/>
+				/> */}
+        	<CardMedia>
+    className={classes.media}
+   image = {
+    <thumbnail
+									/* className={classes.media} */
+									src={thumbnail.filePath + thumbnail.filename}
+									alt=""
+								/>}
+                onClick= {handleClickItem}
 
+    </CardMedia>
 			</CardActionArea>
       <CardContent>
         <div className={classes.itemInfo}>

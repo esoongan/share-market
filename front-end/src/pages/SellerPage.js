@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 const BorroweePage = ({ history }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const [postList, setPostList] = useState([]);
+	const [postList, setPostList] = useState({ids:[], titles:[]});
 
 	const { myPosts, contracts, sellerrenting } = useSelector(({ mypage }) => ({
 		myPosts: mypage.myPosts,
@@ -34,12 +34,19 @@ const BorroweePage = ({ history }) => {
 	
 	}, []);
 
-
+/* 
 	useEffect(()=> {
 	// TODO: post_id를 postTitle로 바꾸기
 	if(contracts.length > 0){
 			let postList = [...new Set(contracts.map(c => (c.postId)))];
 			setPostList(postList);
+		}
+	}, [contracts]); */
+	useEffect(() => {
+		if (contracts.length > 0) {
+			let ids = [...new Set(contracts.map(c => c.postId))];
+			let titles = [...new Set(contracts.map(c => c.postTitle))];
+			setPostList({ids, titles});
 		}
 	}, [contracts]);
 

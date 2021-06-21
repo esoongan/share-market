@@ -8,6 +8,7 @@ import {
 	uploadFiles,
 	writePost,
 } from 'store/modules/editor';
+import { initialize } from 'store/modules/post';
 
 const EditorPage = ({ history, match }) => {
 	const matchId = match.params.post_id;
@@ -46,6 +47,9 @@ const EditorPage = ({ history, match }) => {
 				price: old_post.price,
 				deposit: old_post.deposit,
 			});
+		}
+		else{
+			dispatch(initialize())
 		}
 	}, []);
 
