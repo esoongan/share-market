@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Editor from 'components/editor';
+import Editor from 'components/Editor';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	editFiles,
@@ -7,9 +7,11 @@ import {
 	uploadFiles,
 	writePost,
 } from 'store/modules/editor';
+import { post } from 'store/modules';
 
 //writePost 성공 시 uploadFiles도 성공한다고 가정함.
-const EditorPage = ({ history }) => {
+const EditorPage = ({ history, match }) => {
+	const matchId = match.params.post_id;
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: false,
@@ -20,38 +22,27 @@ const EditorPage = ({ history }) => {
 	});
 	const [error, setError] = useState(null);
 	const [images, setImages] = useState([]);
-	const {
-		logged,
-		post_id,
-		postFailure,
-		uploadSuccess,
-		editMode,
-		old_post,
-		old_img,
-	} = useSelector(({ pender, editor, auth, post }) => {
-		let action = { post: 'editor/WRITE_POST', files: 'editor/UPLOAD_FILES' };
-		if (editor.editMode) {
-			action = {
-				post: 'editor/EDIT_POST',
-				files: 'editor/EDIT_FILES',
+	const { logged, username, old_post, old_img } = useSelector(
+		({ auth, post }) => {
+			return {
+				logged: auth.logged,
+				username: auth.user.username,
+				old_post: post.post, //수정모드일 때 대상 post 정보
+				old_img: post.images,
 			};
-		}
-		return {
-			logged: auth.logged,
-			postFailure: pender.failure[action.post],
-			post_id: editor.post_id, //POST 게시물 api 성공 시 새로 작성한 post의 pk
-			uploadSuccess: pender.success[action.files],
-			editMode: editor.editMode,
-			old_post: post.post, //수정모드일 때 대상 post 정보
-			old_img: post.images,
-		};
-	});
+		},
+	);
 
 	useEffect(() => {
 		// 수정모드일 때는 원래 데이터 모두 불러오기
-		if (editMode) {
+		if (matchId) {
+			//내가 쓴 글이 아닌데 접근했을 때
+			console.log(old_post, username);
+			if (!old_post.id || username !== old_post.username) {
+				alert('허용되지 않은 접근입니다.');
+				history.replace('/');
+			}
 			setInputs({
-				// category: old_post.category,
 				title: old_post.title,
 				content: old_post.content,
 				price: old_post.price,
@@ -61,44 +52,12 @@ const EditorPage = ({ history }) => {
 	}, []);
 
 	useEffect(() => {
-		//로그인 상태가 아니면 로그인 모달 띄우기
+		//로그인 상태가 아니면 홈페이지로
 		if (!logged) {
 			alert('먼저 로그인을 해주세요.');
 			history.replace('/');
 		}
 	}, [logged, history]);
-
-	useEffect(() => {
-		if (post_id) {
-			//POST /user/api/posts 성공 시
-			//해당 id로 이미지 업로드 api 호출 -> POST /uploadMultipleFiles/{id}
-			const config = {
-				headers: {
-					'content-type': 'multipart/form-data',
-				},
-			};
-			const formData = new FormData();
-			for (let i = 0; i < images.length; i++) {
-				formData.append('files', images[i].file);
-			}
-			if (editMode) dispatch(editFiles({ post_id, formData, config }));
-			else dispatch(uploadFiles({ post_id, formData, config }));
-		}
-	}, [post_id]);
-
-	useEffect(() => {
-		//사진 업로드까지 완료하면 해당 포스트 페이지로 이동
-		if (uploadSuccess === true) {
-			history.replace(`/post/${post_id}`);
-		}
-	}, [history, uploadSuccess, post_id]);
-
-	//POST /user/api/posts 실패 시 alert 띄움
-	useEffect(() => {
-		if (postFailure) {
-			alert('업로드 실패. 다시 시도해주세요');
-		}
-	}, [postFailure]);
 
 	const onChangeInput = ({ value, name }) => {
 		if (name === 'price' || name === 'deposit') {
@@ -116,10 +75,33 @@ const EditorPage = ({ history }) => {
 		setImages(imageList);
 	};
 
+	//POST or PUT /uauth/api/post 성공 시 콜백
+	const cb = ({ data }) => {
+		//해당 post id로 이미지 업로드 api 호출
+		const post_id = matchId ? matchId : data.data.id;
+		const config = {
+			headers: {
+				'content-type': 'multipart/form-data',
+			},
+		};
+		const formData = new FormData();
+		for (let i = 0; i < images.length; i++) {
+			formData.append('files', images[i].file);
+		}
+		// POST /api/file/${post_id}
+		dispatch(uploadFiles({ post_id, formData, config }))
+			.then(() => {
+				history.replace(`/post/${post_id}`); //게시물 페이지로 이동
+			})
+			.catch(reason => {
+				console.log(reason);
+			});
+	};
 	const onSubmit = e => {
 		e.preventDefault();
 		const { category, title, content, price, deposit } = inputs;
 
+		/* 포맷 확인 */
 		if (
 			!category ||
 			title === '' ||
@@ -138,11 +120,20 @@ const EditorPage = ({ history }) => {
 		} else {
 			setError(null);
 		}
-		if (editMode && old_post.id)
-			dispatch(editPost({ ...inputs, post_id: old_post.id }));
-		// PUT /user/api/posts
-		else dispatch(writePost(inputs)); // POST /user/api/posts
-		// 성공 시 post_id 값 채워짐: null -> integer
+
+		/* api 호출 */
+		if (matchId && old_post.id)
+			//edit mode
+			// PUT /uauth/api/post
+			dispatch(editPost({ ...inputs, post_id: old_post.id }))
+				.then(cb)
+				.catch(reason => console.log(reason));
+		else {
+			// POST /uauth/api/post
+			dispatch(writePost(inputs))
+				.then(cb)
+				.catch(reason => console.log(reason));
+		}
 	};
 
 	return (
@@ -156,7 +147,7 @@ const EditorPage = ({ history }) => {
 				onSubmit={onSubmit}
 				images={images}
 				onSelectImages={onSelectImages}
-				editMode={editMode}
+				editMode={matchId}
 				error={error}
 			/>
 		</>

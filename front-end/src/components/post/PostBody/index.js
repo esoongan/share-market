@@ -68,7 +68,7 @@ export const PostContent = ({ post_id, writer, category, addr, content, editable
 				<Button color="secondary" onClick={handleClickDelete}>삭제하기</Button>
 			</div>}
 			<Divider className={classes.divider} />
-			<Typography component="p" variant="body1">
+			<Typography component="p" variant="body1" style={{whiteSpace: 'pre-line'}}>
 				{content}
 			</Typography>
 		</Paper>

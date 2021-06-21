@@ -34,23 +34,70 @@ export const locations = [
     { value: "인천 중구", label: "인천 중구" },
     { value: "인천 강화군", label: "인천 강화군" },
     { value: "인천 옹진군", label: "인천 옹진군" },
+    { value: "부산 중구", label: "부산 중구" },
+    { value: "부산 서구", label: "부산 서구" },
+    { value: "부산 동구", label: "부산 동구" },
+    { value: "부산 영도구", label: "부산 영도구" },
+    { value: "부산 부산진구", label: "부산 부산진구" },
+    { value: "부산 남구", label: "부산 남구" },
+    { value: "부산 북구", label: "부산 북구" },
+    { value: "부산 동래구", label: "부산 동래구" },
+    { value: "부산 강서구", label: "부산 강서구" },
+    { value: "부산 해운대구", label: "부산 해운대구" },
+    { value: "부산 사하구", label: "부산 사하구" },
+    { value: "부산 금정구", label: "부산 금정구" },
+    { value: "부산 연제구", label: "부산 연제구" },
+    { value: "부산 수영구", label: "부산 수영구" },
+    { value: "부산 사상구", label: "부산 사상구" },
+    { value: "대구 중구", label: "대구 중구" },
+    { value: "대구 동구", label: "대구 동구" },
+    { value: "대구 서구", label: "대구 서구" },
+    { value: "대구 남구", label: "대구 남구" },
+    { value: "대구 북구", label: "대구 북구" },
+    { value: "대구 수성구", label: "대구 수성구" },
+    { value: "대구 달서구", label: "대구 달서구" },
+    { value: "대구 달성군", label: "대구 달성군" },
+    { value: "광주 동구", label: "광주 동구" },
+    { value: "광주 서구", label: "광주 서구" },
+    { value: "광주 남구", label: "광주 남구" },
+    { value: "광주 북구", label: "광주 북구" },
+    { value: "광주 광산구", label: "광주 광산구" },
+    { value: "대전 동구", label: "대전 동구" }, 
+    { value: "대전 중구 ", label: "대전 중구" }, 
+    { value: "대전 서구", label: "대전 서구" }, 
+    { value: "대전 유성구", label: "대전 유성구" }, 
+    { value: "대전 대덕구", label: "대전 대덕구" }, 
+    { value: "울산 중구", label: "울산 중구" }, 
+    { value: "울산 남구 ", label: "울산 남구" }, 
+    { value: "울산 동구", label: "울산 동구" }, 
+    { value: "울산 북구", label: "울산 북구" }, 
+    { value: "울산 울주군", label: "울산 울주군" }, 
+
+
+
+
+
+
+
+
+
 ]
 
 export const cities = [
     { value: "Seoul", label: "서울", img: "https://a0.muscache.com/im/pictures/71e23854-a3c7-491c-b715-6e86233a293f.jpg?im_q=medq&im_w=240"},
     { value: "Incheon", label: "인천", img: "https://a0.muscache.com/im/pictures/b654084a-1abc-4819-ab37-8c9471bfe917.jpg?im_q=medq&im_w=240"},
-    { value: "GyeongGi", label: "경기", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
-    { value: "DaeGu", label: "대구", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
-    { value: "Busan", label: "부산", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
-    { value: "DaeJun", label: "대전", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    { value: "GyeongGi", label: "경기", img: "https://a0.muscache.com/im/pictures/bd549da5-ecdd-4642-9a4c-4943c9c8cf28.jpg?im_q=medq&im_w=240"},
+    { value: "DaeGu", label: "대구", img: "https://a0.muscache.com/im/pictures/f7736f4a-f8b9-4527-b46c-d0d8df856984.jpg?im_q=medq&im_w=240"},
+    { value: "Busan", label: "부산", img: "https://a0.muscache.com/im/pictures/8340bd19-ee32-4669-8b10-a8ac7e7735d4.jpg?im_q=medq&im_w=240"},
+    { value: "DaeJun", label: "대전", img: "https://a0.muscache.com/im/pictures/926d56aa-8b36-4138-8eae-ad991868b858.jpg?im_q=medq&im_w=240"},
     // { value: "Chungcheong", label: '충청'}, 
     // { value: "Jeolla", label: "전라도"} ,
     // { value: "KangWon", label: '강원도'},
     // { value: "GyeongSang", label:'경상도'}, 
     // { value: "Jeju", label: "제주",},
     // { value: "Sejong", label: "세종",},
-    { value: "Ulsan", label: "울산", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
-    { value: "GwangJu", label: "광주", img: "http://imagescdn.gettyimagesbank.com/500/201707/a10907769.jpg"},
+    { value: "Ulsan", label: "울산", img: "https://a0.muscache.com/im/pictures/76e5f1c6-a788-418c-a28b-f0ee29cffd41.jpg?im_q=medq&im_w=240"},
+    { value: "GwangJu", label: "광주", img: "https://a0.muscache.com/im/pictures/087a8dff-a609-4084-86db-f45051c6f23a.jpg?im_q=medq&im_w=240"},
 ]
 
 export const categories = [

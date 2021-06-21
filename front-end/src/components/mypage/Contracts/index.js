@@ -1,33 +1,41 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { DataGrid } from '@material-ui/data-grid';
 import Typography from '@material-ui/core/Typography';
-import { Button, Divider, FormControlLabel, Hidden, IconButton, Radio, Switch } from '@material-ui/core';
+import {
+	Button,
+	Divider,
+	FormControlLabel,
+	Hidden,
+	IconButton,
+	Switch,
+} from '@material-ui/core';
+import moment from 'moment';
 import { grey } from '@material-ui/core/colors';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import moment from 'moment';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import SendIcon from '@material-ui/icons/Send';
 import ChatModal from 'components/common/ChatModal';
-import {contractState} from 'constant/constant';
+import { contractState } from 'constant/constant';
+import { Link as RouterLink } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
+import { getState } from 'lib/getState';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		marginBottom: theme.spacing(10),
+		marginBottom: theme.spacing(20),
 		height: 350,
 	},
 	header: {
 		display: 'flex',
 		'& h1': {
 			marginRight: theme.spacing(6),
-		}
+		},
 	},
 	container: {
 		display: 'flex',
@@ -36,6 +44,13 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing(0, 2, 0, 0),
 		height: 350,
 		maxHeight: 350,
+	},
+	tableContainer: {
+		maxHeight: 300,
+		height: 300,
+		'& .duplicatedRow': {
+			color: theme.palette.error.dark,
+		},
 	},
 	tableRow: {
 		'&:hover': {
@@ -49,13 +64,17 @@ const useStyles = makeStyles(theme => ({
 	},
 	contractHeader: {
 		display: 'flex',
-		alignItems: 'flex-end',
+		justifyContent: 'space-between',
 		marginBottom: theme.spacing(1),
+		paddingRight: theme.spacing(2),
+		'& div': {
+			display: 'flex',
+			alignItems: 'flex-end',
+		},
 	},
 	contractTable: {
 		width: '100%',
 		overflow: 'auto',
-		maxHeight: 300,
 	},
 	buttons: {
 		display: 'flex',
@@ -63,126 +82,147 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'flex-end',
 	},
 	button: {
-		marginLeft: theme.spacing(1),
+		marginRight: theme.spacing(1),
 	},
 	hide: {
 		visibility: 'hidden',
 	},
 }));
 
-const getDays = ({ start, end }) => {
-	const startDate = moment(start, 'YYYY-MM-DD');
-	const endDate = moment(end, 'YYYY-MM-DD');
-	return (endDate.diff(startDate, 'days') + 1);
-};
-const getState = ({state, start, end}) => {
-	const startDate = moment(start, 'YYYY-MM-DD');
-	const endDate = moment(end, 'YYYY-MM-DD');
-
-	if(state === 'default'){
-		if(startDate.isBefore(moment())){
-			return contractState['expired'];	//수락하지 않고 요청 시작 날짜가 지났을 때
-		}
-		return contractState['waiting'];
-	}
-	else if(state === 'accept'){
-		if(endDate.isBefore(moment())){
-			return contractState['completed'];	//수락되었고 대여 종료 날짜가 지났을 때
-		}
-		else if(startDate.isBefore(moment())){
-			return contractState['ing'];	//수락되었고 대여 중일 때
-		}
-		return contractState['reserved'];
-	}
-	else if(state === 'refused'){
-		return contractState['refused'];
-	}
-}
-
 // 포스트 별 들어온 거래 요청을 테이블로 보여주는 컴포넌트
 function ContractTable({
-	row,
+	row: contracts,
 	selectedContract,
+	setSelectedContract,
+	duplicated,
+	setDuplicated,
 	onClickPrev,
 	onClickNext,
-	onChangeRadio,
 	onClickAccept,
 	onClickRefuse,
 	onClickChat,
 }) {
 	const classes = useStyles();
-	//TODO: 포스트 정보 가져오기 (렌탈료), 보낸 사람 pk 말고 username으로 넣기
+
+	const columns = [
+		{ field: '상태', width: 160, align: 'center', headerAlign: 'center' },
+		{ field: '대여 날짜', width: 200, align: 'center', headerAlign: 'center' },
+		{ field: '반납 날짜', width: 200, align: 'center', headerAlign: 'center' },
+		{
+			field: '보낸 사람',
+			flex: 1,
+			align: 'right',
+			headerAlign: 'right',
+			sortable: false,
+		},
+		{
+			field: '채팅',
+			sortable: false,
+			width: 100,
+			renderCell: params => (
+				<IconButton aria-label="send" onClick={() => onClickChat(params.value)}>
+					<SendIcon fontSize="small" />
+				</IconButton>
+			),
+		},
+	];
+	const rows = contracts.map(contract => {
+		const state = getState({
+			state: contract.state,
+			start: contract.startDate,
+			end: contract.endDate,
+		});
+		return {
+			id: contract.id,
+			상태: state,
+			'대여 날짜': contract.startDate,
+			'반납 날짜': contract.endDate,
+			'보낸 사람': contract.buyer,
+			채팅: {
+				seller: contract.seller,
+				buyer: contract.buyer,
+				defaultMsg: `${
+					contract.postTitle
+				} 게시물에 거래 요청해주셔서 감사합니다~!${'\n'}`,
+			},
+		};
+	});
+
+	const onRowSelected = param => {
+		//select되지 않았으면 상태 초기화 (아무것도 선택하지 않은 상태로)
+		if (param.row['상태'] !== contractState.waiting) {
+			param.api.selectRows(param.api.getAllRowIds(), false, true);
+			setSelectedContract(-1);
+			setDuplicated([]);
+			return;
+		}
+
+		//중복되는 기간을 가진 행은 모두 빨간 글씨로 바꾸기
+		let start = param.row['대여 날짜'];
+		let end = param.row['반납 날짜'];
+		const startDate1 = moment(start, 'YYYY-MM-DD');
+		const endDate1 = moment(end, 'YYYY-MM-DD');
+
+		let duplicatedRows = rows.filter(row => {
+			if (row.id === param.row.id) return false;
+			const startDate2 = moment(row['대여 날짜'], 'YYYY-MM-DD');
+			const endDate2 = moment(row['반납 날짜'], 'YYYY-MM-DD');
+
+			return (
+				moment(startDate1).isSameOrBefore(endDate2) &&
+				moment(startDate2).isSameOrBefore(endDate1)
+			);
+		});
+		duplicatedRows = duplicatedRows.map(row => row.id);
+		setDuplicated(duplicatedRows);
+		setSelectedContract(param.row.id);
+	};
+
 	return (
 		<div style={{ flexGrow: 1 }}>
 			<header className={classes.contractHeader}>
-				<IconButton aria-label="next post" onClick={onClickPrev}>
-					<NavigateBeforeIcon />
-				</IconButton>
-				<Typography variant="h6" gutterBottom component="div">
-					{row[0].postId}
-				</Typography>
-				<IconButton aria-label="next post" onClick={onClickNext}>
-					<NavigateNextIcon />
-				</IconButton>
-			</header>
+				<div>
+					<IconButton aria-label="next post" onClick={onClickPrev}>
+						<NavigateBeforeIcon />
+					</IconButton>
+					<Typography variant="h6" gutterBottom component="div">
+						{contracts[0].postTitle}
+					</Typography>
+					<IconButton aria-label="next post" onClick={onClickNext}>
+						<NavigateNextIcon />
+					</IconButton>
+				</div>
 
-			<Table
-				className={classes.contractTable}
-				aria-label="contract-table"
-				size="small"
-			>
-				<TableHead>
-					<TableRow>
-						<TableCell> </TableCell>
-						<TableCell>상태</TableCell>
-						<TableCell>대여 날짜</TableCell>
-						<TableCell>반납 날짜</TableCell>
-						{/* <TableCell align="right">총 일수</TableCell>  */}
-						<TableCell align="right">보낸 사람</TableCell>
-						<TableCell>채팅</TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{row.map(contract => {
-						const state = getState({state: contract.state, start:contract.startDate, end:contract.endDate})
-						return (
-						<TableRow className={classes.tableRow} key={contract.id}>
-							<TableCell>
-								<Radio
-									disabled= {state !== contractState['waiting']}
-									checked={selectedContract === contract.id.toString()}
-									onChange={onChangeRadio}
-									value={contract.id}
-									name="radio-button-contract"
-								/>
-							</TableCell>
-							<TableCell>{state}</TableCell>
-							<TableCell>{contract.startDate}</TableCell>
-							<TableCell>{contract.endDate}</TableCell>
-							{/* <TableCell align="right">
-								{getDays({
-									start: contract.startDate,
-									end: contract.endDate,
-								})}
-							</TableCell> */}
-							<TableCell align="right">{contract.buyerId}</TableCell>
-							<TableCell>
-								<IconButton
-									aria-label="send"
-									onClick={() =>
-										onClickChat(
-											contract.buyerId,
-											`${contract.postId} 게시물에 거래 요청해주셔서 감사합니다~!${'\n'}`,
-										)
-									}
-								>
-									<SendIcon fontSize="small" />
-								</IconButton>
-							</TableCell>
-						</TableRow>
-					)})}
-				</TableBody>
-			</Table>
+				<Button
+					endIcon={<OpenInNewIcon />}
+					size="large"
+					color="primary"
+					component={RouterLink}
+					to={`/post/${contracts[0].id}`}
+				>
+					자세히
+				</Button>
+			</header>
+			<div className={classes.tableContainer}>
+				<DataGrid
+					onRowClick={onRowSelected}
+					isRowSelectable={params =>
+						params.row['상태'] === contractState.waiting
+					}
+					columns={columns}
+					rows={rows}
+					hideFooter
+					getRowClassName={params =>
+						duplicated.includes(params.row.id) ? 'duplicatedRow' : ''
+					}
+				/>
+				{duplicated.length > 0 && (
+					<Alert severity="warning">
+						<AlertTitle>{duplicated.length}개의 요청과 중복됩니다.</AlertTitle>
+						이 요청을 수락하면 중복되는 요청은 자동으로 거절 처리 됩니다.
+					</Alert>
+				)}
+			</div>
 			<div className={selectedContract !== -1 ? classes.buttons : classes.hide}>
 				<Button
 					variant="contained"
@@ -193,8 +233,7 @@ function ContractTable({
 					수락
 				</Button>
 				<Button
-					variant="contained"
-					color="secondary"
+					variant="outlined"
 					className={classes.button}
 					onClick={onClickRefuse}
 				>
@@ -206,34 +245,34 @@ function ContractTable({
 }
 
 export default function Contracts({
-	rows,
+	contracts,
 	postList,
 	onClickAccept,
 	onClickRefuse,
 	openChatModal,
-	mode,
+	mode,		//전체 내역 보기 <-> 대기중, 예약중만 보임 (todo:)
 }) {
 	const classes = useStyles();
-	const [selectedIndex, setSelectedIndex] = React.useState(0);
-	const [selectedContract, setSelectedContract] = React.useState(-1);
-	const [to, setTo] = useState(null);
-	const [defaultMsg, setDefaultMsg] = useState('');
+	const [selectedIndex, setSelectedIndex] = useState(0); //postList에서 선택한 게시글의 index
+	const [selectedContract, setSelectedContract] = useState(-1); //선택한 거래 요청의 id (거래 pk)
+	const [duplicated, setDuplicated] = useState([]); //선택한 거래 요청과 기간이 중복되는 요청을 저장 [id(거래 pk)]
+	const [chat, setChat] = useState(null); // {seller, buyer, defaultMsg}
 
+	// 다른 포스트를 클릭했으면 selectedContract 초기화
 	React.useEffect(() => {
 		setSelectedContract(-1);
 	}, [selectedIndex]);
 
-	const handleChangeRadio = event => {
-		setSelectedContract(event.target.value);
-	};
+	// 좌측 포스트 목록(postList)에서 아이템을 클릭했을 때, postList의 index 저장
 	const handleListItemClick = (event, index) => {
 		setSelectedIndex(index);
 	};
+
 	const handleClickPrev = () => {
 		if (selectedIndex - 1 >= 0) setSelectedIndex(selectedIndex - 1);
 	};
 	const handleClickNext = () => {
-		if (selectedIndex + 1 < postList.length)
+		if (selectedIndex + 1 < postList.ids.length)
 			setSelectedIndex(selectedIndex + 1);
 	};
 	const handleClickAccept = () => {
@@ -242,22 +281,20 @@ export default function Contracts({
 	const handleClickRefuse = () => {
 		onClickRefuse(selectedContract);
 	};
-	const handleClickChat = (to, defaultMsg) => {
-		setTo(to);
-		setDefaultMsg(defaultMsg);
+	const handleClickChat = ({ seller, buyer, defaultMsg }) => {
+		setChat({ seller, buyer, defaultMsg });
 		openChatModal();
 	};
 	return (
 		<div className={classes.root}>
 			<div className={classes.header}>
-
-			<Typography gutterBottom variant="h5" component="h1">
-				거래 요청 내역
-			</Typography>
-			<FormControlLabel
-        control={<Switch checked={mode} name="mode" />}
-        label="전체 내역"
-      />
+				<Typography gutterBottom variant="h5" component="h1">
+					거래 요청 내역
+				</Typography>
+				<FormControlLabel
+					control={<Switch checked={mode} name="mode" />}
+					label="전체 내역"
+				/>
 			</div>
 
 			<div className={classes.container}>
@@ -267,41 +304,49 @@ export default function Contracts({
 						component="nav"
 						aria-label="post list"
 					>
-						{postList.length>0 ? 
-						postList.map((post, index) => (
-							<ListItem
-								key={index}
-								button
-								selected={selectedIndex === index}
-								onClick={event => handleListItemClick(event, index)}
-							>
-								<ListItemText primary={post} />
+						{postList.titles.length > 0 ? (
+							postList.titles.map((title, index) => (
+								<ListItem
+									key={index}
+									button
+									selected={selectedIndex === index}
+									onClick={event => handleListItemClick(event, index)}
+								>
+									<ListItemText primary={title} />
+								</ListItem>
+							))
+						) : (
+							<ListItem>
+								<ListItemText primary="비어있음" />
 							</ListItem>
-						)) : 
-						<ListItem>
-							<ListItemText primary='비어있음' />
-						</ListItem>
-						}
+						)}
 					</List>
 				</Hidden>
 				<Divider className={classes.divider} orientation="vertical" />
-				{postList.length > 0 && (
+				{postList.ids.length > 0 && (
 					<ContractTable
-						row={rows.filter(r => r.postId === postList[selectedIndex])}
+						row={contracts.filter(
+							contract => contract.postId === postList.ids[selectedIndex],
+						)}
 						selectedContract={selectedContract}
+						setSelectedContract={setSelectedContract}
+						duplicated={duplicated}
+						setDuplicated={setDuplicated}
 						onClickPrev={handleClickPrev}
 						onClickNext={handleClickNext}
-						onChangeRadio={handleChangeRadio}
 						onClickAccept={handleClickAccept}
 						onClickRefuse={handleClickRefuse}
 						onClickChat={handleClickChat}
 					/>
 				)}
-				<ChatModal
-					post_id={postList[selectedIndex]}
-					to={to}
-					defaultMsg={defaultMsg}
-				/>
+				{chat && (
+					<ChatModal
+						post_id={postList.ids[selectedIndex]}
+						seller={chat.seller}
+						buyer={chat.buyer}
+						defaultMsg={chat.defaultMsg}
+					/>
+				)}
 			</div>
 		</div>
 	);

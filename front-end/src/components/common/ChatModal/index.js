@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export default function ChatModal({post_id, to, defaultMsg}) {
+export default function ChatModal({post_id, seller, buyer, defaultMsg}) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [input, setInput] = useState(defaultMsg);
@@ -74,7 +74,7 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 			return;
 		}
 		// 새 채팅방 생성
-		dispatch(createChatroom({post_id, seller: to, buyer: myName}));
+		dispatch(createChatroom({post_id, seller, buyer}));
 	};
 
 	const handleClose = () => {
@@ -88,7 +88,7 @@ export default function ChatModal({post_id, to, defaultMsg}) {
 					<SendIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					{to}님과 대화하기
+					{seller === myName ? buyer : seller}님과 대화하기
 				</Typography>
 				<div className={classes.form} noValidate>
 					<TextField
