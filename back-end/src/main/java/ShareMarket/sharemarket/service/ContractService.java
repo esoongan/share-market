@@ -3,11 +3,13 @@ package ShareMarket.sharemarket.service;
 import ShareMarket.sharemarket.domain.contract.Contract;
 import ShareMarket.sharemarket.domain.contract.ContractRepository;
 import ShareMarket.sharemarket.domain.contract.ContractSpecification;
+import ShareMarket.sharemarket.domain.file.FileRepository;
 import ShareMarket.sharemarket.domain.post.Post;
 import ShareMarket.sharemarket.domain.post.PostRepository;
 import ShareMarket.sharemarket.domain.user.User;
 import ShareMarket.sharemarket.dto.contract.ContractRequestDto;
 import ShareMarket.sharemarket.dto.contract.ContractResponseDto;
+import ShareMarket.sharemarket.dto.file.FileResponseDto;
 import ShareMarket.sharemarket.dto.mail.MailDto;
 import ShareMarket.sharemarket.exception.PostNotFoundException;
 import lombok.Builder;
@@ -31,12 +33,13 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
     private final PostRepository postRepository;
+    private final FileRepository fileRepository;
     private final UserService userService;
     private final MailService mailService;
 
     // 거래요청 - state:default
     @Transactional
-    public ContractResponseDto request(ContractRequestDto contractRequestDto, Authentication authentication) {
+    public Long request(ContractRequestDto contractRequestDto, Authentication authentication) {
 //        contractRequestDto.setSellerId(getUserPkByPostId(contractRequestDto.getPost().getId()));
         // JPA연관관계 후 : getPost -> getUser -> getId (getUserPKByPostID함수 사용할필요 없음)
 
@@ -59,14 +62,13 @@ public class ContractService {
         MailDto mailDto = new MailDto(contractRequestDto);
         mailService.sendMail(mailDto);
 
-        // ResoponseDto로 반환
-        return new ContractResponseDto(contract);
+        return contract.getId();
     }
 
 
     // 거래수락 또는 거절 : change state to accept or refused
     @Transactional
-    public ContractResponseDto update(Long id, String state) {
+    public void update(Long id, String state) {
         // contract PK로 contract찾고
         Contract contract = contractRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 거래가 없습니다. id=" + id));
@@ -75,12 +77,11 @@ public class ContractService {
         // 거래수락일경우, 겹치는 기간의 거래중 default인것들은 refused로 바꾸기
         if (state.equals("accept")) {
             // 겹치는 기간의 거래중 default상태인것들을 찾는다.
-            List<Contract> contractList = this.findContractToExclude(contract.getStartDate(),contract.getEndDate(),"default");
+            List<Contract> contractList = this.findContractToExclude(contract.getStartDate(), contract.getEndDate(), "default");
             for (Contract contract1 : contractList) {
                 contract1.update("refuse");
             }
         }
-        return new ContractResponseDto(contract);
     }
 
     // 거래 삭제
@@ -103,45 +104,25 @@ public class ContractService {
 
         List<ContractResponseDto> responseDtoList = new ArrayList<>();
         for (Contract contract : contractList) {
-            ContractResponseDto responseDto = new ContractResponseDto(contract);
+            Post post = contract.getPost();
+            ContractResponseDto responseDto = ContractResponseDto.builder()
+                    .id(contract.getId())
+                    .postId(post.getId())
+                    .postTitle(post.getTitle())
+                    .fileResponseDto(new FileResponseDto(fileRepository.findAllByPostId(post.getId()).get(0)))
+                    .buyer(contract.getBuyer().getUsername())
+                    .seller(contract.getSeller().getUsername())
+                    .startDate(contract.getStartDate())
+                    .endDate(contract.getEndDate())
+                    .state(contract.getState())
+                    .build();
+
             responseDtoList.add(responseDto);
         }
 
         return responseDtoList;
     }
 
-
-
-    // 거래조회 판매자ver ------------
-    @Transactional
-    public List<ContractResponseDto> findContractSeller(String state, Authentication authentication) {
-
-
-        User seller = userService.getUserByToken(authentication.getPrincipal());
-        List<Contract> contractList = contractRepository.findAllBySellerAndState(seller, state);
-
-        List<ContractResponseDto> responseDtoList = new ArrayList<>();
-        for(Contract contract: contractList){
-            ContractResponseDto responseDto = new ContractResponseDto(contract);
-            responseDtoList.add(responseDto);
-        }
-        return responseDtoList;
-    }
-
-    //거래조회 : 구매자
-    @Transactional
-    public List<ContractResponseDto> findContractBuyer(String state, Authentication authentication) {
-        User buyer = userService.getUserByToken(authentication.getPrincipal());
-        List<Contract> contractList = contractRepository.findAllByBuyerAndState(buyer, state);
-
-        List<ContractResponseDto> responseDtoList = new ArrayList<>();
-        for(Contract contract: contractList){
-            ContractResponseDto responseDto = new ContractResponseDto(contract);
-            responseDtoList.add(responseDto);
-        }
-        return responseDtoList;
-
-    }
 
     // 주어진기간안에 특정state상태인 거래를 찾는함수
     public List<Contract> findContractToExclude(LocalDate startDate, LocalDate endDate, String state) {

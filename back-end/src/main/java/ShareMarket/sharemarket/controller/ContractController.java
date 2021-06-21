@@ -25,22 +25,21 @@ public class ContractController {
 
     //거래요청
     @PostMapping("/uauth/api/contract")
-    public ResponseEntity<ContractResponseDto> requestContract(@RequestBody ContractRequestDto contractRequestDto, Authentication authentication) throws URISyntaxException {
+    public ResponseEntity<String> requestContract(@RequestBody ContractRequestDto contractRequestDto, Authentication authentication) throws URISyntaxException {
         // requestDto에 String으로 받은 날짜값 LocalDate로 변환해서 request함수인자로 줘야함!!! -> 안해도 자동으로되네?
-        ContractResponseDto contractResponseDto = contractService.request(contractRequestDto, authentication);
+        Long id = contractService.request(contractRequestDto, authentication);
 
-        URI url = new URI(String.format("/posts/$s", contractResponseDto.getId()));
-        return ResponseEntity.created(url).body(contractResponseDto);
+        URI url = new URI(String.format("/posts/$s", id));
+        return ResponseEntity.created(url).body("contract request success");
     }
 
     //거래상태변경 - change state to accept or refused
     @PutMapping("/uauth/api/contract/{id}")
     public ResponseEntity<ContractResponseDto> changeContractState(@PathVariable Long id, @RequestParam String state) {
-        ContractResponseDto responseDto = contractService.update(id, state);
+        contractService.update(id, state);
         return new ResponseEntity(DefaultRes.response(
                 HttpStatusCode.OK,
-                HttpResponseMessage.CHANGE_STATE,
-                responseDto),HttpStatus.OK
+                HttpResponseMessage.CHANGE_STATE),HttpStatus.OK
         );
     }
 
@@ -57,39 +56,6 @@ public class ContractController {
 
     }
 
-
-
-
-    //거래목록조회(판매자ver)
-    // 로그인한 유저가 판매자인 거래중, state상태에 따라서
-    @GetMapping("/uauth/api/contract/seller")
-    public ResponseEntity<List<ContractResponseDto>> getContractSellerVer(@RequestParam String state, Authentication authentication) {
-        List<ContractResponseDto> responseDtoList = contractService.findContractSeller(state, authentication);
-        if (responseDtoList.size() == 0) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity(DefaultRes.response(
-                    HttpStatusCode.OK,
-                    HttpResponseMessage.READ_CONTRACT,
-                    responseDtoList), HttpStatus.OK);
-        }
-    }
-
-
-    // 거래목록조회(구매자ver)
-    @GetMapping("/uauth/api/contract/buyer")
-    public ResponseEntity<List<ContractResponseDto>> getContractBuyerVer(@RequestParam String state, Authentication authentication) {
-        List<ContractResponseDto> responseDtoList = contractService.findContractBuyer(state, authentication);
-        if (responseDtoList.size() == 0) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity(DefaultRes.response(
-                    HttpStatusCode.OK,
-                    HttpResponseMessage.READ_CONTRACT,
-                    responseDtoList), HttpStatus.OK);
-        }
-    }
-
     // 거래목록조회 - 거래자 혹은 판매자의 모든 state상태
     @GetMapping("/uauth/api/contract")
     public ResponseEntity<List<ContractResponseDto>> getContract(@RequestParam String ver, Authentication authentication) {
@@ -103,6 +69,4 @@ public class ContractController {
                     responseDtoList), HttpStatus.OK);
         }
     }
-
-
 }
