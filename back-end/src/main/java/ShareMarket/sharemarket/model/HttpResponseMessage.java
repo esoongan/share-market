@@ -12,7 +12,7 @@ public class HttpResponseMessage {
     public static final String READ_POST = "게시글 조회 성공";
     public static final String READ_ACCEPT_CONTRACT = "번 게시글 성사거래 조회 성공";
     public static final String READ_CONTRACT = "거래 조회 성공";
-    public static final String ACCEPT_CONTRACT = "거래 수락 성공";
+    public static final String CHANGE_STATE = "거래상태변경 성공";
     public static final String DELETE_CONTRACT = "거래 삭제 성공";
     public static final String CREATE_ROOM = "채팅방 생성 성공";
     public static final String ROOM_ALREADY_EXIST = "이미 존재하는 채팅방";

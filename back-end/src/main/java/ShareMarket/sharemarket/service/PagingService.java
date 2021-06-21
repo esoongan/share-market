@@ -59,7 +59,7 @@ public class PagingService {
             LocalDate startDate = LocalDate.parse(start);
             LocalDate endDate = LocalDate.parse(end);
             // 클라로부터 온 기간안에 accept인 거래가 있는 게시글목록들 ( 즉 빼야하는애들 )
-            List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate);
+            List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate, "accept");
             log.info("제외시킬 게시글개수 : "+ String.valueOf(postIdtoExclude.size()));
             // 키워드, 카테고리, 지역에서 안걸리고 대여조건에서 처음 걸린경우
             if (spec == null) {
@@ -113,7 +113,7 @@ public class PagingService {
         log.info("SERIVICE TEST INVOKE");
 
         // 해당 기간에 accept인 거래가 잇는 contract찾기 --> 빼야할 게시글 아이디들이 담겨있는상태
-        List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate);
+        List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate, "accept");
         log.info(String.valueOf(postIdtoExclude.size()));
 
         // PostSpecification에 만들어놓은 조건으로 spec생성 --> 게시글 아이디가 담긴 리스트(제외시킬 게시글목록들)를 받아 해당리스트에 없는 게시글만 찾는 spec(not in)

@@ -43,7 +43,7 @@ public class ContractSpecification {
         };
     }
 
-    //3번조건 : state가 accept인것
+    //3번조건 : 특정 state인 상태인 거래를 찾는다.
     public static Specification<Contract> equalSate(String state) {
         return new Specification<Contract>() {
             @Override

@@ -16,6 +16,7 @@ dependencies {
 	implementation 'android.arch.persistence.room:runtime:1.1.1'
     compile('org.projectlombok:lombok')
 	annotationProcessor('org.projectlombok:lombok')
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
