@@ -95,7 +95,7 @@ const EditorPage = ({ history, match }) => {
 				console.log(reason);
 			});
 	};
-	const onSubmit = deletedImages => {
+	const onSubmit = deletedImages => {	//deletedImages: not null
 		const { category, title, content, price, deposit } = inputs;
 
 		/* 포맷 확인 */
@@ -113,8 +113,7 @@ const EditorPage = ({ history, match }) => {
 			return;
 		} else if (
 			(images.length === 0 && !old_images) ||
-			(deletedImages &&
-				old_images &&
+			(old_images &&
 				images.length + old_images.length - deletedImages.length <= 0)
 		) {
 			setError('최소 1장 이상의 사진을 등록해주세요.');

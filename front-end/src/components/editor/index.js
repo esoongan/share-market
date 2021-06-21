@@ -107,7 +107,6 @@ const Editor = ({
 		e.preventDefault();
 		onSubmit(deletedImages);
 	}
-	console.log('Editor images', images);
 	return (
 		<div className={classes.root}>
 			{error !== null && (
@@ -256,7 +255,6 @@ const Editor = ({
 													aria-label={`remove ${img.origFilename}`}
 													onClick={() => {
 														if (deletedImages.includes(img.id)) {
-															console.log( deletedImages.filter((value) => value !== img.id));
 															//기존 이미지 삭제 취소하기
 															setDeletedImages(
 																deletedImages.filter((value) => value !== img.id)
