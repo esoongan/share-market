@@ -45,7 +45,7 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: images } = action.payload;
 				return {
-					...initialState,
+					...state,
 					images,
 				};
 			},

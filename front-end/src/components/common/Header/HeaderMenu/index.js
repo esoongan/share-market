@@ -54,7 +54,7 @@ export default function HeaderMenu({
 				open={Boolean(anchorEl)}
 				onClose={onClose}
 			>
-				<StyledMenuItem component={RouterLink} to='/mypage/seller'>
+				<StyledMenuItem>
 					<ListItemIcon>
 						<SendIcon fontSize="small" />
 					</ListItemIcon>
