@@ -32,5 +32,5 @@ export const getMyPost = () => axios.get(`/uauth/api/post`);
 // export const getSellerContract = ({state}) => axios.get(`/uauth/api/contract/seller?state=${state}`);
 export const getContracts = ({version}) => axios.get(`/uauth/api/contract?ver=${version}`);
 
-export const acceptContract = ({id}) => axios.put(`/uauth/api/contract/${id}`);
-export const refuseContract = ({id}) => axios.delete(`/uauth/api/contract/${id}`);
+export const acceptContract = ({id}) => axios.put(`/uauth/api/contract/${id}?state=accept`);
+export const refuseContract = ({id}) => axios.put(`/uauth/api/contract/${id}?state=refuse`);

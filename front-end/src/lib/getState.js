@@ -11,7 +11,7 @@ export const getState = ({ state, start, end }) => {
 	const endDate = moment(end, 'YYYY-MM-DD');
 
 	if (state === 'default') {
-		if (startDate.isBefore(moment())) {
+		if (startDate.isBefore(moment().subtract(1, 'day'))) {
 			return contractState['expired']; //수락하지 않고 요청 시작 날짜가 지났을 때
 		}
 		return contractState['waiting'];
@@ -22,7 +22,7 @@ export const getState = ({ state, start, end }) => {
 			return contractState['ing']; //수락되었고 대여 중일 때
 		}
 		return contractState['reserved'];	//수락되었고 아직 대여 전 예약 중일 떄
-	} else if (state === 'refused') {
+	} else if (state === 'refuse') {
 		if (startDate.isBefore(moment())) {
 			return contractState['expired']; //거절하였고 요청 시작 날짜가 지났을 때
 		}
