@@ -33,7 +33,6 @@ const initialState = {
 	},
 	blocked: [],
 	images: null,
-	reserved: null,
 };
 
 //reducer
@@ -83,22 +82,6 @@ export default handleActions(
 					blocked: action.payload.data.data,
 				};
 			},
-		}),
-		...pender({
-			// 예약하기
-			type: RESERVE,
-			onSuccess: (state, action) => {
-				return {
-					...state,
-					reserved: true,
-				};
-			},
-			onFailure: (state, action) => {
-				return {
-					...state,
-					reserved: false,
-				};
-			}
 		}),
 	},
 	initialState,

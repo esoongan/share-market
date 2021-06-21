@@ -19,18 +19,22 @@ const PostPage = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const post_id = match.params.post_id;
 	const [editable, setEditable] = useState(false);
-	const { success, post, images, failure, myId, blocked, reserved } =
-		useSelector(({ pender, post, auth }) => ({
+	const [reserveLoading, setReserveLoading] = useState(false);
+	const [reserveSuccess, setReserveSuccess] = useState(null);
+
+	const { success, post, images, failure, myId, blocked } = useSelector(
+		({ pender, post, auth }) => ({
 			post: post.post,
 			images: post.images,
 			success:
 				pender.success['post/GET_POST'] && pender.success['post/GET_FILES'],
 			failure:
 				pender.failure['post/GET_POST'] || pender.failure['post/GET_FILES'],
+			// pending: pender.pending['post/RESERVE'],
 			myId: auth.user.username, //현재 로그인한 유저의 username -> 내가 작성한 포스트일 때 수정 및 삭제 가능하도록
 			blocked: post.blocked,
-			reserved: post.reserved,
-		}));
+		}),
+	);
 	useEffect(() => {
 		dispatch(getFiles({ post_id })); //GET 이미지 api 호출
 		dispatch(getPost({ post_id })); //GET 게시물 api 호출
@@ -46,16 +50,7 @@ const PostPage = ({ match, history }) => {
 		} else {
 			setEditable(false);
 		}
-
 	}, [dispatch, post_id, myId, post.username]);
-
-	useEffect(() => {
-		if (reserved) {
-			alert('예약 요청을 보냈습니다.');
-		} else if (reserved === false) {
-			alert('예약 요청에 실패하였습니다. 다시 시도해주세요.');
-		}
-	}, [reserved]);
 
 	if (success) {
 		const defaultMsg = `'${post.title}' 게시물에 대해 문의드립니다~!${'\n'}`;
@@ -79,7 +74,13 @@ const PostPage = ({ match, history }) => {
 				//로그인 상태가 아니면
 				dispatch(toggleModal({ modal: 'loginModal', visible: true })); //로그인 모달 띄우기
 				return;
-			} else dispatch(reserve({ post_id, startDate, endDate }));
+			} else {
+				setReserveLoading(true);
+				dispatch(reserve({ post_id, startDate, endDate })).then(() => {
+					setReserveSuccess(true);
+					setReserveLoading(false);
+				});
+			}
 		};
 
 		//문의 하기 -> ChatModal 띄우기
@@ -118,9 +119,9 @@ const PostPage = ({ match, history }) => {
 							editable={editable}
 							onClickReserve={onClickReserve}
 							onClickChat={onClickChat}
-							// blocked={testBlocked}
 							blocked={blocked}
-							reserved={reserved}
+							success={reserveSuccess}
+							loading={reserveLoading}
 						/>
 					</Grid>
 				</Grid>

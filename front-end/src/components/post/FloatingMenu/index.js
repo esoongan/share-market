@@ -9,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import moment from 'moment';
+import clsx from 'clsx';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
 	floatingPaper: {
@@ -20,9 +22,30 @@ const useStyles = makeStyles(theme => ({
 	dateRangePicker: {
 		marginBottom: theme.spacing(4),
 	},
+	buttonsContainer:{
+		width:'80%',
+	},
 	button: {
-		width: '80%',
+		width: '100%',
 		marginBottom: theme.spacing(1),
+	},
+	wrapper: {
+		width: '100%',
+		position: 'relative',
+	},
+	buttonProgress: {
+		color: theme.palette.success.dark,
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		marginTop: -12,
+		marginLeft: -12,
+	},
+	buttonSuccess: {
+		backgroundColor: theme.palette.success.light,
+		'&:disabled': {
+			backgroundColor: theme.palette.success.light,
+		},
 	},
 	table: {
 		marginTop: theme.spacing(1),
@@ -37,9 +60,18 @@ export default function FloatingMenu({
 	onClickReserve,
 	onClickChat,
 	blocked,
-	reserved,
+	loading,
+	success,
 }) {
 	const classes = useStyles();
+
+	const buttonClassname = clsx(
+		{
+			[classes.buttonSuccess]: success,
+		},
+		classes.button,
+	);
+
 	const [alert, setAlert] = useState(false);
 	const [dateRange, setDateRange] = useState({
 		startDate: null,
@@ -101,7 +133,7 @@ export default function FloatingMenu({
 					먼저 날짜를 선택해 주세요.
 				</Alert>
 			)}
-			{reserved === true && (
+			{success === true && (
 				<Alert
 					style={{ width: '100%', marginBottom: '4px' }}
 					severity="success"
@@ -109,11 +141,8 @@ export default function FloatingMenu({
 					예약 요청을 보냈습니다.
 				</Alert>
 			)}
-			{reserved === false && (
-				<Alert
-					style={{ width: '100%', marginBottom: '4px' }}
-					severity="error"
-				>
+			{success === false && (
+				<Alert style={{ width: '100%', marginBottom: '4px' }} severity="error">
 					예약 요청에 실패하였습니다. 다시 시도해주세요.
 				</Alert>
 			)}
@@ -141,26 +170,32 @@ export default function FloatingMenu({
 					))}
 				</TableBody>
 			</Table>
-
-			<Button
-				className={classes.button}
-				variant="contained"
-				color="primary"
-				style={{ marginTop: '16px' }}
-				disabled={editable || reserved}
-				onClick={handleClickReserve}
-			>
-				예약하기
-			</Button>
-			<Button
-				className={classes.button}
-				variant="contained"
-				color="secondary"
-				disabled={editable}
-				onClick={onClickChat}
-			>
-				문의하기
-			</Button>
+			<div className={classes.buttonsContainer}>
+				<div className={classes.wrapper}>
+					<Button
+						variant="contained"
+						color="primary"
+						className={buttonClassname}
+						disabled={editable || loading || success}
+						onClick={handleClickReserve}
+						style={{ marginTop: '16px' }}
+					>
+						예약하기
+					</Button>
+					{loading && (
+						<CircularProgress size={24} className={classes.buttonProgress} />
+					)}
+				</div>
+				<Button
+					className={classes.button}
+					variant="contained"
+					color="secondary"
+					disabled={editable}
+					onClick={onClickChat}
+				>
+					문의하기
+				</Button>
+			</div>
 		</Paper>
 	);
 }
