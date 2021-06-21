@@ -164,7 +164,10 @@ function ContractTable({
 		const endDate1 = moment(end, 'YYYY-MM-DD');
 
 		let duplicatedRows = rows.filter(row => {
-			if (row.id === param.row.id) return false;
+			// 자기 자신은 duplicated x, 상태가 '대기중'인 것에서만 검사
+			if (row.id === param.row.id || row['상태'] !== contractState.waiting)
+				return false;
+
 			const startDate2 = moment(row['대여 날짜'], 'YYYY-MM-DD');
 			const endDate2 = moment(row['반납 날짜'], 'YYYY-MM-DD');
 
@@ -245,7 +248,7 @@ function ContractTable({
 }
 
 const ALL_MODE = true;
-const ONLY_MODE = false
+const ONLY_MODE = false;
 export default function Contracts({
 	contracts,
 	postList,
@@ -294,7 +297,13 @@ export default function Contracts({
 					거래 요청 내역
 				</Typography>
 				<FormControlLabel
-					control={<Switch checked={mode} name="mode" onChange={(event)=>setMode(event.target.checked)} />}
+					control={
+						<Switch
+							checked={mode}
+							name="mode"
+							onChange={event => setMode(event.target.checked)}
+						/>
+					}
 					label="전체 내역"
 				/>
 			</div>
