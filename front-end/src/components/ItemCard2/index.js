@@ -25,8 +25,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const today = moment().format('YYYY-MM-DD');
-
 //반납일 - 오늘 을 구하는 함수 --> D데이 구하기, 이 값이 0 보다 커야 대여중
 const getDday = ({ end }) => {
 	const endDate = moment(end, 'YYYY-MM-DD');
@@ -34,34 +32,16 @@ const getDday = ({ end }) => {
 	return endDate.diff(nowTime, 'days');
 };
 
-//오늘 - 시작날 을 구하는 함수 --> 이 값이 0보다 커야 대여중
-const getSday = ({ start }) => {
-	const startDate = moment(start, 'YYYY-MM-DD');
-	const nowTime = moment().format('YYYY-MM-DD');
-	return startDate.diff(nowTime, 'days');
-};
-
 const now = moment().format('YYYY-MM-DD'); //오늘의 날짜
 const ItemCard2 = ({
 	id,
 	seller,
-	buyer,
 	startDate,
 	endDate,
-	createdDate,
 	postTitle,
 	onClickItem,
 	thumbnail,
 }) => {
-
-  ;
-	if (startDate <= today && endDate >= today) {
-		console.log('하하ㅏ하핳하대여중이다');
-	}
-	if (startDate > today) {
-		console.log('하하ㅏ하핳하아직떄가 아니오');
-	}
-
 	const classes = useStyles();
 	const handleClickItem = () => {
 		onClickItem(id);

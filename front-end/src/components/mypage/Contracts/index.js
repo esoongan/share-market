@@ -287,9 +287,11 @@ export default function Contracts({
 			setSelectedIndex(selectedIndex + 1);
 	};
 	const handleClickAccept = () => {
+		setDuplicated([]);
 		onClickAccept(selectedContract);
 	};
 	const handleClickRefuse = () => {
+		setDuplicated([]);
 		onClickRefuse(selectedContract);
 	};
 	const handleClickChat = ({ seller, buyer, defaultMsg }) => {

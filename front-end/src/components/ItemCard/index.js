@@ -10,7 +10,9 @@ import RoomIcon from '@material-ui/icons/Room';
 import { imagePath } from 'constant/constant';
 
 const useStyles = makeStyles(theme => ({
-	root: {},
+	root: {
+		height: 350,
+	},
 	media: {
 		height: 200,
 		width: 300,
@@ -24,6 +26,9 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignItems: 'center',
 	},
+	itemTitle: {
+		overflowWrap: 'anywhere',
+	}
 }));
 
 const ItemCard = ({
@@ -65,7 +70,7 @@ const ItemCard = ({
 					</Typography>
 				</div>
 				<div>
-					<Typography gutterBottom variant="h5" component="h2">
+					<Typography className={classes.itemTitle} gutterBottom variant="h5" component="h2">
 						{title}
 					</Typography>
 				</div>

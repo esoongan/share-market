@@ -16,31 +16,37 @@ import {
 import { makeStyles } from '@material-ui/core';
 import { toggleModal } from 'store/modules/base';
 
-
 const useStyles = makeStyles(theme => ({}));
 const SellerPage = ({ history }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const [postList, setPostList] = useState({ids: [], titles: []}); // {ids: [], titles: []}
-	const { myPosts, contracts, renting } = useSelector(({ mypage }) => ({
-		myPosts: mypage.myPosts,
-		contracts: mypage.contracts.seller, // [{id, postId, seller }]
-		renting: mypage.renting.seller,
-	}));
+	const [postList, setPostList] = useState({ ids: [], titles: [] }); // {ids: [], titles: []}
+	const { logged, myPosts, contracts, renting } = useSelector(
+		({ mypage, auth }) => ({
+			myPosts: mypage.myPosts,
+			contracts: mypage.contracts.seller, // [{id, postId, seller }]
+			renting: mypage.renting.seller,
+			logged: auth.logged,
+		}),
+	);
 
 	//최초 렌더링 시 실행
 	useEffect(() => {
-		dispatch(getMyPost());
-		dispatch(getContracts({ version: 'seller'}));
-		dispatch(getRenting({version:'seller'}));	
-
-	}, []);
+		if (logged) {
+			dispatch(getMyPost());
+			dispatch(getContracts({ version: 'seller' }));
+			dispatch(getRenting({ version: 'seller' }));
+		} else {
+			alert('로그인이 필요한 서비스입니다.');
+			history.replace('/');
+		}
+	}, [logged]);
 
 	useEffect(() => {
 		if (contracts.length > 0) {
 			let ids = [...new Set(contracts.map(c => c.postId))];
 			let titles = [...new Set(contracts.map(c => c.postTitle))];
-			setPostList({ids, titles});
+			setPostList({ ids, titles });
 		}
 	}, [contracts]);
 
@@ -48,7 +54,7 @@ const SellerPage = ({ history }) => {
 		if (window.confirm('수락하시겠습니까? 수락 시 거래가 성사됩니다.'))
 			dispatch(acceptContract({ id })).then(() => {
 				//거래 요청 목록 다시 가져오기
-				dispatch(getContracts({ version: 'seller'}));
+				dispatch(getContracts({ version: 'seller' }));
 			});
 	};
 
@@ -56,7 +62,7 @@ const SellerPage = ({ history }) => {
 		if (window.confirm('거절하시겠습니까? 거절 시 요청이 삭제됩니다.'))
 			dispatch(refuseContract({ id })).then(() => {
 				//거래 요청 목록 다시 가져오기
-				dispatch(getContracts({ version: 'seller'}));
+				dispatch(getContracts({ version: 'seller' }));
 			});
 	};
 	const openChatModal = () => {
@@ -73,8 +79,7 @@ const SellerPage = ({ history }) => {
 				onClickRefuse={onClickRefuse}
 				openChatModal={openChatModal}
 			/>
-
-			<Renting renting={renting}  history={history}/>
+			<Renting renting={renting} history={history} />
 			<MyPost items={myPosts} history={history} />
 		</>
 	);

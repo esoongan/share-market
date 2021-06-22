@@ -40,7 +40,7 @@ const PostPage = ({ match, history }) => {
 		dispatch(getPost({ post_id })); //GET 게시물 api 호출
 		dispatch(getBlockedDates({ post_id })); // 이미 예약된 날짜들 불러오기
 
-		return () => dispatch(initialize());
+		// return () => dispatch(initialize());
 	}, []);
 
 	useEffect(() => {
