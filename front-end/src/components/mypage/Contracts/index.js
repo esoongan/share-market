@@ -184,29 +184,33 @@ function ContractTable({
 
 	return (
 		<div style={{ flexGrow: 1 }}>
-			<header className={classes.contractHeader}>
-				<div>
-					<IconButton aria-label="next post" onClick={onClickPrev}>
-						<NavigateBeforeIcon />
-					</IconButton>
-					<Typography variant="h6" gutterBottom component="div">
-						{contracts[0].postTitle}
-					</Typography>
-					<IconButton aria-label="next post" onClick={onClickNext}>
-						<NavigateNextIcon />
-					</IconButton>
-				</div>
+			{rows.length > 0 ? (
+				<header className={classes.contractHeader}>
+					<div>
+						<IconButton aria-label="next post" onClick={onClickPrev}>
+							<NavigateBeforeIcon />
+						</IconButton>
+						<Typography variant="h6" gutterBottom component="div">
+							{rows[0].postTitle}
+						</Typography>
+						<IconButton aria-label="next post" onClick={onClickNext}>
+							<NavigateNextIcon />
+						</IconButton>
+					</div>
 
-				<Button
-					endIcon={<OpenInNewIcon />}
-					size="large"
-					color="primary"
-					component={RouterLink}
-					to={`/post/${contracts[0].id}`}
-				>
-					자세히
-				</Button>
-			</header>
+					<Button
+						endIcon={<OpenInNewIcon />}
+						size="large"
+						color="primary"
+						component={RouterLink}
+						to={`/post/${rows[0].id}`}
+					>
+						자세히
+					</Button>
+				</header>
+			) : (
+				<header></header>
+			)}
 			<div className={classes.tableContainer}>
 				<DataGrid
 					onRowClick={onRowSelected}
@@ -266,8 +270,8 @@ export default function Contracts({
 	const [selectedContract, setSelectedContract] = useState(-1); //선택한 거래 요청의 id (거래 pk)
 	const [duplicated, setDuplicated] = useState([]); //선택한 거래 요청과 기간이 중복되는 요청을 저장 [id(거래 pk)]
 	const [chat, setChat] = useState(null); // {seller, buyer, defaultMsg}
-	
-	const [mode, setMode] = useState(ONLY_MODE);	//전체 내역 보기 <-> 대기중, 예약중만 보임
+
+	const [mode, setMode] = useState(ONLY_MODE); //전체 내역 보기 <-> 대기중, 예약중만 보임
 
 	// 다른 포스트를 클릭했으면 selectedContract 초기화
 	React.useEffect(() => {
