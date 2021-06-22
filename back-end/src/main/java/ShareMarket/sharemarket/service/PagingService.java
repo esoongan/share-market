@@ -61,12 +61,14 @@ public class PagingService {
             // 클라로부터 온 기간안에 accept인 거래가 있는 게시글목록들 ( 즉 빼야하는애들 )
             List<Long> postIdtoExclude = contractService.findPostIdtoExclude(startDate, endDate, "accept");
             log.info("제외시킬 게시글개수 : "+ String.valueOf(postIdtoExclude.size()));
-            // 키워드, 카테고리, 지역에서 안걸리고 대여조건에서 처음 걸린경우
-            if (spec == null) {
-                spec = PostSpecification.notEqualPostId(postIdtoExclude);
-            }
-            else {
-                spec = spec.and(PostSpecification.notEqualPostId(postIdtoExclude));
+            if (!postIdtoExclude.isEmpty()) {
+                // 키워드, 카테고리, 지역에서 안걸리고 대여조건에서 처음 걸린경우
+                if (spec == null) {
+                    spec = PostSpecification.notEqualPostId(postIdtoExclude);
+                }
+                else {
+                    spec = spec.and(PostSpecification.notEqualPostId(postIdtoExclude));
+                }
             }
         }
         // 검색조건없이 default페이징 요청인 경우
@@ -140,8 +142,8 @@ public class PagingService {
     }
 
 
+    // 내가쓴글 조회
     @Transactional(readOnly = true)
-    // 작성자랑 같은지 찾는거
     public Page<PagingResponseDto> pagingByWriter(Pageable pageable, Authentication authentication){
 
         Specification<Post> spec = PostSpecification.equalWriter(userService.getUserByToken(authentication.getPrincipal()));
