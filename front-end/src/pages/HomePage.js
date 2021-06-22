@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 		paddingBottom: theme.spacing(32),
 	},
 	background: {
-		// backgroundImage: 'url(https://cdn.pixabay.com/photo/2017/09/07/08/54/money-2724241_1280.jpg)',
+		backgroundImage: 'url(https://images.unsplash.com/photo-1547039996-61c1135690c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1797&q=80)',
 		backgroundSize: 'cover',
 		background: grey[200],
 	},
