@@ -5,7 +5,7 @@ export { default as NotFoundPage } from './NotFoundPage'
 export { default as PostPage } from './PostPage'
 
 export { default as ListPage } from './ListPage'
-export { default as BorrowerPage } from './BorrowerPage'
-export { default as BorroweePage } from './BorroweePage'
 export { default as ChatPage } from './ChatPage'
 
+export { default as SellerPage} from './SellerPage'
+export { default as BuyerPage} from './BuyerPage'

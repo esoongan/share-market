@@ -9,58 +9,67 @@ import Chip from '@material-ui/core/Chip';
 import RoomIcon from '@material-ui/icons/Room';
 import { imagePath } from 'constant/constant';
 
-
 const useStyles = makeStyles(theme => ({
-	root: {
-		
-	},
+	root: {},
 	media: {
 		height: 200,
-    width: 300,
+		width: 300,
 	},
-  itemInfo:{
-    display:'flex',
-    justifyContent:'space-between',
-    marginBottom: theme.spacing(1),
-  },
-  addr:{
-    display:'flex',
-    alignItems:'center',
-  }
+	itemInfo: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		marginBottom: theme.spacing(1),
+	},
+	addr: {
+		display: 'flex',
+		alignItems: 'center',
+	},
 }));
 
-const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem, thumbnail}) => {
+const ItemCard = ({
+	id,
+	title,
+	category,
+	addr,
+	createdDate,
+	userId,
+	onClickItem,
+	thumbnail,
+}) => {
 	const classes = useStyles();
-  const handleClickItem = () => {
-    onClickItem(id);
-  }
-  return (
+	const handleClickItem = () => {
+		onClickItem(id);
+	};
+	return (
 		<Card className={classes.root}>
 			<CardActionArea>
-				{/* <CardMedia
+				<CardMedia
 					className={classes.media}
 					image={imagePath + thumbnail.filename}
-          onClick= {handleClickItem}
-          component="img"
-				/>
-
-    </CardMedia>
+					onClick={handleClickItem}
+					component="img"
+				></CardMedia>
 			</CardActionArea>
-      <CardContent>
-        <div className={classes.itemInfo}>
-          <Chip color='primary' label={category} size="small"/>
-          <div className={classes.addr}><RoomIcon/><Typography component='span'>{addr}</Typography></div>
-        </div>
-        <div className={classes.itemInfo}>
-          <Typography color='textSecondary'>{userId}</Typography> 
-          <Typography color='textSecondary'>{createdDate.substring(0,10)} </Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="h5" component="h2">
-            {title}
-          </Typography>
-        </div>
-      </CardContent>
+			<CardContent>
+				<div className={classes.itemInfo}>
+					<Chip color="primary" label={category} size="small" />
+					<div className={classes.addr}>
+						<RoomIcon />
+						<Typography component="span">{addr}</Typography>
+					</div>
+				</div>
+				<div className={classes.itemInfo}>
+					<Typography color="textSecondary">{userId}</Typography>
+					<Typography color="textSecondary">
+						{createdDate.substring(0, 10)}{' '}
+					</Typography>
+				</div>
+				<div>
+					<Typography gutterBottom variant="h5" component="h2">
+						{title}
+					</Typography>
+				</div>
+			</CardContent>
 		</Card>
 	);
 };

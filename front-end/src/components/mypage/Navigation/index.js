@@ -27,10 +27,10 @@ export default function Navigation() {
 				color="primary"
 				aria-label="text primary button group"
 			>
-				<Link to="/mypage/borrower">
+				<Link to="/mypage/buyer">
 					<Button>BUYER</Button>
 				</Link>
-				<Link to="/mypage/borrowee">
+				<Link to="/mypage/seller">
 					<Button>SELLER</Button>
 				</Link>
 			</ButtonGroup>

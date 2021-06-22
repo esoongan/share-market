@@ -5,8 +5,8 @@ import {
 	EditorPage,
 	PostPage,
 	ListPage,
-	BorroweePage,
-	BorrowerPage,
+	SellerPage,
+	BuyerPage,
 	ChatPage,
 } from 'pages';
 import React from 'react';
