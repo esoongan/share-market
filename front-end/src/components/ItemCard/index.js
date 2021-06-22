@@ -37,13 +37,14 @@ const ItemCard = ({ id, title, category, addr, createdDate, userId, onClickItem,
   return (
 		<Card className={classes.root}>
 			<CardActionArea>
-				<CardMedia
+				{/* <CardMedia
 					className={classes.media}
 					image={imagePath + thumbnail.filename}
           onClick= {handleClickItem}
           component="img"
 				/>
 
+    </CardMedia>
 			</CardActionArea>
       <CardContent>
         <div className={classes.itemInfo}>
