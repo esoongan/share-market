@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 export default function Renting({ history, renting }) {
 	const classes = useStyles();
 	const onClickItem = (id) => history.push(`/post/${id}`);
-	console.log('renting',renting);
 	return (
 		<div className={classes.root}>
 			<Typography gutterBottom variant="h5" component="h1">

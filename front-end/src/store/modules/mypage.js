@@ -79,9 +79,8 @@ export default handleActions(
 						const startDate = moment(start, 'YYYY-MM-DD');
 						const endDate = moment(end, 'YYYY-MM-DD');
 
-						return moment().isBetween(startDate.subtract(1, 'days'), endDate.add(1, 'days'))
+						return moment().isBetween(startDate, endDate.add(1, 'days'))
 					});
-					console.log(data);
 				}
 				return produce(state, draft => {
 					draft.renting[version] = data;
