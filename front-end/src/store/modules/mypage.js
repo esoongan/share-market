@@ -79,7 +79,7 @@ export default handleActions(
 						const startDate = moment(start, 'YYYY-MM-DD');
 						const endDate = moment(end, 'YYYY-MM-DD');
 
-						return moment().isBetween(startDate, endDate.add(1, 'days'))
+						return contract.state==='accept' && moment().isBetween(startDate, endDate.add(1, 'days'))
 					});
 				}
 				return produce(state, draft => {
