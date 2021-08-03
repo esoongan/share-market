@@ -16,8 +16,10 @@
 
 [api-specification-sharemarket](https://www.notion.so/URI-7586458dc8814afea3ff301e41844ea0)
 
-### 프론트 화면
+### 상세 설명
 
+[서버](https://good-wallflower-5ff.notion.site/SHARE-MARKET-_-SERVER-0aaef0a6c2a44f26bc0ecb6af0ead9cb)
+[프론트]
 
 ### Contributors
 
